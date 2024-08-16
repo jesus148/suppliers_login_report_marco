@@ -39,10 +39,23 @@ export class SupliersComponent {
 
 
 
+
+  totalRegistros?: number;
+
+  DataSupliers: any = [];
+
+  showPaginator!: boolean;
+
+
+
+
+
   // inicia
   constructor( private loginService : LoginService ,  private router: Router){
 
 
+        // llama al metodo de suplliers
+        this.listData();
 
   }
 
@@ -59,6 +72,9 @@ export class SupliersComponent {
       }
     ]
 
+
+    // llama al metodo de suplliers
+    this.listData();
 
   }
 
@@ -80,15 +96,14 @@ export class SupliersComponent {
 
 
 
-      // llenando la data del service
-      this.loginService.usuario = resp.rows;
-      this.loginService.islogedd = true;
+      this.DataSupliers= resp.rows;
 
 
       // veririca para redirgirse
 
 
-        console.log(resp.rows)
+    console.log("data");
+        console.log(resp);
 
     }, (err) => {
       this.messagesService.showError(err.error.message);

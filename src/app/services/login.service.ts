@@ -84,7 +84,7 @@ export class LoginService {
 
     //metodo para obtener data
     getData( CardCodeData :string){
-      return  this.http.get(`${environment.base_url}/account-state?cardCode=${CardCodeData}` )
+      return  this.http.get(`${environmentPro.base_url}/account-state?cardCode=${CardCodeData}` )
      }
 
 
