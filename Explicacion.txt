@@ -1,0 +1,14 @@
+
+
+Iniciando proyecto
+
+1. PS C:\Users\JesúsArgelHuamanAnge\Desktop\Marco\angular\2_ejercisio\front_1\front_login> ng serve -o
+
+2. instalar librerias >
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
+    "primeng": "^17.18.8",
+
+
+3. Instalacion dependencias pasos
+ https://www.youtube.com/watch?v=lBAKaLkYcWA

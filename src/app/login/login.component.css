@@ -1,0 +1,26 @@
+#fondo-login {
+  height: 100vh;
+  /* background-image: url('../../../../public/assets/images/fondo.jpg'); */
+  background-image: url('../../../public/assets/images/fondo.jpg');
+  background-position: center;
+  background-size: cover;
+}
+
+
+
+.contenedor_2 form a{
+text-decoration: none;
+font-size: 13px;
+margin-left: auto;
+margin-bottom:10px;
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+color: black;
+font-weight: 500;
+}
+
+
+
+
+
+
+

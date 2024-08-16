@@ -1,0 +1,53 @@
+
+
+<!-- COMPONENTE TABLA  -->
+
+
+
+<!-- menu parte superior  -->
+<p-menubar [model]="items" class="">
+  <!-- pnatilla de angular o templates para retulizar -->
+  <!-- pTemplate :es una directiva personalizada de PrimeNG. Su finalidad es vincular una plantilla definida por usted (el usuario) a un contenedor definido por la biblioteca (PrimeNG).
+  Esto permite al usuario proporcionar una plantilla personalizada que se muestra dentro de un componente creado por la biblioteca. -->
+  <ng-template pTemplate="start" class="">
+
+  </ng-template>
+</p-menubar>
+
+
+
+
+
+
+
+<div class="grid justify-content-center align-content-center">
+  <div class="col-11 md:col-11 mt-2">
+    <!-- elemento flexible  es para encabezado para el header -->
+    <p-card [subheader]="'Estado de Cuenta'">
+      <!-- para la tabla  -->
+      <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }"  >
+        <ng-template pTemplate="header">
+          <tr>
+              <th>Serie_Correl</th>
+              <th>Fecha Emision</th>
+              <th>Fecha Vencimiento</th>
+              <th>Fecha Programacion</th>
+              <th>Moneda</th>
+              <th>Total</th>
+              <th>Monto</th>
+              <th>Saldo</th>
+          </tr>
+      </ng-template>
+                      <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{ product.code }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.quantity }}</td>
+                    </tr>
+                </ng-template>
+
+      </p-table>
+    </p-card>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+#fondo-login {
+  height: 100vh;
+  /* background-image: url('../../../../public/assets/images/fondo.jpg'); */
+  background-image: url('../../../public/assets/images/fondo1.jpg');
+  background-position: center;
+  background-size: cover;
+}
+
+
+
+
+.contenedor_2{
+  border: 2px solid white;
+  border-radius: 15px 50px 30px;
+  padding: 15px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.contenedor_2_1 h3{
+   color: #3086e7  ;
+}
+
+.contenedor_2_1 img{
+
+  margin-top: 20px;
+  width: 200px;
+  height: 80px;
+}
+
+
+.contenedor_2 a{
+   text-decoration: none;
+
+}
+
+
+.contenedor_2_3{
+
+  display: flex;
+  justify-content: flex-end;
+
+
+}
+
+.contenedor_2_3 > a > p {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: black;
+  font-size: 13px;
+  color: black;
+  font-weight: 500;
+}
+
