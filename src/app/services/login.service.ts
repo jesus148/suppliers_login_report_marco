@@ -22,7 +22,7 @@ export class LoginService {
   islogedd : boolean = false;
 
 
-  // guarda toda la data
+  // guarda toda la data del usuario
   usuario : any ;
 
 

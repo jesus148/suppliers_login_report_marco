@@ -13,6 +13,7 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { LoginService } from '../services/login.service';
 import { CommonModule } from '@angular/common';
 import { MessagesService } from '../services/messages.service';
+import { Token } from '@angular/compiler';
 
 
 
@@ -79,12 +80,6 @@ export class LoginComponent {
   }
 
 
-
-
-
-
-
-
   ngOnInit(): void {
   }
 
@@ -93,7 +88,7 @@ export class LoginComponent {
 
 
 
-  // metodo para registrar sin el sap
+  // metodo para registrar sin el saps
   // login2() {
 
 
@@ -140,6 +135,16 @@ export class LoginComponent {
 
 
   // metodo login con sap
+
+
+
+
+
+
+
+
+
+  // metodo ligin con sap
   login(){
 
 
@@ -173,6 +178,11 @@ export class LoginComponent {
         this.router.navigateByUrl('SupliersList');
 
         console.log(resp.rows)
+
+
+        // almacenando el token
+        localStorage.setItem('coreData',   cardCode)
+
 
     }, (err) => {
       this.messagesService.showError(err.error.message);

@@ -7,6 +7,12 @@ import { TableModule } from 'primeng/table';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { MessagesService } from '../../services/messages.service';
+import { Supliers } from '../../interfaces/supliers.model';
+import { CommonModule } from '@angular/common';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
+import { Observable, of } from 'rxjs';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-supliers',
@@ -16,7 +22,10 @@ import { MessagesService } from '../../services/messages.service';
     MenubarModule,
     TableModule,
     CardModule,
-    ChartModule
+    ChartModule,
+    CommonModule,
+    ButtonModule,
+    FormsModule
   ],
   templateUrl: './supliers.component.html',
   styleUrl: './supliers.component.css'
@@ -28,10 +37,24 @@ export class SupliersComponent {
   private messagesService = inject(MessagesService);
 
 
+  // const datos = [ ];
+
+
 
 
   // guarda la data
   data: any;
+
+
+
+
+  listSupliers: Supliers[] =[
+    {
+      serie:  13 , fecEmis : '45',fecve:  12, fecpro :  'jjsks' , moneda: 34 , total:  'jsks' , monto:23 ,
+      fecEmisaldo :   'sting'
+    }
+
+  ]
 
 
   // carga iconos
@@ -45,6 +68,16 @@ export class SupliersComponent {
   DataSupliers: any = [];
 
   showPaginator!: boolean;
+
+
+
+//guarda la data de los inputs
+
+prroveedor!: string | undefined;
+
+
+
+
 
 
 
@@ -86,9 +119,31 @@ export class SupliersComponent {
 
 
 
-
-
+  // metodo registra la data
   listData(){
+
+
+    const token = localStorage.getItem('coreData');
+
+    if(token){
+
+          this.loginService.getData(token).subscribe((resp:any) => {
+
+
+
+      this.DataSupliers= resp.rows;
+
+
+      // veririca para redirgirse
+
+
+    console.log("data");
+        console.log(resp);
+
+    }, (err) => {
+      this.messagesService.showError(err.error.message);
+    });
+    }else{
 
 
     // metodo registrar
@@ -116,9 +171,37 @@ export class SupliersComponent {
 
 
 
+    }
 
 
 
 
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
