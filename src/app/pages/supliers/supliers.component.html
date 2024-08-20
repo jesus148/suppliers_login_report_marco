@@ -3,36 +3,51 @@
 <!-- COMPONENTE TABLA  -->
 
 
-
-<!-- menu parte superior  -->
-<p-menubar [model]="items" class="">
-  <!-- pnatilla de angular o templates para retulizar -->
-  <!-- pTemplate :es una directiva personalizada de PrimeNG. Su finalidad es vincular una plantilla definida por usted (el usuario) a un contenedor definido por la biblioteca (PrimeNG).
-  Esto permite al usuario proporcionar una plantilla personalizada que se muestra dentro de un componente creado por la biblioteca. -->
-  <ng-template pTemplate="end" class="">
-
-  </ng-template>
-</p-menubar>
+<div class="contenedor">
 
 
 
+  <div class="contenedor_1">
+
+    <!-- menu parte superior  -->
+    <p-menubar [model]="items" class="" #menu styleClass="menuclass" popup="popup" >
+      <!-- pnatilla de angular o templates para retulizar -->
+      <!-- pTemplate :es una directiva personalizada de PrimeNG. Su finalidad es vincular una plantilla definida por usted (el usuario) a un contenedor definido por la biblioteca (PrimeNG).
+      Esto permite al usuario proporcionar una plantilla personalizada que se muestra dentro de un componente creado por la biblioteca. -->
+      <ng-template pTemplate="end" >
+
+      </ng-template>
+    </p-menubar>
+
+  </div>
 
 
 
 
-<div class=" contenedor_1 grid justify-content-center align-content-center">
+
+
+
+<div class="contenedor_2 grid justify-content-center align-content-center">
   <div class="col-11 md:col-11 mt-2">
     <!-- elemento flexible  es para encabezado para el header -->
-    <p-card [subheader]="'Estado de Cuenta '">
+    <p-card #menu2 styleClass="menu2" [subheader]="'Estado de Cuenta ' ">
 
-      <div class="grid flex justify-content-end pb-3">
+      <div class="grilla_2 grid flex pb-3">
 
-        <div class="md:col-2 col-12">
-          <label for="prroveedor" class="font-bold block mb-2"> Provedor : </label>
-          <input type="text" pInputText id="prroveedor" [(ngModel)]="prroveedor" class="h-2rem" />
+        <div class="md:col-3 col-12">
+          <label for="prroveedor" class="font-bold block mb-2"> Proveedor : </label>
+          <div class="flex justify-content-start gap-2">
+            <input type="text" pInputText id="prroveedor" [(ngModel)]="prroveedor" class="h-2rem m-auto " />
+            <p-button label="Buscar" icon="pi pi-search" severity="success" />
+
+          </div>
+
       </div>
-      <div class="md:col-4 pt-5 col-12 flex justify-content-end">
-        <p-button label="Buscar" icon="pi pi-search" severity="success" />
+
+
+
+      <div class="md:col-9  pt-5 col-12 flex justify-content-end">
+
         <p-button class="ml-3" severity="secondary" label="Limpiar" icon="pi pi-eraser"  />
         <p-button class="ml-3" severity="info" icon="pi pi-sync"  />
     </div>
@@ -66,7 +81,7 @@
                         <td>{{  supliers.Total_Documento | number:   '1.2-2' }}</td>
                         <td>{{ supliers.Monto_pagado  | number:   '1.2' }}</td>
                         <td>{{ supliers.Saldo_pendiente | number :  '1.3'}}</td>
-                        <td class="text-center gap-8" >
+                        <td class="text-center flex gap-3" >
                           <p-button  icon="pi pi-pencil" [text]="true" [raised]="true" />
                           <p-button  icon="pi pi-times" [text]="true" [raised]="true" />
                       </td>
@@ -77,3 +92,7 @@
     </p-card>
   </div>
 </div>
+
+</div>
+
+

@@ -2,7 +2,51 @@
 
 /* estilos */
 
-/* header */
+/* configurar esto en css  */
+@charset "UTF-8";
 
 
+.contenedor{
+  height: 100vh;
+  width: 100%;
+
+}
+
+
+:host ::ng-deep p-menubar .ng-template  {
+  background-color: #000 !important;
+}
+
+
+/* parte de arriba  estilos para header */
+/deep/ .menuclass {
+  /* background: green; */
+  background-color: #00c867;
+  display: flex;
+  margin-right: 30px;
+text-align: center;
+color: white;
+
+}
+
+
+
+.contenedor_1{
+
+  display: flex;
+justify-content: flex-end;
+
+
+}
+
+
+.contenedor_2{
+  /* background-color: goldenrod; */
+}
+
+
+/deep/ .menu2{
+  font-family: "New Amsterdam", sans-serif;
+  font-size: 20px;
+}
 

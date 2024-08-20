@@ -41,7 +41,9 @@ export class LoginService {
 
 
   // inicia
-  constructor( private http : HttpClient) {
+  constructor( private http : HttpClient ,
+    private router : Router
+  ) {
 
     this.myapp = environment.base_url;
 
@@ -89,6 +91,13 @@ export class LoginService {
 
 
 
+
+    //  metodo salir de la sesion
+    logout(){
+      localStorage.removeItem('coreData');
+      this.islogedd = false;
+      this.router.navigateByUrl('/login');
+    }
 
 
 

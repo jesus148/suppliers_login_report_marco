@@ -14,6 +14,7 @@ import { LoginService } from '../services/login.service';
 import { CommonModule } from '@angular/common';
 import { MessagesService } from '../services/messages.service';
 import { Token } from '@angular/compiler';
+import { SpinnerComponent } from "../spinner/spinner.component";
 
 
 
@@ -32,8 +33,10 @@ import { Token } from '@angular/compiler';
     InputTextModule,
     ButtonModule,
     ToastModule,
-    CheckboxModule
-  ],
+    CheckboxModule,
+    SpinnerComponent,
+    CommonModule
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   providers: [MessageService]
@@ -57,7 +60,7 @@ export class LoginComponent {
   showPass: boolean = false;
 
 
-
+  loading: boolean = false;
 
 
     // validar
@@ -162,6 +165,8 @@ export class LoginComponent {
     const password = this.loginForm.controls['password'].value!.trim();
 
 
+    this.loading = true;
+
     // metodo registrar
     this.loginService.loginSap(cardCode, password).subscribe((resp:any) => {
 
@@ -177,7 +182,7 @@ export class LoginComponent {
 
         this.router.navigateByUrl('SupliersList');
 
-        console.log(resp.rows)
+        // console.log(resp.rows)
 
 
         // almacenando el token
@@ -185,6 +190,7 @@ export class LoginComponent {
 
 
     }, (err) => {
+      this.loading = true;
       this.messagesService.showError(err.error.message);
     });
 

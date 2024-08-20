@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
@@ -13,6 +13,7 @@ import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { Observable, of } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-supliers',
@@ -30,7 +31,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './supliers.component.html',
   styleUrl: './supliers.component.css'
 })
-export class SupliersComponent {
+export class SupliersComponent implements OnInit{
 
 
   // private loginService = inject(LoginService);
@@ -63,6 +64,8 @@ export class SupliersComponent {
 
 
 
+
+  loading: boolean = false;
   totalRegistros?: number;
 
   DataSupliers: any = [];
@@ -72,7 +75,6 @@ export class SupliersComponent {
 
 
 //guarda la data de los inputs
-
 prroveedor!: string | undefined;
 
 
@@ -91,20 +93,20 @@ prroveedor!: string | undefined;
         this.listData();
 
   }
-
-
   // inicia
   ngOnInit(){
+    // llama al pmenubar
     this.items=[
       {
-        label:'Salir',
-        icon: 'pi pi-fw pi-power-off'
-      },
-      {
+        label:'Salir', //titulo
+        icon: 'pi pi-fw pi-power-off',//icono
+        // metodo salir sesion
+        command:()=>{
+          this.loginService.logout();
+        },
 
       }
     ]
-
 
     // llama al metodo de suplliers
     this.listData();
@@ -133,6 +135,7 @@ prroveedor!: string | undefined;
 
       this.DataSupliers= resp.rows;
 
+      this.loading = true;
 
       // veririca para redirgirse
 
@@ -157,21 +160,22 @@ prroveedor!: string | undefined;
       // veririca para redirgirse
 
 
-    console.log("data");
-        console.log(resp);
+    // console.log("data");
+    //     console.log(resp);
 
     }, (err) => {
       this.messagesService.showError(err.error.message);
     });
     }
 
-
-
-
-
-
-
     }
+
+
+
+
+
+    // METODOS REST
+
 
 
 
