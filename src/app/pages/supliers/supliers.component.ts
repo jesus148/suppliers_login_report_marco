@@ -12,8 +12,11 @@ import { CommonModule } from '@angular/common';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { Observable, of } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-supliers',
@@ -26,7 +29,11 @@ import { InputTextModule } from 'primeng/inputtext';
     ChartModule,
     CommonModule,
     ButtonModule,
-    FormsModule
+    FormsModule,
+    DialogModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    FormsModule, CommonModule, ReactiveFormsModule,
   ],
   templateUrl: './supliers.component.html',
   styleUrl: './supliers.component.css'
@@ -80,6 +87,22 @@ prroveedor!: string | undefined;
 
 
 
+// modal acutalizar
+modalBolean:boolean = false;
+detailToShow : any;
+
+
+
+
+
+
+
+
+    // validar
+    loginForm = new FormGroup({
+      usuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(3)])
+    });
 
 
 
@@ -174,8 +197,14 @@ prroveedor!: string | undefined;
 
 
 
-    // METODOS REST
 
+
+    //actualizar usuario
+    actualizar(){
+
+      this.modalBolean= true;
+
+    }
 
 
 

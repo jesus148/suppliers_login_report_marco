@@ -9,6 +9,7 @@ import { routes } from './app.routes';
 // provideHttpClient() su import
 import { provideHttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 
 export const appConfig: ApplicationConfig = {
@@ -16,7 +17,10 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
      provideRouter(routes) ,
           // para q nuetra aplicacion pueda usar servicios rest , requiere un import
-          provideHttpClient() , MessageService
-
+          provideHttpClient() ,
+          // mensaje de error
+          MessageService
+          // los modale s
+          , provideAnimations()
         ]
 };

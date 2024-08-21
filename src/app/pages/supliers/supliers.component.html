@@ -96,3 +96,44 @@
 </div>
 
 
+
+<!-- Modal para actulizar  -->
+<p-button (onClick)="actualizar()" label="Show" />
+<p-dialog
+    header="Actualizar Contraseña"
+    [(visible)]="modalBolean"
+    [modal]="true"
+
+    [style]="{ width: '350px', height :'320px' }"
+    [draggable]="false"
+    [resizable]="false">
+    <div class="grid  bg-green-800 justify-content-center align-content-center">
+
+      <form [formGroup]="loginForm" (ngSubmit)="actualizar()">
+        <!-- agrupardor de inputs  -->
+          <p-inputGroup >
+            <!-- agrgar inputs  -->
+              <p-inputGroupAddon class="">
+                  <i class="pi pi-user" ></i>
+              </p-inputGroupAddon>
+              <input class="p-inputtext-sm" pInputText placeholder="Usuario" formControlName="usuario"/>
+          </p-inputGroup>
+          <!-- agrupador de inputs  -->
+          <p-inputGroup class="mt-3 mb-3">
+              <p-inputGroupAddon >
+                  <i class="pi pi-lock"></i>
+              </p-inputGroupAddon>
+              <input type="password" class="p-inputtext-sm" pInputText placeholder="Contraseña" formControlName="password"/>
+          </p-inputGroup>
+
+
+            <p-button size="small" type="submit" label="Ingresar" class="" ></p-button>
+
+
+
+
+        </form>
+
+    </div>
+</p-dialog>
+

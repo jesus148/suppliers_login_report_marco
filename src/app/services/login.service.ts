@@ -105,4 +105,25 @@ export class LoginService {
 
 
 
+
+
+
+
+
+    // REST PARA TEST===========
+    logue2(){
+      
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

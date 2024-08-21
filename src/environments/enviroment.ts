@@ -9,4 +9,7 @@ export const environment = {
 
   // 2 backend
   base_url: 'http://localhost:3000',
+
+
+  base_url2: ''
 };
