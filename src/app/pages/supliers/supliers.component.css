@@ -21,7 +21,7 @@
 /* parte de arriba  estilos para header */
 /deep/ .menuclass {
   /* background: green; */
-  background-color: #00c867;
+  /* background-color: #00c867; */
   display: flex;
   margin-right: 30px;
 text-align: center;
@@ -40,8 +40,10 @@ justify-content: flex-end;
 }
 
 
-.contenedor_2{
-  /* background-color: goldenrod; */
+.contenedor h4{
+  font-family: "New Amsterdam", sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
 }
 
 

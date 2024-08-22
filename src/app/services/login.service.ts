@@ -20,23 +20,21 @@ export class LoginService {
 
   // veririfica si esta logeado
   islogedd : boolean = false;
-
-
   // guarda toda la data del usuario
   usuario : any ;
-
-
   //guarda mensaje actualizado
-
   mensaje : string =  '';
 
 
   // guarda toda la data
-  rows : any;
-
-
+  rows : any ;
   //guarda el cardCode
   CardCodeData : string = '';
+  // datos del usuario o proveddor,-
+  CardName : string ='' ;
+
+
+
 
 
 
@@ -101,19 +99,6 @@ export class LoginService {
 
 
 
-
-
-
-
-
-
-
-
-
-    // REST PARA TEST===========
-    logue2(){
-      
-    }
 
 
 

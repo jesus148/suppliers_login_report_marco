@@ -9,7 +9,7 @@ export const isLogedGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
 
-  const token = localStorage.getItem('coreData');
+  const token = localStorage.getItem('object');
 
 
   if(token == undefined){

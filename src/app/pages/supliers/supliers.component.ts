@@ -17,6 +17,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { SpinnerComponent } from '../../spinner/spinner.component';
+
+import { MegaMenuModule } from 'primeng/megamenu';
+import { TabViewModule } from 'primeng/tabview';
+import { SuppliersService } from '../../services/suppliers.service';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+
 
 @Component({
   selector: 'app-supliers',
@@ -34,6 +42,11 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
     InputGroupModule,
     InputGroupAddonModule,
     FormsModule, CommonModule, ReactiveFormsModule,
+    SpinnerComponent,
+    TabViewModule,
+    MegaMenuModule,
+    AvatarModule ,
+    AvatarGroupModule
   ],
   templateUrl: './supliers.component.html',
   styleUrl: './supliers.component.css'
@@ -45,14 +58,14 @@ export class SupliersComponent implements OnInit{
   private messagesService = inject(MessagesService);
 
 
-  // const datos = [ ];
 
 
 
+  // data estado de cuenta
+  DataSupliers: any = [];
 
-  // guarda la data
-  data: any;
-
+  // data cuenta banco
+  dataSuppliersBanck : any =[ ];
 
 
 
@@ -75,14 +88,19 @@ export class SupliersComponent implements OnInit{
   loading: boolean = false;
   totalRegistros?: number;
 
-  DataSupliers: any = [];
-
   showPaginator!: boolean;
 
 
 
 //guarda la data de los inputs
 prroveedor!: string | undefined;
+// datos del usuario
+usuario : any;
+
+activeIndex : number = 0;
+
+
+
 
 
 
@@ -90,6 +108,7 @@ prroveedor!: string | undefined;
 // modal acutalizar
 modalBolean:boolean = false;
 detailToShow : any;
+
 
 
 
@@ -109,11 +128,14 @@ detailToShow : any;
 
 
   // inicia
-  constructor( private loginService : LoginService ,  private router: Router){
+  constructor( private loginService : LoginService ,  private router: Router , private suppliers : SuppliersService){
 
 
-        // llama al metodo de suplliers
+        // metodo get supliers
         this.listData();
+
+        //metodo get account banck
+        this.getDataAccountBanck();
 
   }
   // inicia
@@ -121,18 +143,27 @@ detailToShow : any;
     // llama al pmenubar
     this.items=[
       {
+        label:'Actualizar Contraseña', //titulo
+        icon: 'pi pi-fw pi-user-edit',//icono
+        // metodo salir sesion
+        command:()=>{
+          this.loginService.logout();
+        }
+      },
+      {
         label:'Salir', //titulo
         icon: 'pi pi-fw pi-power-off',//icono
         // metodo salir sesion
         command:()=>{
           this.loginService.logout();
-        },
-
+        }
       }
     ]
 
     // llama al metodo de suplliers
     this.listData();
+    // lista datos del proveedor
+    this.cargarUsuario();
 
   }
 
@@ -147,49 +178,37 @@ detailToShow : any;
   // metodo registra la data
   listData(){
 
+    const token = localStorage.getItem('object');
 
-    const token = localStorage.getItem('coreData');
+     const  data2= JSON.parse(localStorage.getItem('object') || '');
+
+
+
 
     if(token){
 
-          this.loginService.getData(token).subscribe((resp:any) => {
-
-
+          this.loginService.getData(data2.CardCode).subscribe((resp:any) => {
 
       this.DataSupliers= resp.rows;
 
       this.loading = true;
 
-      // veririca para redirgirse
-
-
-    console.log("data");
-        console.log(resp);
-
     }, (err) => {
       this.messagesService.showError(err.error.message);
     });
     }else{
+      return console.log("false");
+    }
 
-
-    // metodo registrar
-    this.loginService.getData(this.loginService.CardCodeData).subscribe((resp:any) => {
-
-
+    this.loginService.getData(data2.CardCode).subscribe((resp:any) => {
 
       this.DataSupliers= resp.rows;
 
-
-      // veririca para redirgirse
-
-
-    // console.log("data");
-    //     console.log(resp);
+      this.loading = true;
 
     }, (err) => {
       this.messagesService.showError(err.error.message);
     });
-    }
 
     }
 
@@ -197,13 +216,53 @@ detailToShow : any;
 
 
 
+    getDataAccountBanck(){
+
+      const token = localStorage.getItem('object');
+      const  data2= JSON.parse(localStorage.getItem('object') || '');
 
 
-    //actualizar usuario
+    if(token){
+
+      this.suppliers.getBankAccount(data2.CardCode).subscribe((resp:any) => {
+        this.dataSuppliersBanck = resp.rows ;
+        console.log(this.dataSuppliersBanck);
+
+
+    }, (err) => {
+     this.messagesService.showError(err.error.message);
+    });
+    }else{
+    return console.log("false");
+    }
+
+
+
+    }
+
+
+
+
+
+    // cargar usuario datos del cliente
+    cargarUsuario(){
+      // obtiene el token
+      const allObject = localStorage.getItem('object');
+      // conviritendo de objeto a string
+      const  data2= JSON.parse(allObject || '');
+      this.usuario = data2.CardName ;
+    }
+
+
+
+
+
+
+
+
+    //Modal
     actualizar(){
-
       this.modalBolean= true;
-
     }
 
 

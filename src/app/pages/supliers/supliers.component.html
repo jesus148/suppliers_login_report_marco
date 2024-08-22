@@ -3,93 +3,145 @@
 <!-- COMPONENTE TABLA  -->
 
 
-<div class="contenedor">
+<div class="contenedor flex flex-column h-full
+ justify-content-center align-content-center">
+
+<div class="">
 
 
-
-  <div class="contenedor_1">
-
-    <!-- menu parte superior  -->
-    <p-menubar [model]="items" class="" #menu styleClass="menuclass" popup="popup" >
-      <!-- pnatilla de angular o templates para retulizar -->
-      <!-- pTemplate :es una directiva personalizada de PrimeNG. Su finalidad es vincular una plantilla definida por usted (el usuario) a un contenedor definido por la biblioteca (PrimeNG).
-      Esto permite al usuario proporcionar una plantilla personalizada que se muestra dentro de un componente creado por la biblioteca. -->
-      <ng-template pTemplate="end" >
+    <p-menubar class="" [model]="items">
+      <ng-template pTemplate="start">
+          <img src="assets/images/LogoMp2.png" height="40" class="mr-2">
+      </ng-template>
+      <ng-template pTemplate="end"  >
 
       </ng-template>
-    </p-menubar>
+  </p-menubar>
 
-  </div>
-
-
+    <div class="contenedor_1 mt-2">
 
 
 
-
-
-<div class="contenedor_2 grid justify-content-center align-content-center">
-  <div class="col-11 md:col-11 mt-2">
-    <!-- elemento flexible  es para encabezado para el header -->
-    <p-card #menu2 styleClass="menu2" [subheader]="'Estado de Cuenta ' ">
-
-      <div class="grilla_2 grid flex pb-3">
-
-        <div class="md:col-3 col-12">
-          <label for="prroveedor" class="font-bold block mb-2"> Proveedor : </label>
-          <div class="flex justify-content-start gap-2">
-            <input type="text" pInputText id="prroveedor" [(ngModel)]="prroveedor" class="h-2rem m-auto " />
-            <p-button label="Buscar" icon="pi pi-search" severity="success" />
-
-          </div>
-
-      </div>
-
-
-
-      <div class="md:col-9  pt-5 col-12 flex justify-content-end">
-
-        <p-button class="ml-3" severity="secondary" label="Limpiar" icon="pi pi-eraser"  />
-        <p-button class="ml-3" severity="info" icon="pi pi-sync"  />
     </div>
 
-      </div>
-      <!-- para la tabla  -->
-      <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="DataSupliers" >
-        <ng-template pTemplate="header">
-          <tr>
-              <th>Serie_Correl</th>
-              <th>Fecha Emision</th>
-              <th>Fecha Vencimiento</th>
-              <!-- <th>Fecha Programacion</th> -->
-              <th>Moneda</th>
-              <th>Total</th>
-              <th>Monto</th>
-              <th>Saldo</th>
-              <th></th>
-          </tr>
-      </ng-template>
-                      <ng-template pTemplate="body" let-supliers>
-                    <tr>
-                        <td>{{ supliers.SERIE_CORREL }}</td>
-                        <!-- lo corta el valor  -->
-                        <td>{{ supliers.Fec_Emision.split(' ')[0] }}</td>
-                        <td>{{ supliers.Fec_VCTO.split(' ')[0] }}</td>
-                        <!-- <td>{{ supliers.Fec_Programacion }}</td> -->
-                        <td>{{ supliers.Moneda }}</td>
+    <div class="ml-7">
+        <h4>Proveedor {{usuario}}</h4>
+    </div>
 
-                        <!-- mejora el decimal con 2   -->
-                        <td>{{  supliers.Total_Documento | number:   '1.2-2' }}</td>
-                        <td>{{ supliers.Monto_pagado  | number:   '1.2' }}</td>
-                        <td>{{ supliers.Saldo_pendiente | number :  '1.3'}}</td>
-                        <td class="text-center flex gap-3" >
-                          <p-button  icon="pi pi-pencil" [text]="true" [raised]="true" />
-                          <p-button  icon="pi pi-times" [text]="true" [raised]="true" />
-                      </td>
-                    </tr>
-                </ng-template>
 
-      </p-table>
-    </p-card>
+
+  <div class="contenedor_2 grid justify-content-center align-content-center">
+    <div class="col-11 md:col-11 mt-2">
+      <!-- elemento flexible  es para encabezado para el header -->
+      <p-card #menu2 styleClass="menu2" [subheader]="'Estado de Cuenta ' " class="h-7rem">
+
+        <div>
+          <div class="flex mb-2 gap-2 justify-content-end">
+            <p-button
+                (onClick)="activeIndex = 0"
+                rounded="true"
+                styleClass="w-2rem h-2rem p-0"
+                [outlined]="activeIndex !== 0"
+                label="1" />
+            <p-button
+                (onClick)="activeIndex = 1"
+                rounded="true"
+                styleClass="w-2rem h-2rem p-0"
+                [outlined]="activeIndex !== 1"
+                label="2" />
+
+        </div>
+        <!-- tabla  -->
+            <p-tabView [(activeIndex)]="activeIndex">
+
+              <!-- 1 tabla  -->
+                <p-tabPanel header="Estado Cuenta">
+                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="DataSupliers" >
+                    <ng-template pTemplate="header">
+                      <tr>
+                          <th>Serie_Correl</th>
+                          <th>Fecha Emision</th>
+                          <th>Fecha Vencimiento</th>
+                          <!-- <th>Fecha Programacion</th> -->
+                          <th>Moneda</th>
+                          <th>Total</th>
+                          <th>Monto</th>
+                          <th>Saldo</th>
+                          <!-- <th></th> -->
+                      </tr>
+                  </ng-template>
+                                  <ng-template pTemplate="body" let-supliers>
+                                <tr>
+                                    <td>{{ supliers.SERIE_CORREL }}</td>
+                                    <!-- lo corta el valor  -->
+                                    <td>{{ supliers.Fec_Emision.split(' ')[0] }}</td>
+                                    <td>{{ supliers.Fec_VCTO.split(' ')[0] }}</td>
+                                    <!-- <td>{{ supliers.Fec_Programacion }}</td> -->
+                                    <td>{{ supliers.Moneda }}</td>
+
+                                    <!-- mejora el decimal con 2   -->
+                                    <td>{{  supliers.Total_Documento | number:   '1.2-2' }}</td>
+                                    <td>{{ supliers.Monto_pagado  | number:   '1.2' }}</td>
+                                    <td>{{ supliers.Saldo_pendiente | number :  '1.3'}}</td>
+                                    <!-- <td class="text-center flex gap-3" >
+                                      <p-button  icon="pi pi-pencil" [text]="true" [raised]="true" />
+                                      <p-button  icon="pi pi-times" [text]="true" [raised]="true" />
+                                  </td> -->
+                                </tr>
+                            </ng-template>
+
+                  </p-table>
+                </p-tabPanel>
+
+                <!-- 2 tabla  -->
+                <p-tabPanel header="Bancos">
+                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="dataSuppliersBanck" >
+                    <ng-template pTemplate="header">
+                      <tr>
+                          <th>Codigo Banco </th>
+                          <th>Pais</th>
+                          <th>Cuenta </th>
+                          <th>Tipo Cuenta</th>
+                          <th>Moneda Sap</th>
+                          <th>Moneda Sap</th>
+                          <th></th>
+                      </tr>
+                  </ng-template>
+                                  <ng-template pTemplate="body" let-supliersbanck>
+                                <tr>
+                                    <td>{{ supliersbanck.Codigo_Banco }}</td>
+                                    <!-- lo corta el valor  -->
+                                    <td>{{ supliersbanck.Pais }}</td>
+                                    <td>{{ supliersbanck.Cuenta}}</td>
+                                    <!-- <td>{{ supliersbanck.Fec_Programacion }}</td> -->
+                                    <td>{{ supliersbanck.Tipo_Cuenta }}</td>
+
+                                    <!-- mejora el decimal con 2   -->
+                                    <td>{{  supliersbanck.Moneda_SAP }}</td>
+                                    <td>{{ supliersbanck.Moneda_Banco   }}</td>
+                                    <td>
+                                      <p-button icon="pi pi-pencil" [rounded]="true" />
+
+
+                                    </td>
+
+
+                                </tr>
+                            </ng-template>
+
+                  </p-table>
+                </p-tabPanel>
+
+        </p-tabView>
+
+        </div>
+
+
+
+
+
+      </p-card>
+    </div>
   </div>
 </div>
 
@@ -97,8 +149,14 @@
 
 
 
-<!-- Modal para actulizar  -->
-<p-button (onClick)="actualizar()" label="Show" />
+
+
+
+
+
+
+<!-- MODAL ACTUALIZAR  -->
+<!-- <p-button (onClick)="actualizar()" label="Show" /> -->
 <p-dialog
     header="Actualizar Contraseña"
     [(visible)]="modalBolean"

@@ -178,15 +178,17 @@ export class LoginComponent {
       this.loginService.CardCodeData = cardCode;
 
 
+
+
       // veririca para redirgirse
 
         this.router.navigateByUrl('SupliersList');
 
-        // console.log(resp.rows)
+        console.log(resp.rows);
 
-
-        // almacenando el token
-        localStorage.setItem('coreData',   cardCode)
+        // almacenando el token como objeto
+        // convierte a string de json
+        localStorage.setItem(  'object' , JSON.stringify(resp.rows[0]));
 
 
     }, (err) => {

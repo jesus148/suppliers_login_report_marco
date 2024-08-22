@@ -23,4 +23,18 @@ font-weight: 500;
 
 
 
+.contenedor_2{
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+}
 
+
+
+.contenedor_2  h4{
+  font-family: "New Amsterdam", sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-indent: 20px;
+}
