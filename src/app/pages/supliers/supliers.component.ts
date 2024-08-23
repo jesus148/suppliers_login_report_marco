@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { Observable, of } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -46,7 +46,10 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
     TabViewModule,
     MegaMenuModule,
     AvatarModule ,
-    AvatarGroupModule
+    AvatarGroupModule,
+    FormsModule,
+    CommonModule,
+    ReactiveFormsModule
   ],
   templateUrl: './supliers.component.html',
   styleUrl: './supliers.component.css'
@@ -96,6 +99,7 @@ export class SupliersComponent implements OnInit{
 prroveedor!: string | undefined;
 // datos del usuario
 usuario : any;
+cardCode : any;
 
 activeIndex : number = 0;
 
@@ -127,8 +131,15 @@ detailToShow : any;
 
 
 
+
+
+
+
+
   // inicia
-  constructor( private loginService : LoginService ,  private router: Router , private suppliers : SuppliersService){
+  constructor( private loginService : LoginService ,  private router: Router , private suppliers : SuppliersService ,
+    private formBuilder: FormBuilder
+  ){
 
 
         // metodo get supliers
@@ -147,7 +158,7 @@ detailToShow : any;
         icon: 'pi pi-fw pi-user-edit',//icono
         // metodo salir sesion
         command:()=>{
-          this.loginService.logout();
+          this.cargarModal();
         }
       },
       {
@@ -162,8 +173,9 @@ detailToShow : any;
 
     // llama al metodo de suplliers
     this.listData();
-    // lista datos del proveedor
+
     this.cargarUsuario();
+
 
   }
 
@@ -194,7 +206,7 @@ detailToShow : any;
       this.loading = true;
 
     }, (err) => {
-      this.messagesService.showError(err.error.message);
+      // this.messagesService.showError(err.error.message);
     });
     }else{
       return console.log("false");
@@ -203,11 +215,10 @@ detailToShow : any;
     this.loginService.getData(data2.CardCode).subscribe((resp:any) => {
 
       this.DataSupliers= resp.rows;
-
       this.loading = true;
 
     }, (err) => {
-      this.messagesService.showError(err.error.message);
+      // this.messagesService.showError(err.error.message);
     });
 
     }
@@ -226,11 +237,11 @@ detailToShow : any;
 
       this.suppliers.getBankAccount(data2.CardCode).subscribe((resp:any) => {
         this.dataSuppliersBanck = resp.rows ;
-        console.log(this.dataSuppliersBanck);
+        // console.log(this.dataSuppliersBanck);
 
 
     }, (err) => {
-     this.messagesService.showError(err.error.message);
+    //  this.messagesService.showError(err.error.message);
     });
     }else{
     return console.log("false");
@@ -243,7 +254,6 @@ detailToShow : any;
 
 
 
-
     // cargar usuario datos del cliente
     cargarUsuario(){
       // obtiene el token
@@ -251,19 +261,59 @@ detailToShow : any;
       // conviritendo de objeto a string
       const  data2= JSON.parse(allObject || '');
       this.usuario = data2.CardName ;
+      this.cardCode = data2.CardCode ;
     }
 
 
 
 
 
-
-
-
-    //Modal
-    actualizar(){
+    // MODAL ACTUALIZAR
+    cargarModal(){
       this.modalBolean= true;
+      const token = localStorage.getItem('object');
+      const  data2= JSON.parse(localStorage.getItem('object') || '');
     }
+
+
+
+
+
+    // actualizar contraseña
+    restablecer(){
+
+      if(!this.loginForm.valid){
+
+
+      }
+
+          // obteniendo la data
+    const usuario = this.loginForm.controls['usuario'].value!.trim();
+    const password = this.loginForm.controls['password'].value!.trim();
+
+
+
+    // llama al servicio y le envia
+    this.loginService.updatePassword(usuario, password).subscribe((resp:any) => {
+      // localStorage.setItem('usuario', JSON.stringify(resp.usuario));
+
+
+      console.log(resp);
+      this.loginForm.reset();
+
+
+    }, (err) => {
+      // this.messagesService.showError(err.error.message);
+      console.log(err);
+
+    });
+
+    }
+
+
+
+
+
 
 
 

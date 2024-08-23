@@ -3,14 +3,9 @@
 
 
 
-:host {
-
-  min-height: 100%;
-  width: 100%;
-  display: block;
+/* COMPONENTE PADRE PARA HEIGTH 100% */
+.container {
+  height: 100vh;
 
 
 }
-
-
-

@@ -7,15 +7,15 @@
 
 
 .contenedor{
-  height: 100vh;
+
   width: 100%;
+  width: 100%;
+  background-color: #bed2d9;
 
 }
 
 
-:host ::ng-deep p-menubar .ng-template  {
-  background-color: #000 !important;
-}
+
 
 
 /* parte de arriba  estilos para header */
@@ -31,12 +31,12 @@ color: white;
 
 
 
+
+
 .contenedor_1{
 
   display: flex;
 justify-content: flex-end;
-
-
 }
 
 
@@ -52,3 +52,11 @@ justify-content: flex-end;
   font-size: 20px;
 }
 
+
+:host ::ng-deep .p-menubar {
+
+  border-radius: 5px;
+display: flex;
+justify-content: space-around;
+
+}

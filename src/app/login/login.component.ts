@@ -9,13 +9,12 @@ import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule,FormControl, FormGroup, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import {  PrimeNGConfig } from 'primeng/api';
 import { LoginService } from '../services/login.service';
 import { CommonModule } from '@angular/common';
 import { MessagesService } from '../services/messages.service';
 import { Token } from '@angular/compiler';
 import { SpinnerComponent } from "../spinner/spinner.component";
-
 
 
 
@@ -39,7 +38,7 @@ import { SpinnerComponent } from "../spinner/spinner.component";
 ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  providers: [MessageService]
+  providers: [MessagesService]
 })
 
 
@@ -49,7 +48,7 @@ export class LoginComponent {
 
 
   private loginService = inject(LoginService);
-  private messagesService = inject(MessagesService);
+  // private messagesService = inject(MessagesService);
 
 
 
@@ -76,7 +75,7 @@ export class LoginComponent {
   // CUANDO INCIA EL COMPONENTE
   constructor(
     private FormBuilder: FormBuilder ,   private router: Router,
-    private primengConfig: PrimeNGConfig
+    private primengConfig: PrimeNGConfig , private messageService: MessagesService
     //agregar esto para las validaciones recordar importar
   ) {
 
@@ -91,71 +90,16 @@ export class LoginComponent {
 
 
 
-  // metodo para registrar sin el saps
-  // login2() {
-
-
-  //   // valida
-  //   if(!this.loginForm.valid) {
-
-  //     console.log(this.loginForm.valid);
-  //     console.log("error test ");
-  //     this.messagesService.showInfo('Complete correctamente el formulario de inicio de sesión');
-  //     return;
-  //   }
-
-  //   // quitanto los espacios
-  //   const usuario = this.loginForm.controls['usuario'].value!.trim();
-  //   const password = this.loginForm.controls['password'].value!.trim();
-
-
-
-  //   // metodo registrar
-  //   this.loginService.logueo(usuario, password).subscribe((resp:any) => {
-
-
-  //     localStorage.setItem('usuario', JSON.stringify(resp.usuario));
-  //     // llenando la data del serivices
-  //     this.loginService.usuario = resp.usuario;
-  //     this.loginService.islogedd = true;
-  //     /* this.router.navigate(['pages', 'home'], {queryParams: { p : 0}}); */
-
-  //     // veririca para redirgirse
-  //     if(resp.usuario.role === 'ADMIN') {
-  //       this.router.navigateByUrl('loginUpdate');
-  //     }
-  //     if(resp.usuario.role === 'FINZ') {
-  //       this.router.navigateByUrl('loginUpdate');
-  //     }
-  //   }, (err) => {
-  //     this.messagesService.showError(err.error.message);
-  //   });
-  // }
-
-
-
-
-
-
-  // metodo login con sap
-
-
-
-
-
-
-
-
 
   // metodo ligin con sap
   login(){
 
-
-
     if(!this.loginForm.valid){
       console.log(this.loginForm.valid);
       console.log("error test")
-      this.messagesService.showInfo('complete correctamente el formulario');
+      // return this.messagesService.showInfo('complete correctamente el formulario');
+      // return this.messageService.MensjError("complete los datos");
+      return this.messageService.popUpServces('complete los datos por favor');
     }
 
 
@@ -175,8 +119,8 @@ export class LoginComponent {
       // llenando la data del service
       this.loginService.usuario = resp.rows;
       this.loginService.islogedd = true;
-      this.loginService.CardCodeData = cardCode;
 
+      this.loginService.CardCodeData = cardCode;
 
 
 
@@ -192,12 +136,27 @@ export class LoginComponent {
 
 
     }, (err) => {
-      this.loading = true;
-      this.messagesService.showError(err.error.message);
+      // this.loading = true;
+      // this.messagesService.showError(err.error.message);
+
+
+
     });
 
   }
 
+
+
+
+
+
+  // popUpServces() {
+  //   this.messageService.add({
+  //     severity: "success",
+  //     summary: "GeeksforGeeks",
+  //     detail: "Success Service Message",
+  //   });
+  // }
 
 
 

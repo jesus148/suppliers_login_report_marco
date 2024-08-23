@@ -54,13 +54,6 @@ export class LoginService {
 
 
 
-  // metodo para entrar back local con mongo
-  logueo( usuario :string , password : string){
-
-    return  this.http.post(`${environment.base_url}/login-wp` , {usuario, password})
-   }
-
-
 
 
 
@@ -72,9 +65,11 @@ export class LoginService {
 
 
 
+
+
    // metodo pa actualizar contraseña
-   updatePassword( usuario :string , password : string){
-     return  this.http.put(`${environment.base_url}/contrasena/${usuario}` , { password})
+   updatePassword( cardCode :string , password : string){
+     return  this.http.put(`${environmentPro.base_url}/change-password` , { cardCode , password})
     }
 
 
@@ -82,7 +77,7 @@ export class LoginService {
 
 
 
-    //metodo para obtener data
+    //metodo para obtener data estado de cuenta
     getData( CardCodeData :string){
       return  this.http.get(`${environmentPro.base_url}/account-state?cardCode=${CardCodeData}` )
      }
@@ -92,7 +87,7 @@ export class LoginService {
 
     //  metodo salir de la sesion
     logout(){
-      localStorage.removeItem('coreData');
+      localStorage.removeItem('object');
       this.islogedd = false;
       this.router.navigateByUrl('/login');
     }

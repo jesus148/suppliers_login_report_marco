@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { MessagesModule } from "primeng/messages";
 
 @NgModule({
     exports:[
@@ -21,9 +22,10 @@ import { ToastModule } from 'primeng/toast';
       ToastModule,
       BrowserModule,
       BrowserAnimationsModule,
-      MenuModule
+      MenuModule ,
+      MessagesModule
     ],
-    providers: [MessageService , ]
+    providers: []
 
 
 })

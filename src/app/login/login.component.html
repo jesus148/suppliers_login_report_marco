@@ -1,3 +1,4 @@
+<p-toast />
 <div id="fondo-login" class="contenedor grid flex align-items-center justify-content-center" *ngIf="!loading">
   <div class="contenedor_2 col-11 md:col-3 text-center shadow-4 pl-5 pr-5 pt-3 pb-3 bg-white">
     <!-- imagen  -->
@@ -36,7 +37,7 @@
           </p-inputGroup> -->
 
           <p-button  type="submit" label="Ingresar" severity="primary" [raised]="true"
-          [rounded]="true"></p-button>
+          [rounded]="true"   ></p-button>
 
 
         </form>
@@ -44,13 +45,8 @@
     </div>
 
 
+    <p-toast></p-toast>
 
     <!-- muestra el spinner  -->
-    <app-spinner  *ngif="loading"></app-spinner>
-
-
-
-
-
-
-    <p-toast></p-toast>
+    <!-- <app-spinner  *ngif="loading"></app-spinner>
+    <p-toast></p-toast> -->
