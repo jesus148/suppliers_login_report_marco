@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { MessageService } from 'primeng/api';
+import { IMAGE_CONFIG } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,15 @@ import { MessageService } from 'primeng/api';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   // agregar esto si usas primeng
-  providers: [MessageService]
+  providers: [MessageService ,
+    {
+      provide: IMAGE_CONFIG,
+      useValue: {
+        disableImageSizeWarning: true,
+        disableImageLazyLoadWarning: true
+      }
+    },
+  ]
 })
 export class AppComponent {
   title = 'front_login';

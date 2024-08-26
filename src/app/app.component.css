@@ -6,6 +6,6 @@
 /* COMPONENTE PADRE PARA HEIGTH 100% */
 .container {
   height: 100vh;
-
-
+  margin: 0;
+  padding: 0;
 }

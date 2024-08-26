@@ -10,6 +10,7 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { IMAGE_CONFIG } from '@angular/common';
 
 
 export const appConfig: ApplicationConfig = {
@@ -21,6 +22,14 @@ export const appConfig: ApplicationConfig = {
           // mensaje de error
           MessageService
           // los modale s
-          , provideAnimations()
+          , provideAnimations() ,
+
+          {
+            provide: IMAGE_CONFIG,
+            useValue: {
+              disableImageSizeWarning: true,
+              disableImageLazyLoadWarning: true
+            }
+          },
         ]
 };

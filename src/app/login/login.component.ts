@@ -11,10 +11,11 @@ import { FormsModule,FormControl, FormGroup, ReactiveFormsModule, Validators, Fo
 import { Router } from '@angular/router';
 import {  PrimeNGConfig } from 'primeng/api';
 import { LoginService } from '../services/login.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, IMAGE_CONFIG } from '@angular/common';
 import { MessagesService } from '../services/messages.service';
 import { Token } from '@angular/compiler';
 import { SpinnerComponent } from "../spinner/spinner.component";
+
 
 
 
@@ -38,7 +39,8 @@ import { SpinnerComponent } from "../spinner/spinner.component";
 ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  providers: [MessagesService]
+  providers: [MessagesService
+  ]
 })
 
 
@@ -128,7 +130,7 @@ export class LoginComponent {
 
         this.router.navigateByUrl('SupliersList');
 
-        console.log(resp.rows);
+        // console.log(resp.rows);
 
         // almacenando el token como objeto
         // convierte a string de json
@@ -144,19 +146,6 @@ export class LoginComponent {
     });
 
   }
-
-
-
-
-
-
-  // popUpServces() {
-  //   this.messageService.add({
-  //     severity: "success",
-  //     summary: "GeeksforGeeks",
-  //     detail: "Success Service Message",
-  //   });
-  // }
 
 
 

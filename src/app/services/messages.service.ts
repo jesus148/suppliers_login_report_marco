@@ -9,6 +9,9 @@ export class MessagesService {
   constructor(private messageService: MessageService) {}
 
 
+
+
+
   popUpServces(mensaje : string) {
     this.messageService.add({
       severity: "error",
@@ -16,5 +19,12 @@ export class MessagesService {
       detail: mensaje,
     });
   }
+
+
+
+
+
+
+
 
 }

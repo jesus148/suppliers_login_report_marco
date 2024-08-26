@@ -24,6 +24,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { SuppliersService } from '../../services/suppliers.service';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { style } from '@angular/animations';
 
 
 @Component({
@@ -114,6 +115,66 @@ modalBolean:boolean = false;
 detailToShow : any;
 
 
+// modalregistrarbanco
+modalRegistrar:boolean = false;
+btnRegistrarBanco:boolean = false;
+
+
+
+
+
+          // array de bancos
+          listaBancos: any = [
+            { value: '001', name: 'BANCO CENTRAL DE RESERVA' },
+            { value: '002', name: 'BANCO DE CREDITO DEL PERU' },
+            { value: '003', name: 'INTERBANK' },
+            { value: '004', name: 'BANCO INTERAMERICANO DE FINANZAS' },
+            { value: '007', name: 'CITIBANK' },
+            { value: '008', name: 'STANDARD CHARTERED' },
+            { value: '009', name: 'BANCO SCOTIABANK' },
+            { value: '011', name: 'BBVA' },
+            { value: '018', name: 'BANCO DE LA NACION' },
+            { value: '035', name: 'BANCO PICHINCHA' },
+            { value: '038', name: 'BANBIF' },
+            { value: '042', name: 'BANCO DEL LIBERTADOR' },
+            { value: '043', name: 'BANCO DEL TRABAJO' },
+            { value: '053', name: 'BANCO GNB' },
+            { value: '056', name: 'BANCO SANTANDER' },
+            { value: '803', name: 'CMAC AREQUIPA' }
+        ];
+
+        // tipos de cuentas
+         accountType :any = [
+          { value: 'A', name: 'Cuenta Ahorro' },
+          { value: 'C', name: 'Cuenta Corriente' },
+          { value: 'M', name: 'Cuenta Maestra' },
+          { value: 'CI', name: 'Interbancaria/Cheque Gerencial' },
+          { value: 'D', name: 'Detracción' }
+      ];
+      //divisas
+
+ currency :any = [
+  { value: 'USD', name: 'Dolar Americano' },
+  { value: 'PEN', name: 'Soles' }
+];
+
+
+
+
+
+
+
+
+        // datos registrar banco
+        bankCode? : string = '';
+        accountNo? : string = '';
+        divisas?: string =    '';
+        bankAccountType?: string = '';
+
+
+
+
+
 
 
 
@@ -168,8 +229,9 @@ detailToShow : any;
         command:()=>{
           this.loginService.logout();
         }
+        // ,style: {'margin-left': '280px'}
       }
-    ]
+    ];
 
     // llama al metodo de suplliers
     this.listData();
@@ -314,6 +376,40 @@ detailToShow : any;
 
 
 
+
+
+
+
+    // registar banco
+    registrarBank(){
+
+
+      const bankCreate= {
+        cardCode : this.cardCode,
+        bankCode : this.bankCode,
+        accountNo : this.accountNo,
+        userCurrBank : this.divisas,
+        bankAccountType : this.bankAccountType
+      }
+
+
+      console.log(bankCreate)
+      this.suppliers.registerBanck(bankCreate).subscribe((resp : any)=>{
+        this.messagesService.popUpServces(resp);
+        // this.modalRegistrar = false;
+        console.log(resp);
+      },(error) =>{
+        console.log(error);
+        this.messagesService.popUpServces(error);
+      });
+
+    }
+
+
+
+    mostrarModal(){
+      this.modalRegistrar = true;
+    }
 
 
 

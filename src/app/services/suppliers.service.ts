@@ -34,4 +34,23 @@ export class SuppliersService {
 
 
 
+
+  //metodo registrar banco
+  // registerBanck(cardCode : string , bankCode : string ,
+  //   accountNo :string , userCurrBank : string , bankAccountType : string){
+  //     return this.http.post( `${environmentPro.base_url}/create-bank-account` , {cardCode , bankCode , accountNo ,  userCurrBank , bankAccountType});
+  //   }
+
+
+
+
+    registerBanck(body: any){
+      return this.http.post( `${environmentPro.base_ur2}/create-bank-account` , body);
+    }
+
+
+
+
+
+
 }
