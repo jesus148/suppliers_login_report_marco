@@ -14,7 +14,7 @@ import { LoginService } from '../services/login.service';
 import { CommonModule, IMAGE_CONFIG } from '@angular/common';
 import { MessagesService } from '../services/messages.service';
 import { Token } from '@angular/compiler';
-import { SpinnerComponent } from "../spinner/spinner.component";
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 
@@ -34,13 +34,11 @@ import { SpinnerComponent } from "../spinner/spinner.component";
     ButtonModule,
     ToastModule,
     CheckboxModule,
-    SpinnerComponent,
     CommonModule
 ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  providers: [MessagesService
-  ]
+  providers: [MessagesService]
 })
 
 
@@ -99,12 +97,8 @@ export class LoginComponent {
     if(!this.loginForm.valid){
       console.log(this.loginForm.valid);
       console.log("error test")
-      // return this.messagesService.showInfo('complete correctamente el formulario');
-      // return this.messageService.MensjError("complete los datos");
-      return this.messageService.popUpServces('complete los datos por favor');
+      return this.messageService.popUpServces('complete los datos correctamente');
     }
-
-
 
 
     const cardCode = this.loginForm.controls['usuario'].value!.trim();
@@ -113,21 +107,45 @@ export class LoginComponent {
 
     this.loading = true;
 
-    // metodo registrar
-    this.loginService.loginSap(cardCode, password).subscribe((resp:any) => {
 
 
+    // // metodo registrar
+    // this.loginService.loginSap(cardCode, password).subscribe((resp:any) => {
+    //   // llenando la data del service
+    //   this.loginService.usuario = resp.rows;
+    //   this.loginService.islogedd = true;
+    //   this.loginService.CardCodeData = cardCode;
+    //   console.log("kslds");
+    //   // veririca para redirgirse
+    //     this.router.navigateByUrl('SupliersList');
+    //     // console.log(resp.rows);
+    //     // almacenando el token como objeto
+    //     // convierte a string de json
+    //     localStorage.setItem(  'object' , JSON.stringify(resp.rows[0]));
+    // }, (err) => {
+    //   // return this.messageService.warningMessage('Usuario no encontrado');
+    //   console.log(err);
+    // });
+
+
+
+
+
+    this.loginService.loginSap(cardCode , password).subscribe({
+
+      // usando propiedades del suscribe
+
+      // todo ok , obtenemos el response del back
+      next :(resp :any) =>{
 
       // llenando la data del service
       this.loginService.usuario = resp.rows;
       this.loginService.islogedd = true;
-
       this.loginService.CardCodeData = cardCode;
 
 
 
       // veririca para redirgirse
-
         this.router.navigateByUrl('SupliersList');
 
         // console.log(resp.rows);
@@ -135,15 +153,21 @@ export class LoginComponent {
         // almacenando el token como objeto
         // convierte a string de json
         localStorage.setItem(  'object' , JSON.stringify(resp.rows[0]));
+      },
+      // cuando hay error , el error sea del servidor o un error desconocido
+      error:(e : HttpErrorResponse)=>{
+         this.messageService.msjError( e);
+         this.loading=false;
+      }
+    })
 
 
-    }, (err) => {
-      // this.loading = true;
-      // this.messagesService.showError(err.error.message);
 
 
 
-    });
+
+
+
 
   }
 
@@ -154,11 +178,13 @@ export class LoginComponent {
 
   // metodo regresar
   updatePassword(){
-
-
     this.router.navigate(['/loginUpdate'])
-
   }
+
+
+
+
+
 
 
 

@@ -12,7 +12,7 @@
 
 
         <ng-template  pTemplate="start" class="" styleClass="menubar2">
-          <div class="flex mb-2 gap-2 justify-content-end">
+          <div class="flex mb-2 gap-3 justify-content-end">
 
 
             <img src="assets/images/LogoMp2.png" height="38" class="mr-2">
@@ -21,7 +21,8 @@
 
               <p-button
                   (onClick)="activeIndex = 0 "
-                  styleClass=" w-8rem h-3rem text-base"
+                  styleClass="w-8rem h-3rem text-base"
+                  (onClick)="btnRegistrarBanco = false"
                   [outlined]="activeIndex !== 0"
                   label="Estado Cuenta"
                   [rounded]="true" severity="success"
@@ -34,7 +35,7 @@
                   (onClick)="btnRegistrarBanco = true"
                   styleClass=" w-8rem h-3rem text-base"
                   [outlined]="activeIndex !== 1"
-                  label="Estado Banco"
+                  label="Cuentas de Banco"
                   [rounded]="true" severity="success" />
           </div>
 
@@ -51,16 +52,37 @@
 
 
 
+    <!-- tabla  -->
+
   <div class="contenedor_2 grid justify-content-center align-content-center  h-auto">
     <div class="col-11 md:col-11 ">
       <!-- elemento flexible  es para encabezado para el header -->
-      <p-card #menu2 styleClass="menu2" [subheader]="'Estado de Cuenta ' " class="h-7rem">
+      <p-card #menu2 styleClass="menu2"
+  class="h-7rem" >
 
-        @if(btnRegistrarBanco){
-        <p-button label="Registrar Banco" severity="success" (onClick)="mostrarModal()"/>
+  <div class="flex flex-row-reverse  h-3rem mb-0 justify-content-between " style="margin-bottom: -30px;" >
+    <div>
+
+      @if(btnRegistrarBanco ){
+      <p-button label="Registrar Banco" severity="success" (onClick)="mostrarModal()"/>
+      }
+
+    </div>
+    <div>
+
+
+      @if(btnRegistrarBanco ){
+
+        <h3>LISTA DE CUENTAS DE BANCO </h3>
+        }@else{
+          <h3>ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
         }
 
-        <div>
+
+    </div>
+  </div>
+
+  <div class="m-0">
 
         <!-- tabla  -->
             <p-tabView [(activeIndex)]="activeIndex">
@@ -107,18 +129,19 @@
                 <!-- 2 tabla  -->
                 <p-tabPanel  header="" class="border-white" [closable]="false"  >
                   <p-table [styleClass]="'p-datatable-sm'" [value]="dataSuppliersBanck" >
-                    <ng-template pTemplate="header">
-                      <tr>
+                    <ng-template pTemplate="header"  >
+                      <tr >
                           <th>Codigo Banco </th>
                           <th>Pais</th>
                           <th>Cuenta </th>
                           <th>Tipo Cuenta</th>
                           <th>Moneda Sap</th>
-                          <th>Moneda Sap</th>
+                          <th>Moneda Banco</th>
+
                           <th></th>
                       </tr>
                   </ng-template>
-                                  <ng-template pTemplate="body" let-supliersbanck>
+                                  <ng-template pTemplate="body" let-supliersbanck let-i="rowIndex" >
                                 <tr>
                                     <td>{{ supliersbanck.Codigo_Banco }}</td>
                                     <!-- lo corta el valor  -->
@@ -131,7 +154,7 @@
                                     <td>{{  supliersbanck.Moneda_SAP }}</td>
                                     <td>{{ supliersbanck.Moneda_Banco   }}</td>
                                     <td>
-                                      <p-button icon="pi pi-pencil" [rounded]="true" />
+                                      <p-button icon="pi pi-pencil" [rounded]="true" (click)="modalBanco(supliersbanck , i)" />
 
 
                                     </td>
@@ -145,7 +168,7 @@
 
         </p-tabView>
 
-        </div>
+  </div>
 
 
 
@@ -164,6 +187,9 @@
 
 
 
+
+
+
 <!-- MODAL ACTUALIZAR CONTRASEÑA -->
 
 <p-dialog header="Actualizar Contraseña" [(visible)]="modalBolean" [style]="{ width: '25rem' , height: '350px' }"  [draggable]="false" [resizable]="false"
@@ -175,14 +201,15 @@
         <label for="username" class="font-semibold w-6rem">Usuario</label>
         <input pInputText id="username" class="flex-auto border-1 h-2rem border-round" formControlName="usuario"
         [(ngModel)]="cardCode"  type="text" readonly   />
-
-
-
     </div>
+
+
     <div class="flex align-items-center gap-3 mb-5 p-2">
         <label for="email" class="font-semibold w-6rem">Contraseña</label>
         <input pInputText id="email" class="flex-auto border-1 h-2rem border-round" autocomplete="off" formControlName="password"/>
     </div>
+
+
     <div class="flex justify-content-evenly gap-2">
         <p-button label="Actualizar" (onClick)="modalBolean = false" type="submit" />
     </div>
@@ -195,58 +222,129 @@
 
 
 
+
+
+
 <!-- MODAL REGISTRAR BANCO  -->
 
 
-<p-dialog header="Registrar Banco" [(visible)]="modalRegistrar" [style]="{ width: '25rem' , height: '350px' }"  [draggable]="false" [resizable]="false"
-  >
+<p-dialog header="Actualizar Contraseña" [(visible)]="modalRegistrar" [style]="{ width: '28rem' , height: '550px' }"  [draggable]="false" [resizable]="false" >
+
+  <form [formGroup]="registrarBanco" (ngSubmit)="registrarBank()">
 
 
-    <div class="flex align-items-center gap-3 mb-3 mt-5 p-2">
-        <label for="username" class="font-semibold w-6rem">Bancos</label>
-        <div class="custom-select-container">
-          <select name="para" class="custom-select" [(ngModel)]="bankCode">
-              <option value="">Seleccione el banco </option>
-              @for (user of listaBancos; track user) {
-                  <option [value]="user.value">{{ user.name }} </option>
-              }
-          </select>
-      </div>
+
+<div class="flex align-items-center  mb-5 mt-5 p-2 ">
+    <label for="username" class="font-semibold w-8rem  text-center">Bancos</label>
+    <div class="custom-select-container relative ">
+      <select name="para" class="custom-select border-round" [(ngModel)]="bankCode" style="width: 100%; height: 30px;" formControlName="bancos">
+          <option value="">Seleccione el banco </option>
+          @for (user of listaBancos; track user) {
+              <option [value]="user.value">{{ user.name }} </option>
+          }
+      </select>
+  </div>
+</div>
+
+
+<div class="flex align-items-center gap-3 mb-5 p-2 ">
+  <label for="email" class="font-semibold w-8rem text-center">Numero de Cuenta</label>
+  <input pInputText id="username" class="flex-auto border-1  border-round"
+  [(ngModel)]="accountNo"  type="text" style="width: 100%; height: 30px;"  formControlName="numCuenta" />
+
+</div>
+
+
+
+
+<div class="flex align-items-center gap-3 mb-5 p-2  ">
+    <label for="email" class="font-semibold w-8rem text-center">
+      Divisas
+    </label>
+    <select name="para" class="custom-select w-full border-round" [(ngModel)]="divisas" style="width: 100%; height: 30px;" formControlName="divisas" >
+      <option value="">Seleccione las divisas </option>
+      @for (user of currency; track user) {
+          <option [value]="user.value">{{ user.name }} </option>
+      }
+  </select>
+</div>
+
+
+
+
+<div class="flex align-items-center gap-3 mb-5 p-2">
+  <label for="email" class="font-semibold w-8rem text-center">
+    Tipos de Cuentas
+  </label>
+  <select name="para" class="custom-select border-round" [(ngModel)]="bankAccountType" style="width: 100%; height: 30px;" formControlName="tipoCuentas">
+    <option value="">Seleccione tipos de cuentas </option>
+    @for (user of accountType; track user) {
+        <option [value]="user.value">{{ user.name }} </option>
+    }
+</select>
+</div>
+
+
+
+
+
+<div class="flex justify-content-evenly gap-2">
+    <p-button label="Registrar" type="submit" severity="success"   />
+</div>
+
+</form>
+
+
+
+
+
+</p-dialog>
+
+
+
+
+
+
+
+
+
+<!-- modal actualizar banco -->
+   <p-dialog header="Actualizar Bancos" [(visible)]="modalActualizar" [style]="{ width: '28rem' , height: '550px' }"  [draggable]="false" [resizable]="false" >
+
+    <form [formGroup]="actualizarBanco" (ngSubmit)="ActualizarBank()">
+
+
+
+    <div class="flex align-items-center  mb-5 mt-5 p-2 ">
+      <label for="username" class="font-semibold w-8rem  text-center">Bancos</label>
+      <div class="custom-select-container relative ">
+        <select name="para" class="custom-select border-round" [(ngModel)]="bankCode2" style="width: 100%; height: 30px;" formControlName="bancos">
+            <option value="">Seleccione el banco </option>
+            @for (user of listaBancos; track user) {
+                <option [value]="user.value">{{ user.name }} </option>
+            }
+        </select>
     </div>
+  </div>
 
 
-    <div class="flex align-items-center gap-3 mb-5 p-2">
-      <label for="email" class="font-semibold w-6rem">Numero de Cuenta</label>
-      <input pInputText id="username" class="flex-auto border-1 h-2rem border-round"
-      [(ngModel)]="accountNo"  type="text"    />
+  <div class="flex align-items-center gap-3 mb-5 p-2 ">
+    <label for="email" class="font-semibold w-8rem text-center">Numero de Cuenta</label>
+    <input pInputText id="username" class="flex-auto border-1  border-round"
+    [(ngModel)]="accountNo2"  type="text" style="width: 100%; height: 30px;"  formControlName="accountNo" />
 
   </div>
 
 
 
 
-    <div class="flex align-items-center gap-3 mb-5 p-2">
-        <label for="email" class="font-semibold w-6rem">
-          Divisas
-        </label>
-        <select name="para" class="custom-select" [(ngModel)]="divisas">
-          <option value="">Seleccione las divisas </option>
-          @for (user of currency; track user) {
-              <option [value]="user.value">{{ user.name }} </option>
-          }
-      </select>
-    </div>
-
-
-
-
-    <div class="flex align-items-center gap-3 mb-5 p-2">
-      <label for="email" class="font-semibold w-6rem">
-        Tipos de Cuentas
+  <div class="flex align-items-center gap-3 mb-5 p-2  ">
+      <label for="email" class="font-semibold w-8rem text-center">
+        Divisas
       </label>
-      <select name="para" class="custom-select" [(ngModel)]="bankAccountType">
-        <option value="">Seleccione tipos de cuentas </option>
-        @for (user of accountType; track user) {
+      <select name="para" class="custom-select w-full border-round" [(ngModel)]="userCurrBank2" style="width: 100%; height: 30px;" formControlName="divisas" >
+        <option value="">Seleccione las divisas </option>
+        @for (user of currency; track user) {
             <option [value]="user.value">{{ user.name }} </option>
         }
     </select>
@@ -255,10 +353,61 @@
 
 
 
+  <div class="flex align-items-center gap-3 mb-5 p-2">
+    <label for="email" class="font-semibold w-8rem text-center">
+      Tipos de Cuentas
+    </label>
+    <select name="para" class="custom-select border-round" [(ngModel)]="bankAccountType2" style="width: 100%; height: 30px;" formControlName="tipoCuentas">
+      <option value="">Seleccione tipos de cuentas </option>
+      @for (user of accountType; track user) {
+          <option [value]="user.value">{{ user.name }} </option>
+      }
+  </select>
+  </div>
 
-    <div class="flex justify-content-evenly gap-2">
-        <p-button label="Registrar" type="submit" (onClick)="registrarBank()" />
-    </div>
 
 
-</p-dialog>
+
+
+  <div class="flex justify-content-evenly gap-2">
+      <p-button label="Actualizar" type="submit" severity="success"   />
+  </div>
+
+  </form>
+
+  </p-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p-toast></p-toast>

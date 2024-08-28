@@ -17,14 +17,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { SpinnerComponent } from '../../spinner/spinner.component';
-
 import { MegaMenuModule } from 'primeng/megamenu';
 import { TabViewModule } from 'primeng/tabview';
 import { SuppliersService } from '../../services/suppliers.service';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { style } from '@angular/animations';
+import { ToastModule } from 'primeng/toast';
 
 
 @Component({
@@ -33,6 +32,7 @@ import { style } from '@angular/animations';
   imports: [
 // modulos para la vista de este componente
     MenubarModule,
+    ToastModule,
     TableModule,
     CardModule,
     ChartModule,
@@ -43,7 +43,6 @@ import { style } from '@angular/animations';
     InputGroupModule,
     InputGroupAddonModule,
     FormsModule, CommonModule, ReactiveFormsModule,
-    SpinnerComponent,
     TabViewModule,
     MegaMenuModule,
     AvatarModule ,
@@ -53,13 +52,15 @@ import { style } from '@angular/animations';
     ReactiveFormsModule
   ],
   templateUrl: './supliers.component.html',
-  styleUrl: './supliers.component.css'
+  styleUrl: './supliers.component.css',
+  providers: [MessagesService
+  ]
 })
 export class SupliersComponent implements OnInit{
 
 
   // private loginService = inject(LoginService);
-  private messagesService = inject(MessagesService);
+  // private messagesService = inject(MessagesService);
 
 
 
@@ -73,13 +74,13 @@ export class SupliersComponent implements OnInit{
 
 
 
-  listSupliers: Supliers[] =[
-    {
-      serie:  13 , fecEmis : '45',fecve:  12, fecpro :  'jjsks' , moneda: 34 , total:  'jsks' , monto:23 ,
-      fecEmisaldo :   'sting'
-    }
 
-  ]
+  // listSupliers: Supliers[] =[
+  //   {
+  //     serie:  13 , fecEmis : '45',fecve:  12, fecpro :  'jjsks' , moneda: 34 , total:  'jsks' , monto:23 ,
+  //     fecEmisaldo :   'sting'
+  //   }
+  // ]
 
 
   // carga iconos
@@ -118,6 +119,30 @@ detailToShow : any;
 // modalregistrarbanco
 modalRegistrar:boolean = false;
 btnRegistrarBanco:boolean = false;
+
+
+
+
+
+// banco
+// modalactualizar
+modalActualizar:boolean = false;
+
+
+// datos actualizarbanco
+bankCode2:any;
+accountNo2:any;
+userCurrBank2:any;
+bankAccountType2:any;
+index:any;
+
+
+
+
+
+
+
+
 
 
 
@@ -191,6 +216,29 @@ btnRegistrarBanco:boolean = false;
 
 
 
+    // valida registrar banco
+    registrarBanco = new FormGroup({
+      bancos: new FormControl('', [Validators.required]),
+      numCuenta: new FormControl('', [Validators.required, Validators.minLength(3)]) ,
+      divisas: new FormControl('', [Validators.required]) ,
+      tipoCuentas : new FormControl('', [Validators.required])
+    });
+
+
+
+    // modal actualizar banco
+    actualizarBanco = new FormGroup({
+      bancos: new FormControl('', [Validators.required]),
+      accountNo: new FormControl('', [Validators.required, Validators.minLength(3)]) ,
+      divisas : new FormControl('' , [Validators.required]),
+      tipoCuentas : new FormControl('' , [Validators.required]),
+
+    })
+
+
+
+
+
 
 
 
@@ -199,7 +247,8 @@ btnRegistrarBanco:boolean = false;
 
   // inicia
   constructor( private loginService : LoginService ,  private router: Router , private suppliers : SuppliersService ,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder ,
+    private messageService: MessagesService
   ){
 
 
@@ -299,7 +348,7 @@ btnRegistrarBanco:boolean = false;
 
       this.suppliers.getBankAccount(data2.CardCode).subscribe((resp:any) => {
         this.dataSuppliersBanck = resp.rows ;
-        // console.log(this.dataSuppliersBanck);
+
 
 
     }, (err) => {
@@ -360,7 +409,7 @@ btnRegistrarBanco:boolean = false;
       // localStorage.setItem('usuario', JSON.stringify(resp.usuario));
 
 
-      console.log(resp);
+
       this.loginForm.reset();
 
 
@@ -383,6 +432,11 @@ btnRegistrarBanco:boolean = false;
     // registar banco
     registrarBank(){
 
+      if(!this.registrarBanco.valid){
+         console.log("test");
+         return this.messageService.popUpServces('complete los datos');
+      }
+
 
       const bankCreate= {
         cardCode : this.cardCode,
@@ -392,21 +446,19 @@ btnRegistrarBanco:boolean = false;
         bankAccountType : this.bankAccountType
       }
 
-
       console.log(bankCreate)
       this.suppliers.registerBanck(bankCreate).subscribe((resp : any)=>{
-        this.messagesService.popUpServces(resp);
-        // this.modalRegistrar = false;
-        console.log(resp);
+
+
+        this.getDataAccountBanck();
+        this.messageService.popUpServces('usuario registrado');
+
       },(error) =>{
         console.log(error);
-        this.messagesService.popUpServces(error);
+
       });
 
     }
-
-
-
     mostrarModal(){
       this.modalRegistrar = true;
     }
@@ -414,6 +466,65 @@ btnRegistrarBanco:boolean = false;
 
 
 
+
+
+
+
+
+    // Modal Banco muestra
+    modalBanco(obj: any , index:number){
+      this.modalActualizar = true;
+
+      // seteando la data
+      this.bankCode2 = obj.Codigo_Banco;
+      this.accountNo2= obj.Cuenta;
+      this.userCurrBank2 = obj.Moneda_Banco;
+      this.bankAccountType2 = obj.Tipo_Cuenta;
+      this.index = index + 1;
+
+
+
+
+
+    }
+    // metodo registrar banco
+    ActualizarBank(){
+
+      if(!this.actualizarBanco.valid){
+        return this.messageService.popUpServces('complete los datos');
+     }
+
+
+     const updateBank= {
+      cardCode : this.cardCode,
+      bankCode : this.bankCode2,
+      accountNo : this.accountNo2,
+      userCurrBank : this.userCurrBank2,
+      bankAccountType : this.bankAccountType2,
+      index : this.index
+    }
+
+
+
+    this.suppliers.updateBanck2(updateBank).subscribe((resp : any)=>{
+
+      alert("registrado");
+
+      this.messageService.popUpServces("banco agregado");
+
+    },(error) =>{
+      console.log(error);
+      this.messageService.popUpServces("banco agregado");
+
+
+    });
+
+
+
+
+
+
+    }
 
 
 

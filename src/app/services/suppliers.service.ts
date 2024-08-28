@@ -49,6 +49,18 @@ export class SuppliersService {
     }
 
 
+    registerBanck2(body: any){
+      return this.http.post( `${environmentPro.base_ur2}/test` , body);
+    }
+
+
+
+
+    updateBanck2(body:any){
+      return this.http.post(`${environmentPro.base_ur2}/create-update-bank-account`, body )
+    }
+
+
 
 
 
