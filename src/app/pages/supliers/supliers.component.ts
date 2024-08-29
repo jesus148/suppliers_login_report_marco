@@ -176,6 +176,8 @@ export class SupliersComponent implements OnInit {
     { value: 'CI', name: 'Interbancaria/Cheque Gerencial' },
     { value: 'D', name: 'Detracción' }
   ];
+
+  accountType2: any =[];
   //divisas
 
   currency: any = [
@@ -418,11 +420,9 @@ export class SupliersComponent implements OnInit {
 
   // registar banco
   registrarBank() {
-
     if (!this.registrarBanco.valid) {
       return this.messageService.popUpServces('error', 'Error',  'complete los datos');
     }
-
     const bankCreate = {
       cardCode: this.cardCode,
       bankCode: this.bankCode,
@@ -430,7 +430,6 @@ export class SupliersComponent implements OnInit {
       userCurrBank: this.divisas,
       bankAccountType: this.bankAccountType
     }
-
       if(this.accountNo?.length !== 14 && this.bankAccountType === 'A'){
         return this.messageService.warningMessage('el numero de cuentas para ahorros debe tener 14 digitos');
       }else if( this.accountNo?.length !== 13 && this.bankAccountType ===  'C' ){
@@ -464,7 +463,13 @@ export class SupliersComponent implements OnInit {
   }
   changeTypeCount(){
     console.log("codigo de banco" + this.bankCode);
-
+    this.accountType2 =[
+      { value: 'A', name: 'Cuenta Ahorro' },
+      { value: 'M', name: 'Cuenta Maestra' }
+    ]
+    // this.accountType = this.accountType.map(todo=>({
+    //   ...todo, this.accountType2
+    // }));
   }
 
 

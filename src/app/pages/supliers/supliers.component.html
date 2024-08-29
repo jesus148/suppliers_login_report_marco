@@ -268,9 +268,15 @@
   </label>
   <select name="para" class="custom-select border-round" [(ngModel)]="bankAccountType" style="width: 100%; height: 30px;" formControlName="tipoCuentas">
     <option value="">Seleccione tipos de cuentas </option>
-    @for (user of accountType; track user) {
-        <option [value]="user.value">{{ user.name }} </option>
+    @if(accountType2){
+      @for (user of accountType2; track user) {
+          <option [value]="user.value">{{ user.name }} </option>
+      }
     }
+    @for (user of accountType; track user) {
+      <option [value]="user.value">{{ user.name }} </option>
+  }
+
 </select>
 </div>
 
