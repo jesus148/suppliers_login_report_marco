@@ -464,6 +464,7 @@ export class SupliersComponent implements OnInit {
   }
   changeTypeCount(){
     console.log("codigo de banco" + this.bankCode);
+
   }
 
 
