@@ -14,11 +14,11 @@ export class MessagesService {
 
 
 
-  // mensaje para error
-  popUpServces(mensaje : string) {
+  // mensaje
+  popUpServces(severity: string, summary: string, mensaje : string, ) {
     this.messageService.add({
-      severity: "error",
-      summary: "Error",
+      severity,
+      summary,
       detail: mensaje,
     });
   }
@@ -30,11 +30,20 @@ export class MessagesService {
     warningMessage( mensaje: string) {
     this.messageService.add({
       severity: "warn",
-      summary: "Warning",
+      summary: "Advertencia",
       detail: mensaje,
     });
   }
 
+
+
+
+
+
+  // mensaje confirmacion
+  msjSuccees(message: string){
+    this.messageService.add({severity:'success' , summary:'Success' ,detail:  message});
+  }
 
 
 
@@ -51,8 +60,6 @@ export class MessagesService {
         // si es un error desconocido osea el servidor o el backend no devuelve nada o no estan disponibles
       }else{
         this.messageService.add({severity:"warn" , summary:"Warining", detail:e.error.message})
-
-
       }
 
 }

@@ -11,14 +11,8 @@ import { IMAGE_CONFIG } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   // agregar esto si usas primeng
-  providers: [MessageService ,
-    {
-      provide: IMAGE_CONFIG,
-      useValue: {
-        disableImageSizeWarning: true,
-        disableImageLazyLoadWarning: true
-      }
-    },
+  providers: [MessageService
+
   ]
 })
 export class AppComponent {

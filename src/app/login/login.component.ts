@@ -7,9 +7,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
-import { FormsModule,FormControl, FormGroup, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
+import { FormsModule, FormControl, FormGroup, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import {  PrimeNGConfig } from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
 import { LoginService } from '../services/login.service';
 import { CommonModule, IMAGE_CONFIG } from '@angular/common';
 import { MessagesService } from '../services/messages.service';
@@ -35,7 +35,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     ToastModule,
     CheckboxModule,
     CommonModule
-],
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   providers: [MessagesService]
@@ -53,8 +53,8 @@ export class LoginComponent {
 
 
 
-  username: string =  '';
-  password: string =  '';
+  username: string = '';
+  password: string = '';
 
   showPass: boolean = false;
 
@@ -62,11 +62,11 @@ export class LoginComponent {
   loading: boolean = false;
 
 
-    // validar
-    loginForm = new FormGroup({
-      usuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(3)])
-    });
+  // validar
+  loginForm = new FormGroup({
+    usuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(3)])
+  });
 
 
 
@@ -74,8 +74,8 @@ export class LoginComponent {
 
   // CUANDO INCIA EL COMPONENTE
   constructor(
-    private FormBuilder: FormBuilder ,   private router: Router,
-    private primengConfig: PrimeNGConfig , private messageService: MessagesService
+    private FormBuilder: FormBuilder, private router: Router,
+    private primengConfig: PrimeNGConfig, private messageService: MessagesService
     //agregar esto para las validaciones recordar importar
   ) {
 
@@ -83,7 +83,7 @@ export class LoginComponent {
 
 
   ngOnInit(): void {
-  }
+  }
 
 
 
@@ -92,12 +92,12 @@ export class LoginComponent {
 
 
   // metodo ligin con sap
-  login(){
+  login() {
 
-    if(!this.loginForm.valid){
+    if (!this.loginForm.valid) {
       console.log(this.loginForm.valid);
       console.log("error test")
-      return this.messageService.popUpServces('complete los datos correctamente');
+      return this.messageService.popUpServces('error', 'Error', 'complete los datos correctamente');
     }
 
 
@@ -131,33 +131,33 @@ export class LoginComponent {
 
 
 
-    this.loginService.loginSap(cardCode , password).subscribe({
+    this.loginService.loginSap(cardCode, password).subscribe({
 
       // usando propiedades del suscribe
 
       // todo ok , obtenemos el response del back
-      next :(resp :any) =>{
+      next: (resp: any) => {
 
-      // llenando la data del service
-      this.loginService.usuario = resp.rows;
-      this.loginService.islogedd = true;
-      this.loginService.CardCodeData = cardCode;
+        // llenando la data del service
+        this.loginService.usuario = resp.rows;
+        this.loginService.islogedd = true;
+        this.loginService.CardCodeData = cardCode;
 
 
 
-      // veririca para redirgirse
+        // veririca para redirgirse
         this.router.navigateByUrl('SupliersList');
 
         // console.log(resp.rows);
 
         // almacenando el token como objeto
         // convierte a string de json
-        localStorage.setItem(  'object' , JSON.stringify(resp.rows[0]));
+        localStorage.setItem('object', JSON.stringify(resp.rows[0]));
       },
       // cuando hay error , el error sea del servidor o un error desconocido
-      error:(e : HttpErrorResponse)=>{
-         this.messageService.msjError( e);
-         this.loading=false;
+      error: (e: HttpErrorResponse) => {
+        this.messageService.msjError(e);
+        this.loading = false;
       }
     })
 
@@ -177,7 +177,7 @@ export class LoginComponent {
 
 
   // metodo regresar
-  updatePassword(){
+  updatePassword() {
     this.router.navigate(['/loginUpdate'])
   }
 

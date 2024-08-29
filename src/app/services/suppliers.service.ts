@@ -44,9 +44,9 @@ export class SuppliersService {
 
 
 
-    registerBanck(body: any){
+   /*  registerBanck(body: any){
       return this.http.post( `${environmentPro.base_ur2}/create-bank-account` , body);
-    }
+    } */
 
 
     registerBanck2(body: any){

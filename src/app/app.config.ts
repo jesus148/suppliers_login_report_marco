@@ -22,6 +22,8 @@ export const appConfig: ApplicationConfig = {
           // mensaje de error
           MessageService
           // los modale s
-          , provideAnimations()
+          , provideAnimations() ,
+
+          { provide: IMAGE_CONFIG, useValue: { disableImageSizeWarning: true, disableImageLazyLoadWarning: true } },
         ]
 };
