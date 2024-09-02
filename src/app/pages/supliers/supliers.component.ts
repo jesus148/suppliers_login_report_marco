@@ -24,6 +24,18 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { style } from '@angular/animations';
 import { ToastModule } from 'primeng/toast';
+import { Withholdings } from '../../interfaces/withholdings.model';
+import { PaginatorModule } from 'primeng/paginator';
+
+
+
+
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 
 
 @Component({
@@ -49,7 +61,8 @@ import { ToastModule } from 'primeng/toast';
     AvatarGroupModule,
     FormsModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PaginatorModule
   ],
   templateUrl: './supliers.component.html',
   styleUrl: './supliers.component.css',
@@ -71,6 +84,12 @@ export class SupliersComponent implements OnInit {
 
   // data cuenta banco
   dataSuppliersBanck: any = [];
+
+  //data tabla deducciones
+  dataDeductionsBanck: any = [];
+
+  // tabla retenciones data
+  dataWithholdings:Withholdings[] =[];
 
 
 
@@ -140,6 +159,16 @@ export class SupliersComponent implements OnInit {
 
 
 
+  // paginacion
+
+  first:number = 0;
+  rows : number =10;
+
+
+  onPageChange(event : PageEvent){
+    this.first = event.first;
+    this.rows = event.rows;
+  }
 
 
 
@@ -259,6 +288,12 @@ export class SupliersComponent implements OnInit {
 
     //metodo get account banck
     this.getDataAccountBanck();
+
+    // data de deducciones
+    this.getDataDeductions();
+
+    // data retenciones
+    this.getDataWithholdings();
 
   }
   // inicia
@@ -524,12 +559,6 @@ export class SupliersComponent implements OnInit {
 
 
     });
-
-
-
-
-
-
   }
 
 
@@ -542,11 +571,69 @@ export class SupliersComponent implements OnInit {
 
 
 
+  // data de la retenciones
+  getDataWithholdings() {
+
+    const token = localStorage.getItem('object');
+    const data2 = JSON.parse(localStorage.getItem('object') || '');
+
+    if (token) {
+
+      this.suppliers.getWithholdings(data2.CardCode).subscribe((resp: any) => {
+        this.dataWithholdings = resp.rows;
+
+
+
+      }, (err) => {
+
+        console.log(err);
+        this.messageService.msjError(err);
+
+
+      });
+    }
+
+  }
 
 
 
 
-}
+
+
+
+
+  // data de la deducciones
+  getDataDeductions() {
+
+    const token = localStorage.getItem('object');
+    const data2 = JSON.parse(localStorage.getItem('object') || '');
+
+
+    if (token) {
+
+      this.suppliers.getDeductions(data2.CardCode).subscribe((resp: any) => {
+        this.dataDeductionsBanck = resp.rows;
+        // console.log(this.dataDeductionsBanck);
+
+      }, (err) => {
+        this.messageService.msjError(err);
+      });
+    } else {
+      return console.log("false");
+    }
+
+  }
+
+
+
+
+  }
+
+
+
+
+
+
 
 
 

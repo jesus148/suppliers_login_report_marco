@@ -109,3 +109,9 @@ margin-right: 100px;
 
 
 
+/* estilos navbar botones  */
+:host ::ng-deep .p-button{
+  text-align: center;
+  justify-content: center;
+  border-radius: 15px;
+}

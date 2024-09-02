@@ -21,11 +21,11 @@
 
               <p-button
                   (onClick)="activeIndex = 0 "
-                  styleClass="w-8rem h-3rem text-base"
+                  styleClass="w-6rem h-3rem text-sm"
                   (onClick)="btnRegistrarBanco = false"
                   [outlined]="activeIndex !== 0"
                   label="Estado Cuenta"
-                  [rounded]="true" severity="success"
+                   severity="success"
                  />
 
 
@@ -33,10 +33,26 @@
               <p-button
                   (onClick)="activeIndex = 1"
                   (onClick)="btnRegistrarBanco = true"
-                  styleClass=" w-8rem h-3rem text-base"
+                  styleClass=" w-7rem h-3rem  text-sm"
                   [outlined]="activeIndex !== 1"
                   label="Cuentas de Banco"
-                  [rounded]="true" severity="success" />
+                  severity="success" />
+
+              <p-button
+                  (onClick)="activeIndex = 2"
+                  (onClick)="btnRegistrarBanco = false"
+                  styleClass="w-7rem h-3rem text-sm "
+                  [outlined]="activeIndex !== 2"
+                  label="Retenciones"
+                  severity="success" />
+
+              <p-button
+                  (onClick)="activeIndex = 3"
+                  (onClick)="btnRegistrarBanco = false"
+                  styleClass="w-7rem h-3rem text-sm"
+                  [outlined]="activeIndex !== 3"
+                  label="Deducciones"
+                  severity="success" />
           </div>
 
 
@@ -54,7 +70,7 @@
 
     <!-- tabla  -->
 
-  <div class="contenedor_2 grid justify-content-center align-content-center  h-auto">
+  <div class="contenedor_2 grid justify-content-center align-content-center  h-auto ">
     <div class="col-11 md:col-11 ">
       <!-- elemento flexible  es para encabezado para el header -->
       <p-card #menu2 styleClass="menu2"
@@ -85,7 +101,7 @@
   <div class="m-0">
 
         <!-- tabla  -->
-            <p-tabView [(activeIndex)]="activeIndex">
+            <p-tabView [(activeIndex)]="activeIndex" styleClass="">
 
               <!-- 1 tabla  -->
                 <p-tabPanel header=""  >
@@ -165,6 +181,88 @@
 
                   </p-table>
                 </p-tabPanel>
+                <!-- 3 tabla  -->
+                <p-tabPanel  header="" class="border-white" [closable]="false"  >
+                  <p-table [styleClass]="'p-datatable-sm'" [value]="dataDeductionsBanck">
+                    <ng-template pTemplate="header"  >
+                      <tr>
+                          <th>Nro_Interno_Sap </th>
+                          <th>Nro_Documento_Sap</th>
+                          <th>Sunat </th>
+                          <th>Fecha_Contable</th>
+                          <th>Emisión</th>
+                          <th>Moneda</th>
+                          <th>Vencimiento</th>
+                          <th>Moneda</th>
+                          <th>Detracción</th>
+                          <th>Redondeo</th>
+
+                          <th></th>
+                      </tr>
+                  </ng-template>
+                                  <ng-template pTemplate="body" let-DeductionsBanck let-i="rowIndex" >
+                                <tr>
+                                    <td>{{ DeductionsBanck.losmi }}</td>
+
+
+
+                                </tr>
+                            </ng-template>
+
+                  </p-table>
+                </p-tabPanel>
+                <!-- 4 tabla  -->
+                <p-tabPanel  header="" class="border-white" [closable]="false"  >
+                  <p-table [styleClass]="'p-datatable-sm'" [value]="dataWithholdings"  >
+                    <ng-template pTemplate="header"  >
+                      <tr >
+                          <th>PROV_RUC</th>
+                          <th>FEC_EMI_FACT</th>
+                          <th>MONEDA_FACT</th>
+                          <th>TOTAL_FACT</th>
+                          <th>FECHA_RETENCION</th>
+                          <th>MONEDA_PAGO</th>
+                          <th>TOTAL_PAGO</th>
+
+                          <th></th>
+                      </tr>
+                  </ng-template>
+                                  <ng-template pTemplate="body" let-Withholdings let-i="rowIndex" >
+                                <tr>
+                                    <td>{{ Withholdings.PROV_RUC }}</td>
+                                    <!-- lo corta el valor desde espacio en blanco muestra el 1 valor -->
+                                    <td>{{ Withholdings.FEC_EMI_FACT.split(' ')[0]   }}</td>
+                                    <td>{{ Withholdings.MONEDA_FACT }}</td>
+
+                                    <td>{{ Withholdings.TOTAL_FACT | number : '1.2-2'}}</td>
+
+                                    <!-- mejora el decimal con 2   -->
+                                    <td>{{  Withholdings.FECHA_RETENCION.split(' ')[0] }}</td>
+                                    <td>{{ Withholdings.MONEDA_PAGO   }}</td>
+                                    <td>{{ Withholdings.TOTAL_PAGO  | number : '1.2-2' }}</td>
+                                    <td>
+                                      <p-button icon="pi pi-pencil" [rounded]="true"  />
+
+
+                                    </td>
+
+
+                                </tr>
+                            </ng-template>
+
+                  </p-table>
+
+
+                  <p-paginator
+
+                  [first]="first"
+                  [rows]="rows"
+                  [totalRecords]="120"
+                  [rowsPerPageOptions]="[10, 20, 30]" />
+
+
+                </p-tabPanel>
+
 
         </p-tabView>
 
@@ -177,6 +275,8 @@
       </p-card>
     </div>
   </div>
+
+
 </div>
 
 </div>

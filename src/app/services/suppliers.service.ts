@@ -33,22 +33,6 @@ export class SuppliersService {
   }
 
 
-
-
-  //metodo registrar banco
-  // registerBanck(cardCode : string , bankCode : string ,
-  //   accountNo :string , userCurrBank : string , bankAccountType : string){
-  //     return this.http.post( `${environmentPro.base_url}/create-bank-account` , {cardCode , bankCode , accountNo ,  userCurrBank , bankAccountType});
-  //   }
-
-
-
-
-   /*  registerBanck(body: any){
-      return this.http.post( `${environmentPro.base_ur2}/create-bank-account` , body);
-    } */
-
-
     registerBanck2(body: any){
       return this.http.post( `${environmentPro.base_ur2}/test` , body);
     }
@@ -59,6 +43,28 @@ export class SuppliersService {
     updateBanck2(body:any){
       return this.http.post(`${environmentPro.base_ur2}/create-update-bank-account`, body )
     }
+
+
+
+
+    // deducciones
+
+    getDeductions(cardCode : string){
+      return this.http.get(`${environmentPro.base_url}/deductions?cardCode=${cardCode}`)
+    }
+
+
+
+    // retenciones
+    getWithholdings(cardCode : string){
+      return this.http.get(`${environmentPro.base_url}/withholdings?cardCode=${cardCode}`)
+    }
+
+
+
+
+
+
 
 
 
