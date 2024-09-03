@@ -4,9 +4,6 @@
 export interface Withholdings {
 
   // recordar q una interface debe tener constructor
-
-
-
   DocEntry?:number ;
   PROV_RUC?:string;
   PROV_RZ?:string;
@@ -23,4 +20,16 @@ export interface Withholdings {
   COMPRET?:string;
   TC?:string;
   TCO?:string;
+}
+
+
+// metodo paginacion
+export interface WithholdingsRequest {
+  first: number;
+  rows: number;
+  sortField: string | string[];
+  sortOrder: number;
+  filter?: {
+      firstName: string
+  }
 }

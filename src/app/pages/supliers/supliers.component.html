@@ -23,6 +23,8 @@
                   (onClick)="activeIndex = 0 "
                   styleClass="w-6rem h-3rem text-sm"
                   (onClick)="btnRegistrarBanco = false"
+                  (onClick)="btnRetenciones = false"
+                  (onClick)="btnDeducciones = false"
                   [outlined]="activeIndex !== 0"
                   label="Estado Cuenta"
                    severity="success"
@@ -33,6 +35,8 @@
               <p-button
                   (onClick)="activeIndex = 1"
                   (onClick)="btnRegistrarBanco = true"
+                  (onClick)="btnRetenciones = false"
+                  (onClick)="btnDeducciones = false"
                   styleClass=" w-7rem h-3rem  text-sm"
                   [outlined]="activeIndex !== 1"
                   label="Cuentas de Banco"
@@ -41,6 +45,8 @@
               <p-button
                   (onClick)="activeIndex = 2"
                   (onClick)="btnRegistrarBanco = false"
+                  (onClick)="btnRetenciones = true"
+                  (onClick)="btnDeducciones = false"
                   styleClass="w-7rem h-3rem text-sm "
                   [outlined]="activeIndex !== 2"
                   label="Retenciones"
@@ -49,6 +55,8 @@
               <p-button
                   (onClick)="activeIndex = 3"
                   (onClick)="btnRegistrarBanco = false"
+                  (onClick)="btnRetenciones = false"
+                  (onClick)="btnDeducciones = true"
                   styleClass="w-7rem h-3rem text-sm"
                   [outlined]="activeIndex !== 3"
                   label="Deducciones"
@@ -87,13 +95,15 @@
     <div>
 
 
-      @if(btnRegistrarBanco ){
-
-        <h3>LISTA DE CUENTAS DE BANCO </h3>
-        }@else{
+        @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones ){
+          <h3>LISTA DE CUENTAS DE BANCO </h3>
+        }@else if(!btnRegistrarBanco && btnDeducciones && !btnRetenciones  ){
+          <h3>ESTADO DE CUENTA - Deducciones</h3>
+        }@else if(!btnRegistrarBanco && !btnDeducciones && btnRetenciones  ){
+          <h3>ESTADO DE CUENTA - Retenciones</h3>
+        }@else {
           <h3>ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
         }
-
 
     </div>
   </div>
@@ -101,7 +111,8 @@
   <div class="m-0">
 
         <!-- tabla  -->
-            <p-tabView [(activeIndex)]="activeIndex" styleClass="">
+            <p-tabView [(activeIndex)]="activeIndex" styleClass=""
+            >
 
               <!-- 1 tabla  -->
                 <p-tabPanel header=""  >
@@ -186,26 +197,32 @@
                   <p-table [styleClass]="'p-datatable-sm'" [value]="dataDeductionsBanck">
                     <ng-template pTemplate="header"  >
                       <tr>
-                          <th>Nro_Interno_Sap </th>
-                          <th>Nro_Documento_Sap</th>
-                          <th>Sunat </th>
-                          <th>Fecha_Contable</th>
-                          <th>Emisión</th>
-                          <th>Moneda</th>
-                          <th>Vencimiento</th>
-                          <th>Moneda</th>
-                          <th>Detracción</th>
-                          <th>Redondeo</th>
+                          <th>NRO_INTERNO_SAP</th>
+                          <th>NRO_DOCUMENTO_SAP</th>
+                          <th>SUNAT</th>
+                          <th>FECHA_CONTABLE</th>
+                          <th>EMISIÓN</th>
+                          <th>VENCIMIENTO</th>
+                          <th>MONEDA</th>
+                          <th>TOTAL</th>
+                          <th>DETRACCIÓN</th>
+                          <th>REDONDEO</th>
 
                           <th></th>
                       </tr>
                   </ng-template>
                                   <ng-template pTemplate="body" let-DeductionsBanck let-i="rowIndex" >
                                 <tr>
-                                    <td>{{ DeductionsBanck.losmi }}</td>
-
-
-
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
                                 </tr>
                             </ng-template>
 
@@ -213,7 +230,14 @@
                 </p-tabPanel>
                 <!-- 4 tabla  -->
                 <p-tabPanel  header="" class="border-white" [closable]="false"  >
-                  <p-table [styleClass]="'p-datatable-sm'" [value]="dataWithholdings"  >
+                  <p-table [styleClass]="'p-datatable-sm'" [value]="dataWithholdings"
+                  >
+<!--
+                                    [lazy]="true"
+                                   (onLazyLoad)="loadCustomers($event)"
+                                   [paginator]="true" [rows]="10"
+                                   [totalRecords]="totalRecords"
+                                   [loading]="loading" -->
                     <ng-template pTemplate="header"  >
                       <tr >
                           <th>PROV_RUC</th>
@@ -253,18 +277,14 @@
                   </p-table>
 
 
-                  <p-paginator
-
-                  [first]="first"
-                  [rows]="rows"
-                  [totalRecords]="120"
-                  [rowsPerPageOptions]="[10, 20, 30]" />
-
 
                 </p-tabPanel>
 
 
         </p-tabView>
+
+
+
 
   </div>
 

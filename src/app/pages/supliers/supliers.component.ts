@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { MenubarModule } from 'primeng/menubar';
@@ -24,18 +24,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { style } from '@angular/animations';
 import { ToastModule } from 'primeng/toast';
-import { Withholdings } from '../../interfaces/withholdings.model';
+import { Withholdings, WithholdingsRequest } from '../../interfaces/withholdings.model';
 import { PaginatorModule } from 'primeng/paginator';
 
 
 
-
-interface PageEvent {
-  first: number;
-  rows: number;
-  page: number;
-  pageCount: number;
-}
 
 
 @Component({
@@ -138,6 +131,9 @@ export class SupliersComponent implements OnInit {
   // modalregistrarbanco
   modalRegistrar: boolean = false;
   btnRegistrarBanco: boolean = false;
+  btnRetenciones:boolean = false ;
+  btnDeducciones:boolean = false ;
+
 
 
 
@@ -159,25 +155,32 @@ export class SupliersComponent implements OnInit {
 
 
 
+
   // paginacion
 
-  first:number = 0;
-  rows : number =10;
+  customer:any =[];
 
+  totalRecords: number =0;
 
-  onPageChange(event : PageEvent){
-    this.first = event.first;
-    this.rows = event.rows;
-  }
+  cols: any;
 
-
+  loadings: boolean = false;
 
 
 
 
 
 
-  // array de bancos
+
+
+
+
+
+
+
+
+
+  // array de bancosz
   listaBancos: any = [
     { value: '001', name: 'BANCO CENTRAL DE RESERVA' },
     { value: '002', name: 'BANCO DE CREDITO DEL PERU' },
@@ -335,6 +338,8 @@ export class SupliersComponent implements OnInit {
 
 
 
+
+
   // metodo registra la data
   listData() {
 
@@ -469,8 +474,8 @@ export class SupliersComponent implements OnInit {
         return this.messageService.warningMessage('el numero de cuentas para ahorros debe tener 14 digitos');
       }else if( this.accountNo?.length !== 13 && this.bankAccountType ===  'C' ){
         this.messageService.warningMessage('el numero de cuenta debe tener 13 digitos');
-      }else if(this.accountNo?.length !== 20 && this.accountNo ===  'CI'){
-        this.messageService.warningMessage('el numero de cuenta debe tener 20 digitos')
+      }else if(this.accountNo?.length !== 20 && this.bankAccountType ===  'CI'){
+        this.messageService.warningMessage('el n° cuenta para el tipo de cuenta CI debe tener 20 digitos')
       }else{
 
            this.suppliers.updateBanck2(bankCreate).subscribe((resp: any) => {
@@ -497,14 +502,23 @@ export class SupliersComponent implements OnInit {
     this.modalRegistrar = true;
   }
   changeTypeCount(){
-    console.log("codigo de banco" + this.bankCode);
-    this.accountType2 =[
-      { value: 'A', name: 'Cuenta Ahorro' },
-      { value: 'M', name: 'Cuenta Maestra' }
-    ]
-    // this.accountType = this.accountType.map(todo=>({
-    //   ...todo, this.accountType2
-    // }));
+    if(this.bankCode ===  '002') {
+      this.accountType =[
+        { value: 'A', name: 'Cuenta Ahorro' },
+        { value: 'M', name: 'Cuenta Maestra' }
+      ]
+    }else{
+      this.accountType = [
+        { value: 'A', name: 'Cuenta Ahorro' },
+        { value: 'C', name: 'Cuenta Corriente' },
+        { value: 'M', name: 'Cuenta Maestra' },
+        { value: 'CI', name: 'Interbancaria/Cheque Gerencial' },
+        { value: 'D', name: 'Detracción' }
+      ];
+
+    }
+
+
   }
 
 
@@ -546,19 +560,29 @@ export class SupliersComponent implements OnInit {
     }
 
 
+    if(updateBank.accountNo.length !== 14 && updateBank.bankAccountType ===  'A' ){
+      return this.messageService.warningMessage('el  numero de cuenta para ahorrros debe tener 14 digitos');
+    }else if(updateBank.accountNo.length !== 13 && updateBank.bankAccountType  === 'C'){
+      return this.messageService.warningMessage('el numero de cuenta para la cuenta corriente debe tener 13 digitos')
+    }else if(updateBank.accountNo.length !== 20 && updateBank.bankAccountType === 'CI'){
+      return this.messageService.warningMessage('el n° cuenta para el tipo de cuenta CI debe tener 20 digitos');
+    }else if(updateBank.bankCode ===  '002' && ( updateBank.bankAccountType !==   'A' || updateBank.bankAccountType !==   'M')){
+      return this.messageService.warningMessage('la cuenta maestra y de ahorros solo aplica para el BCP');
+    }else{
+          this.suppliers.updateBanck2(updateBank).subscribe((resp: any) => {
 
-    this.suppliers.updateBanck2(updateBank).subscribe((resp: any) => {
+            alert("registrado");
 
-      alert("registrado");
+            this.messageService.popUpServces('error', 'Error', "banco agregado");
 
-      this.messageService.popUpServces('error', 'Error', "banco agregado");
-
-    }, (error) => {
-      console.log(error);
-      this.messageService.popUpServces('error', 'Error', "banco agregado");
+          }, (error) => {
+            console.log(error);
+            this.messageService.popUpServces('error', 'Error', "banco agregado");
 
 
-    });
+          });
+    }
+
   }
 
 
@@ -581,7 +605,7 @@ export class SupliersComponent implements OnInit {
 
       this.suppliers.getWithholdings(data2.CardCode).subscribe((resp: any) => {
         this.dataWithholdings = resp.rows;
-
+        this.totalRecords = resp.rows.length;
 
 
       }, (err) => {
@@ -595,6 +619,16 @@ export class SupliersComponent implements OnInit {
 
   }
 
+
+  // paginacion
+  loadCustomers(event : LazyLoadEvent){
+    setTimeout(() => {
+      if (this.dataWithholdings) {
+          this.customer = this.dataWithholdings.slice(event?.first, (event!.first! + event!.rows!));
+          this.loading = false;
+      }
+  }, 1000);
+  }
 
 
 
