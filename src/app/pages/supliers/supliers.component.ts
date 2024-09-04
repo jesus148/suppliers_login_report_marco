@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { LazyLoadEvent, MenuItem } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import {  MenuItem } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { MenubarModule } from 'primeng/menubar';
@@ -7,13 +7,9 @@ import { TableModule } from 'primeng/table';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { MessagesService } from '../../services/messages.service';
-import { Supliers } from '../../interfaces/supliers.model';
 import { CommonModule } from '@angular/common';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
-import { Observable, of } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -22,10 +18,10 @@ import { TabViewModule } from 'primeng/tabview';
 import { SuppliersService } from '../../services/suppliers.service';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
-import { style } from '@angular/animations';
 import { ToastModule } from 'primeng/toast';
-import { Withholdings, WithholdingsRequest } from '../../interfaces/withholdings.model';
+import { Withholdings } from '../../interfaces/withholdings.model';
 import { PaginatorModule } from 'primeng/paginator';
+import { PageEvent } from '../../interfaces/PageEvent';
 
 
 
@@ -87,12 +83,6 @@ export class SupliersComponent implements OnInit {
 
 
 
-  // listSupliers: Supliers[] =[
-  //   {
-  //     serie:  13 , fecEmis : '45',fecve:  12, fecpro :  'jjsks' , moneda: 34 , total:  'jsks' , monto:23 ,
-  //     fecEmisaldo :   'sting'
-  //   }
-  // ]
 
 
   // carga iconos
@@ -156,22 +146,15 @@ export class SupliersComponent implements OnInit {
 
 
 
-  // paginacion
+  // paginacion detracciones
+  paginatedData: any[] = [];
+  rows: number = 12;
+  totalRecords: number = 0;
 
-  customer:any =[];
-
-  totalRecords: number =0;
-
-  cols: any;
-
-  loadings: boolean = false;
-
-
-
-
-
-
-
+  // paginacion retenciones
+  paginatedData2:any[] = [];
+  rows2: number = 12;
+  totalRecords2: number = 0;
 
 
 
@@ -344,11 +327,7 @@ export class SupliersComponent implements OnInit {
   listData() {
 
     const token = localStorage.getItem('object');
-
     const data2 = JSON.parse(localStorage.getItem('object') || '');
-
-
-
 
     if (token) {
 
@@ -494,6 +473,7 @@ export class SupliersComponent implements OnInit {
                 this.messageService.popUpServces('error', 'Error' ,'Error al registrar el banco');
                 this.registrarBanco.reset();
                 this.modalRegistrar=false;
+                this.getDataAccountBanck();
               }
             });
       }
@@ -528,12 +508,6 @@ export class SupliersComponent implements OnInit {
 
 
 
-
-
-
-
-
-
   // Modal Banco actualiza
   modalBanco(obj: any, index: number) {
     this.modalActualizar = true;
@@ -541,10 +515,17 @@ export class SupliersComponent implements OnInit {
     this.bankCode2 = obj.Codigo_Banco;
     this.accountNo2 = obj.Cuenta;
     this.userCurrBank2 = obj.Moneda_Banco;
-    this.bankAccountType2 = obj.Tipo_Cuenta;
-    this.index = index;
 
+    if(obj.Tipo_Cuenta === 'B' || obj.Tipo_Cuenta === 'N'){
+      this.bankAccountType2 ='CI'
+    }else{
+      this.bankAccountType2 = obj.Tipo_Cuenta;
+    }
+
+    this.index = index;
   }
+
+
   // metodo acutalizar banco
   ActualizarBank() {
     if (!this.actualizarBanco.valid) {
@@ -571,14 +552,22 @@ export class SupliersComponent implements OnInit {
     }else{
           this.suppliers.updateBanck2(updateBank).subscribe((resp: any) => {
 
-            alert("registrado");
 
-            this.messageService.popUpServces('error', 'Error', "banco agregado");
+            this.messageService.popUpServces('info', 'Error', "banco actualizado");
 
           }, (error) => {
             console.log(error);
-            this.messageService.popUpServces('error', 'Error', "banco agregado");
+            this.messageService.popUpServces('success', 'Confirmación', "banco actualizado correctamente");
+            this.modalActualizar = false;
 
+
+            this.bankCode2 =   '';
+            this.accountNo2 =  '';
+            this.userCurrBank2 =  '';
+            this.bankAccountType2 = '';
+            this.index= '';
+
+            this.getDataAccountBanck()
 
           });
     }
@@ -605,8 +594,10 @@ export class SupliersComponent implements OnInit {
 
       this.suppliers.getWithholdings(data2.CardCode).subscribe((resp: any) => {
         this.dataWithholdings = resp.rows;
-        this.totalRecords = resp.rows.length;
 
+        this.totalRecords2 = resp.rows.length;
+
+        this.Paginator2({ first: 0, rows: this.rows });
 
       }, (err) => {
 
@@ -616,19 +607,19 @@ export class SupliersComponent implements OnInit {
 
       });
     }
+  }
+
+  // metodo paginator
+  Paginator2(event: any): void {
+
+    // event.first es el event rows actual
+    const start = event.first;
+    const end = event.first + event.rows;
+    this.paginatedData2 = this.dataWithholdings.slice(start, end);
 
   }
 
 
-  // paginacion
-  loadCustomers(event : LazyLoadEvent){
-    setTimeout(() => {
-      if (this.dataWithholdings) {
-          this.customer = this.dataWithholdings.slice(event?.first, (event!.first! + event!.rows!));
-          this.loading = false;
-      }
-  }, 1000);
-  }
 
 
 
@@ -636,7 +627,12 @@ export class SupliersComponent implements OnInit {
 
 
 
-  // data de la deducciones
+
+
+
+
+
+  // data de la detracciones
   getDataDeductions() {
 
     const token = localStorage.getItem('object');
@@ -647,7 +643,9 @@ export class SupliersComponent implements OnInit {
 
       this.suppliers.getDeductions(data2.CardCode).subscribe((resp: any) => {
         this.dataDeductionsBanck = resp.rows;
-        // console.log(this.dataDeductionsBanck);
+        this.totalRecords = resp.rows.length;
+        this.Paginator({ first: 0, rows: this.rows });
+
 
       }, (err) => {
         this.messageService.msjError(err);
@@ -658,10 +656,23 @@ export class SupliersComponent implements OnInit {
 
   }
 
+  // metodo paginator
+    Paginator(event: any): void {
+
+      // event.first es el event rows actual
+      const start = event.first;
+      const end = event.first + event.rows;
+      this.paginatedData = this.dataDeductionsBanck.slice(start, end);
+
+    }
+
+
+
 
 
 
   }
+
 
 
 

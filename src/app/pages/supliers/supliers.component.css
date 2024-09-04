@@ -57,15 +57,7 @@ justify-content: flex-end;
 
 /* ---barra arriba barra de navegacion  */
 
-/* .contenedor .menubar_var{
-  width: 200px;
-margin-right: 100px;
-}
-@media only screen and (min-width: 600px) {
-  .contenedor .menubar_var{
-    width: 600px;
-  }
-} */
+
 
 
 :host ::ng-deep .p-menubar {
@@ -115,3 +107,8 @@ margin-right: 100px;
   justify-content: center;
   border-radius: 15px;
 }
+
+
+
+/* media queries  */
+

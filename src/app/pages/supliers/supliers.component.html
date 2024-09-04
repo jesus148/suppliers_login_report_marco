@@ -12,7 +12,7 @@
 
 
         <ng-template  pTemplate="start" class="" styleClass="menubar2">
-          <div class="flex mb-2 gap-3 justify-content-end">
+          <div class="hidden md:flex md:mb-2 md:gap-3 md:justify-content-end">
 
 
             <img src="assets/images/LogoMp2.png" height="38" class="mr-2">
@@ -49,7 +49,7 @@
                   (onClick)="btnDeducciones = false"
                   styleClass="w-7rem h-3rem text-sm "
                   [outlined]="activeIndex !== 2"
-                  label="Retenciones"
+                  label="Detracciones"
                   severity="success" />
 
               <p-button
@@ -59,8 +59,13 @@
                   (onClick)="btnDeducciones = true"
                   styleClass="w-7rem h-3rem text-sm"
                   [outlined]="activeIndex !== 3"
-                  label="Deducciones"
+                  label="Reteneciones"
                   severity="success" />
+          </div>
+
+          <div class="flex mb-2 gap-3 justify-content-end  md:hidden">
+            <img src="assets/images/LogoMp2.png" height="38" class="mr-2">
+
           </div>
 
 
@@ -98,9 +103,9 @@
         @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones ){
           <h3>LISTA DE CUENTAS DE BANCO </h3>
         }@else if(!btnRegistrarBanco && btnDeducciones && !btnRetenciones  ){
-          <h3>ESTADO DE CUENTA - Deducciones</h3>
+          <h3>ESTADO DE CUENTA - DEDUCCIONES</h3>
         }@else if(!btnRegistrarBanco && !btnDeducciones && btnRetenciones  ){
-          <h3>ESTADO DE CUENTA - Retenciones</h3>
+          <h3>ESTADO DE CUENTA - DETRACCIONES</h3>
         }@else {
           <h3>ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
         }
@@ -194,59 +199,57 @@
                 </p-tabPanel>
                 <!-- 3 tabla  -->
                 <p-tabPanel  header="" class="border-white" [closable]="false"  >
-                  <p-table [styleClass]="'p-datatable-sm'" [value]="dataDeductionsBanck">
-                    <ng-template pTemplate="header"  >
-                      <tr>
-                          <th>NRO_INTERNO_SAP</th>
-                          <th>NRO_DOCUMENTO_SAP</th>
-                          <th>SUNAT</th>
-                          <th>FECHA_CONTABLE</th>
-                          <th>EMISIÓN</th>
-                          <th>VENCIMIENTO</th>
-                          <th>MONEDA</th>
-                          <th>TOTAL</th>
-                          <th>DETRACCIÓN</th>
-                          <th>REDONDEO</th>
-
-                          <th></th>
+                  <p-table [styleClass]="'p-datatable-sm'" [value]="paginatedData" [tableStyle]="{ 'min-width': '76rem' }">
+                    <ng-template pTemplate="header" >
+                      <tr >
+                          <th style="font-size: 16px;" >Nro_Interno_Sap</th>
+                          <th style="font-size: 16px;"  >Nro_Documento_Sap</th>
+                          <th style="font-size: 16px;" >Sunat</th>
+                          <th style="font-size: 16px;">Fecha_Contable</th>
+                          <th style="font-size: 16px;">Emisión</th>
+                          <th style="font-size: 16px;">Vencimiento</th>
+                          <th style="font-size: 16px;">Moneda</th>
+                          <th style="font-size: 16px;">Total</th>
+                          <th style="font-size: 16px;">Detracción</th>
+                          <th style="font-size: 16px;">Redondeo</th>
                       </tr>
                   </ng-template>
                                   <ng-template pTemplate="body" let-DeductionsBanck let-i="rowIndex" >
                                 <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
+                                  <td class="text-center">{{DeductionsBanck.Nro_interno_SAP}}</td>
+                                  <td class="text-center">{{DeductionsBanck.Nro_de_Documento_SAP}}</td>
+                                  <td>{{DeductionsBanck.Sunat}}</td>
+                                  <td>{{DeductionsBanck.F_Contable.split(' ')[0]}}</td>
+                                  <td>{{DeductionsBanck.Emision.split(' ')[0]}}</td>
+                                  <td>{{DeductionsBanck.Vencimiento.split(' ')[0]}}</td>
+                                  <td>{{DeductionsBanck.Moneda}}</td>
+                                  <td>{{DeductionsBanck.Total | number  : '1.2-2'}}</td>
+                                  <td>{{DeductionsBanck.Detraccion | number : '1.2-2'}}</td>
+                                  <td>{{DeductionsBanck.Redondeo
+                                    | number : '1.2-3'}}</td>
                                 </tr>
                             </ng-template>
 
                   </p-table>
+                  <p-paginator [rows]="rows" [totalRecords]="totalRecords" (onPageChange)="Paginator($event)" styleClass="custom-paginator">
+                  </p-paginator>
+
                 </p-tabPanel>
                 <!-- 4 tabla  -->
                 <p-tabPanel  header="" class="border-white" [closable]="false"  >
-                  <p-table [styleClass]="'p-datatable-sm'" [value]="dataWithholdings"
+                  <p-table [styleClass]="'p-datatable-sm'" [value]="paginatedData2" [tableStyle]="{ 'min-width': '64rem','text-align':'center' }"
                   >
-<!--
-                                    [lazy]="true"
-                                   (onLazyLoad)="loadCustomers($event)"
-                                   [paginator]="true" [rows]="10"
-                                   [totalRecords]="totalRecords"
-                                   [loading]="loading" -->
+
                     <ng-template pTemplate="header"  >
                       <tr >
-                          <th>PROV_RUC</th>
-                          <th>FEC_EMI_FACT</th>
-                          <th>MONEDA_FACT</th>
-                          <th>TOTAL_FACT</th>
-                          <th>FECHA_RETENCION</th>
-                          <th>MONEDA_PAGO</th>
-                          <th>TOTAL_PAGO</th>
+                          <th style="font-size: 16px;">Pro_Ruc</th>
+                          <th style="font-size: 16px;">Fec_Emi_Fact</th>
+                          <th style="font-size: 16px;">Moneda_Fact</th>
+                          <th style="font-size: 16px;">Total_Fact</th>
+                          <th style="font-size: 16px;">Fecha Retención</th>
+                          <th style="font-size: 16px;">Moneda Pago</th>
+                          <th style="font-size: 16px;">Total Pago</th>
+                          <th style="font-size: 16px;">Retenido</th>
 
                           <th></th>
                       </tr>
@@ -265,8 +268,7 @@
                                     <td>{{ Withholdings.MONEDA_PAGO   }}</td>
                                     <td>{{ Withholdings.TOTAL_PAGO  | number : '1.2-2' }}</td>
                                     <td>
-                                      <p-button icon="pi pi-pencil" [rounded]="true"  />
-
+                                      {{Withholdings.RETENIDO | number :  '1.'}}
 
                                     </td>
 
@@ -277,6 +279,8 @@
                   </p-table>
 
 
+                  <p-paginator [rows]="rows" [totalRecords]="totalRecords2" (onPageChange)="Paginator2($event)" styleClass="custom-paginator">
+                  </p-paginator>
 
                 </p-tabPanel>
 
@@ -352,10 +356,10 @@
 
   <form [formGroup]="registrarBanco" (ngSubmit)="registrarBank()">
 
-<div class="flex align-items-center  mb-5 mt-5 p-2 ">
-    <label for="username" class="font-semibold w-8rem  text-center">Bancos</label>
+<div class="flex align-items-center gap-2 mb-5 mt-5 p-2">
+    <label for="update1" class="font-semibold w-6rem  text-center">Bancos </label>
     <div class="custom-select-container relative ">
-      <select name="para" class="custom-select border-round" [(ngModel)]="bankCode" style="width: 100%; height: 30px;" formControlName="bancos" (change)="changeTypeCount()">
+      <select name="update1" class="custom-select border-round w-full" [(ngModel)]="bankCode" style="height: 30px;" formControlName="bancos" (change)="changeTypeCount()">
           <option value="">Seleccione el banco </option>
           @for (user of listaBancos; track user) {
               <option [value]="user.value">{{ user.name }} </option>
@@ -364,17 +368,17 @@
   </div>
 </div>
 <div class="flex align-items-center gap-3 mb-5 p-2 ">
-  <label for="email" class="font-semibold w-8rem text-center">Numero de Cuenta</label>
+  <label for="update2" class="font-semibold w-8rem text-center">Numero de Cuenta</label>
   <input pInputText id="username" class="flex-auto border-1  border-round"
   [(ngModel)]="accountNo"  type="text" style="width: 100%; height: 30px;"  formControlName="numCuenta" />
 
 </div>
 
 <div class="flex align-items-center gap-3 mb-5 p-2  ">
-    <label for="email" class="font-semibold w-8rem text-center">
+    <label for="update3" class="font-semibold w-8rem text-center">
       Divisas
     </label>
-    <select name="para" class="custom-select w-full border-round" [(ngModel)]="divisas" style="width: 100%; height: 30px;" formControlName="divisas" >
+    <select name="update3" class="custom-select w-full border-round" [(ngModel)]="divisas" style="height: 30px;" formControlName="divisas" >
       <option value="">Seleccione las divisas </option>
       @for (user of currency; track user) {
           <option [value]="user.value">{{ user.name }} </option>
@@ -383,10 +387,10 @@
 </div>
 
 <div class="flex align-items-center gap-3 mb-5 p-2">
-  <label for="email" class="font-semibold w-8rem text-center">
+  <label for="update4" class="font-semibold w-8rem text-center">
     Tipos de Cuentas
   </label>
-  <select name="para" class="custom-select border-round" [(ngModel)]="bankAccountType" style="width: 100%; height: 30px;" formControlName="tipoCuentas">
+  <select name="update4" class="custom-select border-round" [(ngModel)]="bankAccountType" style="width: 100%; height: 30px;" formControlName="tipoCuentas">
     <option value="">Seleccione tipos de cuentas </option>
     @if(accountType2){
       @for (user of accountType2; track user) {

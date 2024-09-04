@@ -20,6 +20,7 @@ export class MessagesService {
       severity,
       summary,
       detail: mensaje,
+      life:4000
     });
   }
 

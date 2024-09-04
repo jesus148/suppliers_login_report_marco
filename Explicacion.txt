@@ -12,3 +12,13 @@ Iniciando proyecto
 
 3. Instalacion dependencias pasos
  https://www.youtube.com/watch?v=lBAKaLkYcWA
+
+
+
+4. ejemplo de array
+   // listSupliers: Supliers[] =[
+  //   {
+  //     serie:  13 , fecEmis : '45',fecve:  12, fecpro :  'jjsks' , moneda: 34 , total:  'jsks' , monto:23 ,
+  //     fecEmisaldo :   'sting'
+  //   }
+  // ]
