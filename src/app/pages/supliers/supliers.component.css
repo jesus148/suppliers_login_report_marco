@@ -57,26 +57,38 @@ justify-content: flex-end;
 
 /* ---barra arriba barra de navegacion  */
 
-
+/*  */
 
 
 :host ::ng-deep .p-menubar {
   position: relative;
   right: 0;
   border-radius: 5px;
+  max-width: 100%;
 }
 
+/* movi */
 :host ::ng-deep .p-menubar .p-menubar-button{
   position: absolute;
   right: 0;
   top: 100%;
   transform: translateX(-50%) translateY(-135%);
+  color: black;
+  width: 40px;
+  height: 40px;
 }
 
 
+
+
+
+/* desktop */
 @media screen and (min-width: 860px) {
+
+
   :host ::ng-deep  .p-menubar-root-list>li:last-child .p-submenu-list {
     right: 0;
+
   }
 
   :host ::ng-deep .p-menubar .p-menubar-root-list {
@@ -110,5 +122,25 @@ justify-content: flex-end;
 
 
 
-/* media queries  */
+
+/* estilos para el nav mobile */
+
+@media screen and (min-width: 860px) {
+
+  :host >>> .active{
+    background-color: greenyellow;
+    display: none;
+  }
+
+}
+
+
+
+
+
+:host::ng-deep{
+  #mytable{
+    .p-
+  }
+}
 

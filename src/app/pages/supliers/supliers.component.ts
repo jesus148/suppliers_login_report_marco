@@ -201,6 +201,8 @@ export class SupliersComponent implements OnInit {
   ];
 
 
+  //divisas registrar banco
+  divisasBoolean:boolean=true;
 
 
 
@@ -215,6 +217,8 @@ export class SupliersComponent implements OnInit {
 
 
 
+  // botones responsive
+  disableCuenta : boolean = true;
 
 
 
@@ -292,7 +296,55 @@ export class SupliersComponent implements OnInit {
         // metodo salir sesion
         command: () => {
           this.cargarModal();
-        }
+        },
+        styleClass:'estilos'
+      },
+      {
+        label: 'Estado de Cuenta', //titulo
+        icon: 'pi pi-file',//icono
+        // metodo salir sesion
+        command: () => {
+          this.activeIndex=0;
+           this.btnRegistrarBanco=false;
+          this.btnRetenciones= false;
+          this.btnDeducciones = false;
+        },
+        styleClass: 'active'
+      },
+      {
+        label: 'Detracciones', //titulo
+        icon: 'pi pi-file',//icono
+        // metodo salir sesion
+        command: () => {
+          this.activeIndex=2;
+          this.btnRegistrarBanco=false;
+          this.btnRetenciones=true;
+          this.btnDeducciones =false;
+        },
+        styleClass: 'active'
+      },
+      {
+        label: 'Retenciones', //titulo
+        icon: 'pi pi-file',//icono
+        // metodo salir sesion
+        command: () => {
+          this.activeIndex=3 ;
+          this.btnRegistrarBanco=false;
+          this.btnRetenciones=false;
+          this.btnDeducciones=true;
+        },
+        styleClass: 'active'
+      },
+      {
+        label: 'Cuentas de banco', //titulo
+        icon: 'pi pi-file',//icono
+        // metodo salir sesion
+        command: () => {
+          this.btnRegistrarBanco= true;
+          this.btnRetenciones=false;
+          this.btnDeducciones=false;
+        },
+        styleClass: 'active'
       },
       {
         label: 'Salir', //titulo
@@ -483,23 +535,36 @@ export class SupliersComponent implements OnInit {
   }
   changeTypeCount(){
     if(this.bankCode ===  '002') {
-      this.accountType =[
-        { value: 'A', name: 'Cuenta Ahorro' },
-        { value: 'M', name: 'Cuenta Maestra' }
-      ]
-    }else{
+
       this.accountType = [
         { value: 'A', name: 'Cuenta Ahorro' },
         { value: 'C', name: 'Cuenta Corriente' },
         { value: 'M', name: 'Cuenta Maestra' },
-        { value: 'CI', name: 'Interbancaria/Cheque Gerencial' },
-        { value: 'D', name: 'Detracción' }
+        { value: 'CI', name: 'Interbancaria/Cheque Gerencial' }
+
       ];
+    }else if(this.bankCode ===  '018'){
+      this.accountType=[
+        { value: 'M', name: 'Cuenta Detracción' }
+      ]
+      this.currency=[
+        { value: 'PEN', name: 'Soles' }
+      ]
+      this.divisasBoolean=false;
+      console.log(this.divisasBoolean);
 
+    }else{
+
+      this.accountType =[
+        { value: 'A', name: 'Cuenta Ahorro' },
+        { value: 'M', name: 'Cuenta Interbancaria' }
+      ]
     }
-
-
   }
+
+
+
+
 
 
 

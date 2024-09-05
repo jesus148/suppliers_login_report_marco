@@ -15,7 +15,7 @@ Iniciando proyecto
 
 
 
-4. ejemplo de array
+4. ejemplo de array en .ts
    // listSupliers: Supliers[] =[
   //   {
   //     serie:  13 , fecEmis : '45',fecve:  12, fecpro :  'jjsks' , moneda: 34 , total:  'jsks' , monto:23 ,

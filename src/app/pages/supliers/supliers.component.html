@@ -5,14 +5,14 @@
 
 <div class="contenedor grid justify-content-center ">
 
-<div class="col-12 md:col-11">
+<div class="col-11 md:col-11">
 
 
     <p-menubar class="" [model]="items" styleClass="menubar">
 
 
         <ng-template  pTemplate="start" class="" styleClass="menubar2">
-          <div class="hidden md:flex md:mb-2 md:gap-3 md:justify-content-end">
+          <div class="hidden md:flex md:mb-2 md:gap-3 md:justify-content-end ">
 
 
             <img src="assets/images/LogoMp2.png" height="38" class="mr-2">
@@ -32,15 +32,6 @@
 
 
 
-              <p-button
-                  (onClick)="activeIndex = 1"
-                  (onClick)="btnRegistrarBanco = true"
-                  (onClick)="btnRetenciones = false"
-                  (onClick)="btnDeducciones = false"
-                  styleClass=" w-7rem h-3rem  text-sm"
-                  [outlined]="activeIndex !== 1"
-                  label="Cuentas de Banco"
-                  severity="success" />
 
               <p-button
                   (onClick)="activeIndex = 2"
@@ -59,8 +50,23 @@
                   (onClick)="btnDeducciones = true"
                   styleClass="w-7rem h-3rem text-sm"
                   [outlined]="activeIndex !== 3"
-                  label="Reteneciones"
+                  label="Retenciones"
                   severity="success" />
+
+
+                  <p-button
+                  (onClick)="activeIndex = 1"
+                  (onClick)="btnRegistrarBanco = true"
+                  (onClick)="btnRetenciones = false"
+                  (onClick)="btnDeducciones = false"
+                  styleClass=" w-8rem h-3rem  text-sm p-2"
+                  [outlined]="activeIndex !== 1"
+                  label="Cuentas de Banco"
+                  severity="primary"
+                  icon="pi pi-user-edit" />
+
+
+
           </div>
 
           <div class="flex mb-2 gap-3 justify-content-end  md:hidden">
@@ -75,7 +81,7 @@
   </p-menubar>
 
 
-    <div class="ml-7">
+    <div class="ml-3 md:ml-2">
         <h4>Proveedor {{usuario}}</h4>
     </div>
 
@@ -83,17 +89,17 @@
 
     <!-- tabla  -->
 
-  <div class="contenedor_2 grid justify-content-center align-content-center  h-auto ">
-    <div class="col-11 md:col-11 ">
+  <div class="contenedor_2 grid justify-content-center align-content-center  h-auto">
+    <div class="col-11 md:col-12  ">
       <!-- elemento flexible  es para encabezado para el header -->
       <p-card #menu2 styleClass="menu2"
   class="h-7rem" >
 
-  <div class="flex flex-row-reverse  h-3rem mb-0 justify-content-between " style="margin-bottom: -30px;" >
+  <div class="flex flex-row-reverse  md:h-3rem mb-0 justify-content-between  h-4rem" style="margin-bottom: -30px;" >
     <div>
 
       @if(btnRegistrarBanco ){
-      <p-button label="Registrar Banco" severity="success" (onClick)="mostrarModal()"/>
+      <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class=""/>
       }
 
     </div>
@@ -101,13 +107,13 @@
 
 
         @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones ){
-          <h3>LISTA DE CUENTAS DE BANCO </h3>
+          <h3 class="text-lg md:text-2xl">LISTA DE CUENTAS DE BANCO </h3>
         }@else if(!btnRegistrarBanco && btnDeducciones && !btnRetenciones  ){
-          <h3>ESTADO DE CUENTA - DEDUCCIONES</h3>
+          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - DEDUCCIONES</h3>
         }@else if(!btnRegistrarBanco && !btnDeducciones && btnRetenciones  ){
-          <h3>ESTADO DE CUENTA - DETRACCIONES</h3>
+          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - DETRACCIONES</h3>
         }@else {
-          <h3>ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
+          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
         }
 
     </div>
@@ -121,17 +127,17 @@
 
               <!-- 1 tabla  -->
                 <p-tabPanel header=""  >
-                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="DataSupliers" >
-                    <ng-template pTemplate="header">
+                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="DataSupliers"  id="myTable">
+                    <ng-template pTemplate="header" class="mystyle">
                       <tr>
                           <th>Serie_Correl</th>
                           <th>Fecha Emision</th>
                           <th>Fecha Vencimiento</th>
                           <!-- <th>Fecha Programacion</th> -->
                           <th>Moneda</th>
-                          <th>Total</th>
-                          <th>Monto</th>
-                          <th>Saldo</th>
+                          <th class="text-center">Total</th>
+                          <th class="text-center">Monto</th>
+                          <th class="text-center">Saldo</th>
                           <!-- <th></th> -->
                       </tr>
                   </ng-template>
@@ -145,9 +151,9 @@
                                     <td>{{ supliers.Moneda }}</td>
 
                                     <!-- mejora el decimal con 2   -->
-                                    <td>{{  supliers.Total_Documento | number:   '1.2-2' }}</td>
-                                    <td>{{ supliers.Monto_pagado  | number:   '1.2' }}</td>
-                                    <td>{{ supliers.Saldo_pendiente | number :  '1.3'}}</td>
+                                    <td class="text-right"> {{  supliers.Total_Documento | number:   '1.2-2' }}</td>
+                                    <td class="text-right">{{ supliers.Monto_pagado  | number:   '1.2' }}</td>
+                                    <td class="flex justify-content-end">S/.{{ supliers.Saldo_pendiente | number :  '1.2'}}</td>
                                     <!-- <td class="text-center flex gap-3" >
                                       <p-button  icon="pi pi-pencil" [text]="true" [raised]="true" />
                                       <p-button  icon="pi pi-times" [text]="true" [raised]="true" />
@@ -199,35 +205,30 @@
                 </p-tabPanel>
                 <!-- 3 tabla  -->
                 <p-tabPanel  header="" class="border-white" [closable]="false"  >
-                  <p-table [styleClass]="'p-datatable-sm'" [value]="paginatedData" [tableStyle]="{ 'min-width': '76rem' }">
+                  <p-table [styleClass]="'p-datatable-sm'" [value]="paginatedData" [tableStyle]="{  }">
                     <ng-template pTemplate="header" >
                       <tr >
-                          <th style="font-size: 16px;" >Nro_Interno_Sap</th>
-                          <th style="font-size: 16px;"  >Nro_Documento_Sap</th>
                           <th style="font-size: 16px;" >Sunat</th>
-                          <th style="font-size: 16px;">Fecha_Contable</th>
                           <th style="font-size: 16px;">Emisión</th>
                           <th style="font-size: 16px;">Vencimiento</th>
                           <th style="font-size: 16px;">Moneda</th>
                           <th style="font-size: 16px;">Total</th>
-                          <th style="font-size: 16px;">Detracción</th>
-                          <th style="font-size: 16px;">Redondeo</th>
+                          <th style="font-size: 16px;" class="">Detracción</th>
+                          <!-- <th style="font-size: 16px;" class="text-center">Redondeo</th> -->
                       </tr>
                   </ng-template>
                                   <ng-template pTemplate="body" let-DeductionsBanck let-i="rowIndex" >
                                 <tr>
-                                  <td class="text-center">{{DeductionsBanck.Nro_interno_SAP}}</td>
-                                  <td class="text-center">{{DeductionsBanck.Nro_de_Documento_SAP}}</td>
+
                                   <td>{{DeductionsBanck.Sunat}}</td>
-                                  <td>{{DeductionsBanck.F_Contable.split(' ')[0]}}</td>
                                   <td>{{DeductionsBanck.Emision.split(' ')[0]}}</td>
                                   <td>{{DeductionsBanck.Vencimiento.split(' ')[0]}}</td>
                                   <td>{{DeductionsBanck.Moneda}}</td>
                                   <td>{{DeductionsBanck.Total | number  : '1.2-2'}}</td>
-                                  <td>{{DeductionsBanck.Detraccion | number : '1.2-2'}}</td>
-                                  <td>{{DeductionsBanck.Redondeo
+                                  <td class="flex justify-content-evenly">{{DeductionsBanck.Detraccion | number : '1.2-2'}}</td>
+                                  <!-- <td class="text-right bg-green-200">{{DeductionsBanck.Redondeo
                                     | number : '1.2-3'}}</td>
-                                </tr>
+                                </tr> -->
                             </ng-template>
 
                   </p-table>
@@ -236,41 +237,54 @@
 
                 </p-tabPanel>
                 <!-- 4 tabla  -->
-                <p-tabPanel  header="" class="border-white" [closable]="false"  >
-                  <p-table [styleClass]="'p-datatable-sm'" [value]="paginatedData2" [tableStyle]="{ 'min-width': '64rem','text-align':'center' }"
+                <p-tabPanel  header="" class="border-white" [closable]="false" >
+                  <p-table [styleClass]="'p-datatable-sm'" [value]="paginatedData2" [tableStyle]="{ 'min-width': '77rem','text-align':'center' }"
                   >
 
                     <ng-template pTemplate="header"  >
                       <tr >
-                          <th style="font-size: 16px;">Pro_Ruc</th>
-                          <th style="font-size: 16px;">Fec_Emi_Fact</th>
-                          <th style="font-size: 16px;">Moneda_Fact</th>
+                          <th style="font-size: 16px;">Serie_Correlativo</th>
+                          <th style="font-size: 16px;">Fec_Emi</th>
+                          <th style="font-size: 16px;">Mo_Fac</th>
                           <th style="font-size: 16px;">Total_Fact</th>
-                          <th style="font-size: 16px;">Fecha Retención</th>
-                          <th style="font-size: 16px;">Moneda Pago</th>
+                          <th style="font-size: 16px;" class="text-center">Compret</th>
+                          <th style="font-size: 16px;" class="text-center">Fecha Retención</th>
+                          <th style="font-size: 16px;" class="text-center">Mo_Pag</th>
                           <th style="font-size: 16px;">Total Pago</th>
                           <th style="font-size: 16px;">Retenido</th>
+                          <th style="font-size: 16px;" class="text-center">Tc</th>
+                          <!-- <th style="font-size: 16px;">Tco</th> -->
 
                           <th></th>
                       </tr>
                   </ng-template>
                                   <ng-template pTemplate="body" let-Withholdings let-i="rowIndex" >
                                 <tr>
-                                    <td>{{ Withholdings.PROV_RUC }}</td>
+                                    <td>{{ Withholdings.SERIE_CORRELATIVO }}</td>
                                     <!-- lo corta el valor desde espacio en blanco muestra el 1 valor -->
                                     <td>{{ Withholdings.FEC_EMI_FACT.split(' ')[0]   }}</td>
                                     <td>{{ Withholdings.MONEDA_FACT }}</td>
 
                                     <td>{{ Withholdings.TOTAL_FACT | number : '1.2-2'}}</td>
 
-                                    <!-- mejora el decimal con 2   -->
+                                    <td>
+                                      {{Withholdings.COMPRET }}
+
+                                    </td>
                                     <td>{{  Withholdings.FECHA_RETENCION.split(' ')[0] }}</td>
                                     <td>{{ Withholdings.MONEDA_PAGO   }}</td>
                                     <td>{{ Withholdings.TOTAL_PAGO  | number : '1.2-2' }}</td>
                                     <td>
-                                      {{Withholdings.RETENIDO | number :  '1.'}}
+                                      {{Withholdings.RETENIDO | number: '1.2-2' }}
 
                                     </td>
+                                    <!-- mejora el decimal    -->
+                                    <td>
+                                    {{Withholdings.TC| number : '' }}
+                                    </td>
+                                    <!-- <td>
+                                      {{Withholdings.TCO }}
+                                    </td> -->
 
 
                                 </tr>
@@ -360,7 +374,7 @@
     <label for="update1" class="font-semibold w-6rem  text-center">Bancos </label>
     <div class="custom-select-container relative ">
       <select name="update1" class="custom-select border-round w-full" [(ngModel)]="bankCode" style="height: 30px;" formControlName="bancos" (change)="changeTypeCount()">
-          <option value="">Seleccione el banco </option>
+          <option value="" *ngIf="divisasBoolean">Seleccione el banco </option>
           @for (user of listaBancos; track user) {
               <option [value]="user.value">{{ user.name }} </option>
           }
@@ -379,7 +393,7 @@
       Divisas
     </label>
     <select name="update3" class="custom-select w-full border-round" [(ngModel)]="divisas" style="height: 30px;" formControlName="divisas" >
-      <option value="">Seleccione las divisas </option>
+      <option value="" *ngIf="disableCuenta" >Seleccione las divisas </option>
       @for (user of currency; track user) {
           <option [value]="user.value">{{ user.name }} </option>
       }
