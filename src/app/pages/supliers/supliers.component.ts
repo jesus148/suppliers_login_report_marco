@@ -85,8 +85,12 @@ export class SupliersComponent implements OnInit {
 
 
 
+
+
+
   // carga iconos
   items: MenuItem[] | undefined;
+
 
 
 
@@ -118,7 +122,7 @@ export class SupliersComponent implements OnInit {
   detailToShow: any;
 
 
-  // modalregistrarbanco
+  // titulos segun tablas
   modalRegistrar: boolean = false;
   btnRegistrarBanco: boolean = false;
   btnRetenciones:boolean = false ;
@@ -201,8 +205,7 @@ export class SupliersComponent implements OnInit {
   ];
 
 
-  //divisas registrar banco
-  divisasBoolean:boolean=true;
+
 
 
 
@@ -210,15 +213,15 @@ export class SupliersComponent implements OnInit {
 
 
   // datos registrar banco
-  bankCode?: string = '';
-  accountNo?: string = '';
-  divisas?: string = '';
-  bankAccountType?: string = '';
+  bankCode?: string ='';
+  accountNo?: string ='';
+  divisas?: string ='';
+  bankAccountType?:string='';
+  //divisas registrar banco
+  divisasBoolean:boolean=true;
+  tiposCuentas:boolean=true;
 
 
-
-  // botones responsive
-  disableCuenta : boolean = true;
 
 
 
@@ -535,15 +538,23 @@ export class SupliersComponent implements OnInit {
   }
   changeTypeCount(){
     if(this.bankCode ===  '002') {
-
       this.accountType = [
         { value: 'A', name: 'Cuenta Ahorro' },
         { value: 'C', name: 'Cuenta Corriente' },
         { value: 'M', name: 'Cuenta Maestra' },
         { value: 'CI', name: 'Interbancaria/Cheque Gerencial' }
-
       ];
+
+      this.currency = [
+        { value: 'USD', name: 'Dolar Americano' },
+        { value: 'PEN', name: 'Soles' }
+      ];
+
+      this.divisasBoolean=true;
+      this.tiposCuentas = true;
     }else if(this.bankCode ===  '018'){
+
+
       this.accountType=[
         { value: 'M', name: 'Cuenta Detracción' }
       ]
@@ -551,16 +562,56 @@ export class SupliersComponent implements OnInit {
         { value: 'PEN', name: 'Soles' }
       ]
       this.divisasBoolean=false;
-      console.log(this.divisasBoolean);
+      this.tiposCuentas = false;
+
 
     }else{
 
+      this.divisasBoolean = true;
+      this.tiposCuentas = true;
       this.accountType =[
         { value: 'A', name: 'Cuenta Ahorro' },
         { value: 'M', name: 'Cuenta Interbancaria' }
       ]
+      this.currency = [
+        { value: 'USD', name: 'Dolar Americano' },
+        { value: 'PEN', name: 'Soles' }
+      ];
     }
   }
+  cancel(){
+    this.accountType = [
+      { value: 'A', name: 'Cuenta Ahorro' },
+      { value: 'C', name: 'Cuenta Corriente' },
+      { value: 'M', name: 'Cuenta Maestra' },
+      { value: 'CI', name: 'Interbancaria/Cheque Gerencial' },
+      { value: 'D', name: 'Detracción' }
+    ];
+
+
+    this.currency = [
+      { value: 'USD', name: 'Dolar Americano' },
+      { value: 'PEN', name: 'Soles' }
+    ];
+
+
+
+    this.bankCode = '';
+    this.accountNo =  '';
+    this.divisas =  '' ;
+    this.bankAccountType= '';
+
+  }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -580,14 +631,10 @@ export class SupliersComponent implements OnInit {
     this.bankCode2 = obj.Codigo_Banco;
     this.accountNo2 = obj.Cuenta;
     this.userCurrBank2 = obj.Moneda_Banco;
-
-    if(obj.Tipo_Cuenta === 'B' || obj.Tipo_Cuenta === 'N'){
-      this.bankAccountType2 ='CI'
-    }else{
-      this.bankAccountType2 = obj.Tipo_Cuenta;
-    }
-
+    this.bankAccountType2 = obj.Tipo_Cuenta;
     this.index = index;
+
+    console.log(this.bankCode2);
   }
 
 
@@ -604,7 +651,6 @@ export class SupliersComponent implements OnInit {
       bankAccountType: this.bankAccountType2,
       index: this.index
     }
-
 
     if(updateBank.accountNo.length !== 14 && updateBank.bankAccountType ===  'A' ){
       return this.messageService.warningMessage('el  numero de cuenta para ahorrros debe tener 14 digitos');
@@ -635,6 +681,40 @@ export class SupliersComponent implements OnInit {
             this.getDataAccountBanck()
 
           });
+    }
+  }
+  changeTypeCount2(){
+    if(this.bankCode2 ===  '002') {
+      this.accountType = [
+        { value: 'A', name: 'Cuenta Ahorro' },
+        { value: 'C', name: 'Cuenta Corriente' },
+        { value: 'M', name: 'Cuenta Maestra' },
+        { value: 'CI', name: 'Interbancaria/Cheque Gerencial' }
+      ];
+
+      this.currency=[
+        { value: 'USD', name: 'Dolar Americano' },
+        { value: 'PEN', name: 'Soles' }
+      ]
+    }else if(this.bankCode2 ===  '018'){
+
+      this.accountType=[
+        { value: 'M', name: 'Cuenta Detracción' }
+      ]
+      this.currency=[
+        { value: 'PEN', name: 'Soles' }
+      ]
+
+    }else{
+
+      this.accountType =[
+        { value: 'A', name: 'Cuenta Ahorro' },
+        { value: 'M', name: 'Cuenta Interbancaria' }
+      ]
+      this.currency = [
+        { value: 'USD', name: 'Dolar Americano' },
+        { value: 'PEN', name: 'Soles' }
+      ];
     }
 
   }

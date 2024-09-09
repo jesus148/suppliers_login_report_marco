@@ -99,7 +99,7 @@
     <div>
 
       @if(btnRegistrarBanco ){
-      <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class=""/>
+      <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class="title" styleClass="p-button-estilos"/>
       }
 
     </div>
@@ -126,10 +126,12 @@
             >
 
               <!-- 1 tabla  -->
-                <p-tabPanel header=""  >
-                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="DataSupliers"  id="myTable">
-                    <ng-template pTemplate="header" class="mystyle">
-                      <tr>
+                <p-tabPanel  >
+                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="DataSupliers"  id="myTable"
+
+                  >
+                    <ng-template pTemplate="header"  >
+                      <tr >
                           <th>Serie_Correl</th>
                           <th>Fecha Emision</th>
                           <th>Fecha Vencimiento</th>
@@ -143,7 +145,7 @@
                   </ng-template>
                                   <ng-template pTemplate="body" let-supliers>
                                 <tr>
-                                    <td>{{ supliers.SERIE_CORREL }}</td>
+                                    <td>{{supliers.SERIE_CORREL }}</td>
                                     <!-- lo corta el valor  -->
                                     <td>{{ supliers.Fec_Emision.split(' ')[0] }}</td>
                                     <td>{{ supliers.Fec_VCTO.split(' ')[0] }}</td>
@@ -365,15 +367,14 @@
 
 <!-- MODAL REGISTRAR BANCO  -->
 
-
-<p-dialog header="Registrar Banco" [(visible)]="modalRegistrar" [style]="{ width: '28rem' , height: '550px' }"  [draggable]="false" [resizable]="false" >
+<p-dialog header="Registrar Banco" [(visible)]="modalRegistrar" [style]="{ width: '28rem' , height: '550px' }"  [draggable]="false" [resizable]="false"  (onHide)="cancel()">
 
   <form [formGroup]="registrarBanco" (ngSubmit)="registrarBank()">
 
 <div class="flex align-items-center gap-2 mb-5 mt-5 p-2">
-    <label for="update1" class="font-semibold w-6rem  text-center">Bancos </label>
+    <label for="bancos" class="font-semibold w-6rem  text-center">Bancos </label>
     <div class="custom-select-container relative ">
-      <select name="update1" class="custom-select border-round w-full" [(ngModel)]="bankCode" style="height: 30px;" formControlName="bancos" (change)="changeTypeCount()">
+      <select name="bancos" class="custom-select border-round w-full" [(ngModel)]="bankCode" style="height: 30px;" formControlName="bancos" (change)="changeTypeCount()">
           <option value="" *ngIf="divisasBoolean">Seleccione el banco </option>
           @for (user of listaBancos; track user) {
               <option [value]="user.value">{{ user.name }} </option>
@@ -382,18 +383,18 @@
   </div>
 </div>
 <div class="flex align-items-center gap-3 mb-5 p-2 ">
-  <label for="update2" class="font-semibold w-8rem text-center">Numero de Cuenta</label>
-  <input pInputText id="username" class="flex-auto border-1  border-round"
+  <label for="numCuenta" class="font-semibold w-8rem text-center">Numero de Cuenta</label>
+  <input pInputText id="numCuenta" class="flex-auto border-1  border-round"
   [(ngModel)]="accountNo"  type="text" style="width: 100%; height: 30px;"  formControlName="numCuenta" />
 
 </div>
 
 <div class="flex align-items-center gap-3 mb-5 p-2  ">
-    <label for="update3" class="font-semibold w-8rem text-center">
+    <label for="divisas" class="font-semibold w-8rem text-center">
       Divisas
     </label>
-    <select name="update3" class="custom-select w-full border-round" [(ngModel)]="divisas" style="height: 30px;" formControlName="divisas" >
-      <option value="" *ngIf="disableCuenta" >Seleccione las divisas </option>
+    <select name="divisas" class="custom-select w-full border-round" [(ngModel)]="divisas" style="height: 30px;" formControlName="divisas" >
+      <option *ngIf="divisasBoolean">Seleccione las divisas </option>
       @for (user of currency; track user) {
           <option [value]="user.value">{{ user.name }} </option>
       }
@@ -401,11 +402,11 @@
 </div>
 
 <div class="flex align-items-center gap-3 mb-5 p-2">
-  <label for="update4" class="font-semibold w-8rem text-center">
+  <label for="tipoCuentas" class="font-semibold w-8rem text-center">
     Tipos de Cuentas
   </label>
-  <select name="update4" class="custom-select border-round" [(ngModel)]="bankAccountType" style="width: 100%; height: 30px;" formControlName="tipoCuentas">
-    <option value="">Seleccione tipos de cuentas </option>
+  <select name="tipoCuentas" class="custom-select border-round" [(ngModel)]="bankAccountType" style="width: 100%; height: 30px;" formControlName="tipoCuentas">
+    <option value="" *ngIf="tiposCuentas">Seleccione tipos de cuentas </option>
     @if(accountType2){
       @for (user of accountType2; track user) {
           <option [value]="user.value">{{ user.name }} </option>
@@ -419,7 +420,7 @@
 </div>
 
 <div class="flex justify-content-evenly gap-2">
-    <p-button label="Registrar" type="submit" severity="success"   />
+    <p-button label="Registrar" type="submit" severity="primary"   />
 </div>
 
 </form>
@@ -434,12 +435,12 @@
 
 
 <!-- modal actualizar banco -->
-   <p-dialog header="Actualizar Bancos" [(visible)]="modalActualizar" [style]="{ width: '28rem' , height: '550px' }"  [draggable]="false" [resizable]="false" >
+   <p-dialog header="Actualizar Bancos" [(visible)]="modalActualizar" [style]="{ width: '28rem' , height: '550px'  }"  [draggable]="false" [resizable]="false" (onHide)="cancel()" >
     <form [formGroup]="actualizarBanco" (ngSubmit)="ActualizarBank()">
     <div class="flex align-items-center  mb-5 mt-5 p-2 ">
       <label for="username" class="font-semibold w-8rem  text-center">Bancos</label>
       <div class="custom-select-container relative ">
-        <select name="para" class="custom-select border-round" [(ngModel)]="bankCode2" style="width: 100%; height: 30px;" formControlName="bancos">
+        <select name="para" class="custom-select border-round" [(ngModel)]="bankCode2" style="width: 100%; height: 30px;" formControlName="bancos" (change)="changeTypeCount2()">
             <option value="">Seleccione el banco </option>
             @for (user of listaBancos; track user) {
                 <option [value]="user.value">{{ user.name }} </option>
@@ -475,7 +476,7 @@
   </select>
   </div>
   <div class="flex justify-content-evenly gap-2">
-      <p-button label="Actualizar" type="submit" severity="success"   />
+      <p-button label="Actualizar" type="submit" severity="primary"   />
   </div>
 
   </form>
