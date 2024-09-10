@@ -3,9 +3,9 @@
 <!-- COMPONENTE TABLA  -->
 
 
-<div class="contenedor grid justify-content-center ">
+<div class="contenedor grid justify-content-center">
 
-<div class="col-11 md:col-11">
+<div class="col-11 md:col-11 relative" >
 
 
     <p-menubar class="" [model]="items" styleClass="menubar">
@@ -21,7 +21,7 @@
 
               <p-button
                   (onClick)="activeIndex = 0 "
-                  styleClass="w-6rem h-3rem text-sm"
+                  styleClass="w-7rem h-3rem text-sm"
                   (onClick)="btnRegistrarBanco = false"
                   (onClick)="btnRetenciones = false"
                   (onClick)="btnDeducciones = false"
@@ -109,7 +109,7 @@
         @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones ){
           <h3 class="text-lg md:text-2xl">LISTA DE CUENTAS DE BANCO </h3>
         }@else if(!btnRegistrarBanco && btnDeducciones && !btnRetenciones  ){
-          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - DEDUCCIONES</h3>
+          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - RETENCIONES</h3>
         }@else if(!btnRegistrarBanco && !btnDeducciones && btnRetenciones  ){
           <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - DETRACCIONES</h3>
         }@else {
@@ -351,7 +351,7 @@
 
 
     <div class="flex justify-content-evenly gap-2">
-        <p-button label="Actualizar" type="submit" />
+        <p-button label="Actualizar" type="submit" severity="success" />
     </div>
 
   </form>

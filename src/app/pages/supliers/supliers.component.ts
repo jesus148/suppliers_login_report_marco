@@ -316,7 +316,7 @@ export class SupliersComponent implements OnInit {
       },
       {
         label: 'Detracciones', //titulo
-        icon: 'pi pi-file',//icono
+        icon: 'pi pi-credit-card',//icono
         // metodo salir sesion
         command: () => {
           this.activeIndex=2;
@@ -328,7 +328,7 @@ export class SupliersComponent implements OnInit {
       },
       {
         label: 'Retenciones', //titulo
-        icon: 'pi pi-file',//icono
+        icon: 'pi pi-wallet',//icono
         // metodo salir sesion
         command: () => {
           this.activeIndex=3 ;
@@ -340,9 +340,10 @@ export class SupliersComponent implements OnInit {
       },
       {
         label: 'Cuentas de banco', //titulo
-        icon: 'pi pi-file',//icono
+        icon: 'pi pi-building-columns',//icono
         // metodo salir sesion
         command: () => {
+          this.activeIndex=1 ;
           this.btnRegistrarBanco= true;
           this.btnRetenciones=false;
           this.btnDeducciones=false;
@@ -635,6 +636,7 @@ export class SupliersComponent implements OnInit {
     this.index = index;
 
     console.log(this.bankCode2);
+    this.changeTypeCount2();
   }
 
 
@@ -706,7 +708,6 @@ export class SupliersComponent implements OnInit {
       ]
 
     }else{
-
       this.accountType =[
         { value: 'A', name: 'Cuenta Ahorro' },
         { value: 'M', name: 'Cuenta Interbancaria' }
@@ -716,6 +717,7 @@ export class SupliersComponent implements OnInit {
         { value: 'PEN', name: 'Soles' }
       ];
     }
+    console.log(this.accountType)
 
   }
 

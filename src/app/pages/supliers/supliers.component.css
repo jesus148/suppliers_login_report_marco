@@ -9,7 +9,7 @@
 .contenedor{
 
   width: 100%;
-  width: 100%;
+min-height: 100vh;
   background-color: #bed2d9;
 
 
@@ -76,9 +76,16 @@ justify-content: flex-end;
   color: black;
   width: 40px;
   height: 40px;
+
 }
 
 
+:host ::ng-deep .p-menubar .p-menubar-root-list {
+
+  font-family: "New Amsterdam", sans-serif;
+  font-size: 20px;
+
+}
 
 
 
@@ -88,7 +95,6 @@ justify-content: flex-end;
 
   :host ::ng-deep  .p-menubar-root-list>li:last-child .p-submenu-list {
     right: 0;
-
   }
 
   :host ::ng-deep .p-menubar .p-menubar-root-list {
@@ -96,6 +102,10 @@ justify-content: flex-end;
     right: 0;
     top: 95%;
     transform: translateX(-5%) translateY(-120%);
+    font-family: "New Amsterdam", sans-serif;
+    font-size: 22px;
+
+
   }
 
 }
@@ -128,7 +138,6 @@ justify-content: flex-end;
 @media screen and (min-width: 860px) {
 
   :host >>> .active{
-    background-color: greenyellow;
     display: none;
   }
 
