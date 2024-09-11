@@ -21,7 +21,9 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { ToastModule } from 'primeng/toast';
 import { Withholdings } from '../../interfaces/withholdings.model';
 import { PaginatorModule } from 'primeng/paginator';
-import { PageEvent } from '../../interfaces/PageEvent';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { SpinnerComponent } from '../../spinner/spinner/spinner.component';
+
 
 
 
@@ -51,7 +53,9 @@ import { PageEvent } from '../../interfaces/PageEvent';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    PaginatorModule
+    PaginatorModule,
+    NgxSpinnerModule,
+    SpinnerComponent
   ],
   templateUrl: './supliers.component.html',
   styleUrl: './supliers.component.css',
@@ -272,7 +276,9 @@ export class SupliersComponent implements OnInit {
   // inicia
   constructor(private loginService: LoginService, private router: Router, private suppliers: SuppliersService,
     private formBuilder: FormBuilder,
-    private messageService: MessagesService
+    private messageService: MessagesService ,
+    private spinner: NgxSpinnerService
+
   ) {
 
 
@@ -356,6 +362,7 @@ export class SupliersComponent implements OnInit {
         // metodo salir sesion
         command: () => {
           this.loginService.logout();
+
         }
         // ,style: {'margin-left': '280px'}
       }
@@ -365,7 +372,6 @@ export class SupliersComponent implements OnInit {
     this.listData();
 
     this.cargarUsuario();
-
 
   }
 
@@ -513,6 +519,11 @@ export class SupliersComponent implements OnInit {
         this.messageService.warningMessage('el n° cuenta para el tipo de cuenta CI debe tener 20 digitos')
       }else{
 
+
+
+        this.spinner.show();
+
+
            this.suppliers.updateBanck2(bankCreate).subscribe((resp: any) => {
 
 
@@ -525,11 +536,19 @@ export class SupliersComponent implements OnInit {
                 this.messageService.popUpServces('success', 'Confirmación' ,'Banco registrado correctamente');
                 this.registrarBanco.reset();
                 this.modalRegistrar=false;
+                setTimeout(() => {
+                  this.spinner.hide();
+                }, 2000);
+
               }else{
                 this.messageService.popUpServces('error', 'Error' ,'Error al registrar el banco');
                 this.registrarBanco.reset();
                 this.modalRegistrar=false;
                 this.getDataAccountBanck();
+                setTimeout(() => {
+                  this.spinner.hide();
+                }, 2000);
+
               }
             });
       }
@@ -663,15 +682,25 @@ export class SupliersComponent implements OnInit {
     }else if(updateBank.bankCode ===  '002' && ( updateBank.bankAccountType !==   'A' || updateBank.bankAccountType !==   'M')){
       return this.messageService.warningMessage('la cuenta maestra y de ahorros solo aplica para el BCP');
     }else{
+
+
+      this.spinner.show();
+
           this.suppliers.updateBanck2(updateBank).subscribe((resp: any) => {
 
 
             this.messageService.popUpServces('info', 'Error', "banco actualizado");
+            setTimeout(() => {
+              this.spinner.hide();
+            }, 2000);
 
           }, (error) => {
             console.log(error);
             this.messageService.popUpServces('success', 'Confirmación', "banco actualizado correctamente");
             this.modalActualizar = false;
+            setTimeout(() => {
+              this.spinner.hide();
+            }, 2000);
 
 
             this.bankCode2 =   '';

@@ -1,28 +1,28 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 
 import { routes } from './app.routes';
-
-
-
 // provideHttpClient() su import
 import { provideHttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { IMAGE_CONFIG } from '@angular/common';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
      provideRouter(routes) ,
-          // para q nuetra aplicacion pueda usar servicios rest , requiere un import
+          // servicios rest
           provideHttpClient() ,
           // mensaje de error
           MessageService
-          // los modale s
+          // los modale
           , provideAnimations() ,
+          // spinner
+          importProvidersFrom(NgxSpinnerModule.forRoot()),
 
           { provide: IMAGE_CONFIG, useValue: { disableImageSizeWarning: true, disableImageLazyLoadWarning: true } },
         ]

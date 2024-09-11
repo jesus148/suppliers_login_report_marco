@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject  } from '@angular/core';
 import { DividerModule } from 'primeng/divider';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { RouterLink } from '@angular/router';
@@ -11,10 +11,12 @@ import { FormsModule, FormControl, FormGroup, ReactiveFormsModule, Validators, F
 import { Router } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 import { LoginService } from '../services/login.service';
-import { CommonModule, IMAGE_CONFIG } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MessagesService } from '../services/messages.service';
-import { Token } from '@angular/compiler';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
+import { SpinnerComponent } from "../spinner/spinner/spinner.component";
+import { SuppliersService } from '../services/suppliers.service';
 
 
 
@@ -34,8 +36,10 @@ import { HttpErrorResponse } from '@angular/common/http';
     ButtonModule,
     ToastModule,
     CheckboxModule,
-    CommonModule
-  ],
+    CommonModule,
+    NgxSpinnerModule,
+    SpinnerComponent
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   providers: [MessagesService]
@@ -56,9 +60,9 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
 
+
   showPass: boolean = false;
-
-
+  // spinner cargador
   loading: boolean = false;
 
 
@@ -75,14 +79,20 @@ export class LoginComponent {
   // CUANDO INCIA EL COMPONENTE
   constructor(
     private FormBuilder: FormBuilder, private router: Router,
-    private primengConfig: PrimeNGConfig, private messageService: MessagesService
+    private primengConfig: PrimeNGConfig, private messageService: MessagesService,
+    private spinner: NgxSpinnerService
     //agregar esto para las validaciones recordar importar
   ) {
-
   }
-
-
+// inicia con e spinner
   ngOnInit(): void {
+    if(this.loginService.islogedd){
+      this.spinner.show();
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 2000);
+    }
+    this.spinner.hide();
   }
 
 
@@ -108,26 +118,13 @@ export class LoginComponent {
     this.loading = true;
 
 
+        /** spinner starts on init */
+        this.spinner.show();
 
-    // // metodo registrar
-    // this.loginService.loginSap(cardCode, password).subscribe((resp:any) => {
-    //   // llenando la data del service
-    //   this.loginService.usuario = resp.rows;
-    //   this.loginService.islogedd = true;
-    //   this.loginService.CardCodeData = cardCode;
-    //   console.log("kslds");
-    //   // veririca para redirgirse
-    //     this.router.navigateByUrl('SupliersList');
-    //     // console.log(resp.rows);
-    //     // almacenando el token como objeto
-    //     // convierte a string de json
-    //     localStorage.setItem(  'object' , JSON.stringify(resp.rows[0]));
-    // }, (err) => {
-    //   // return this.messageService.warningMessage('Usuario no encontrado');
-    //   console.log(err);
-    // });
-
-
+        setTimeout(() => {
+          /** spinner ends after 5 seconds */
+          this.spinner.hide();
+        }, 2000);
 
 
 
@@ -153,6 +150,8 @@ export class LoginComponent {
         // almacenando el token como objeto
         // convierte a string de json
         localStorage.setItem('object', JSON.stringify(resp.rows[0]));
+
+        this.spinner.hide();
       },
       // cuando hay error , el error sea del servidor o un error desconocido
       error: (e: HttpErrorResponse) => {

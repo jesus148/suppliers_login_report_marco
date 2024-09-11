@@ -19,7 +19,7 @@ export class LoginService {
 
 
   // veririfica si esta logeado
-  islogedd : boolean = false;
+  public islogedd : boolean = true;
   // guarda toda la data del usuario
   usuario : any ;
   //guarda mensaje actualizado

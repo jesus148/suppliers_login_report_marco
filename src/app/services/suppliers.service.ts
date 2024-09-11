@@ -15,6 +15,8 @@ export class SuppliersService {
   private myapp : string =  '';
   private myappi : string =  '';
 
+
+
   // guardar data datos banco
 
 

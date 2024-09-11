@@ -1,34 +1,25 @@
-
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MenuModule } from "primeng/menu";
-import { MessageService } from 'primeng/api';
-// ACA COLOCAMOS TODAS LAS IMPORTACIONES DE ANGULAR
-
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessagesModule } from "primeng/messages";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     exports:[
-
     ] ,
-
     imports:[
       ButtonModule,
       ToastModule,
       BrowserModule,
-      BrowserAnimationsModule,
       MenuModule ,
       MessagesModule,
-
+      BrowserAnimationsModule
     ],
-    providers: []
-
+    providers: [],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
 })
 export class AppMaterialModule{
-
 }
