@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {  MenuItem } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { MenubarModule } from 'primeng/menubar';
@@ -68,10 +68,6 @@ export class SupliersComponent implements OnInit {
   // private loginService = inject(LoginService);
   // private messagesService = inject(MessagesService);
 
-
-
-
-
   // data estado de cuenta
   DataSupliers: any = [];
 
@@ -82,22 +78,11 @@ export class SupliersComponent implements OnInit {
   dataDeductionsBanck: any = [];
 
   // tabla retenciones data
-  dataWithholdings:Withholdings[] =[];
-
-
-
-
-
-
-
+  dataWithholdings: Withholdings[] = [];
 
 
   // carga iconos
   items: MenuItem[] | undefined;
-
-
-
-
 
 
   loading: boolean = false;
@@ -115,31 +100,25 @@ export class SupliersComponent implements OnInit {
 
   activeIndex: number = 0;
 
-
-
-
-
-
-
   // modal acutalizar
   modalBolean: boolean = false;
   detailToShow: any;
 
-
   // titulos segun tablas
   modalRegistrar: boolean = false;
   btnRegistrarBanco: boolean = false;
-  btnRetenciones:boolean = false ;
-  btnDeducciones:boolean = false ;
-
-
-
-
-
+  btnRetenciones: boolean = false;
+  btnDeducciones: boolean = false;
 
   // banco
   // modalactualizar
   modalActualizar: boolean = false;
+
+
+    // paginacion de estado cuenta
+    paginatedData1: any[] = [];
+    rows1: number = 10;
+    totalRecords1: number = 0;
 
 
   // datos actualizarbanco
@@ -149,27 +128,15 @@ export class SupliersComponent implements OnInit {
   bankAccountType2: any;
   index: any;
 
-
-
-
-
-
   // paginacion detracciones
   paginatedData: any[] = [];
   rows: number = 12;
   totalRecords: number = 0;
 
   // paginacion retenciones
-  paginatedData2:any[] = [];
+  paginatedData2: any[] = [];
   rows2: number = 12;
   totalRecords2: number = 0;
-
-
-
-
-
-
-
 
   // array de bancosz
   listaBancos: any = [
@@ -200,7 +167,7 @@ export class SupliersComponent implements OnInit {
     { value: 'D', name: 'Detracción' }
   ];
 
-  accountType2: any =[];
+  accountType2: any = [];
   //divisas
 
   currency: any = [
@@ -209,40 +176,20 @@ export class SupliersComponent implements OnInit {
   ];
 
 
-
-
-
-
-
-
-
   // datos registrar banco
-  bankCode?: string ='';
-  accountNo?: string ='';
-  divisas?: string ='';
-  bankAccountType?:string='';
+  bankCode?: string = '';
+  accountNo?: string = '';
+  divisas?: string = '';
+  bankAccountType?: string = '';
   //divisas registrar banco
-  divisasBoolean:boolean=true;
-  tiposCuentas:boolean=true;
-
-
-
-
-
-
-
-
-
-
+  divisasBoolean: boolean = true;
+  tiposCuentas: boolean = true;
 
   // validar actualizar contraseña
   loginForm = new FormGroup({
     usuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
     password: new FormControl('', [Validators.required, Validators.minLength(3)])
   });
-
-
-
 
   // valida registrar banco
   registrarBanco = new FormGroup({
@@ -251,7 +198,6 @@ export class SupliersComponent implements OnInit {
     divisas: new FormControl('', [Validators.required]),
     tipoCuentas: new FormControl('', [Validators.required])
   });
-
 
 
   // modal actualizar banco
@@ -263,24 +209,16 @@ export class SupliersComponent implements OnInit {
 
   })
 
-
-
-
-
-
-
-
-
-
-
   // inicia
-  constructor(private loginService: LoginService, private router: Router, private suppliers: SuppliersService,
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private suppliers: SuppliersService,
     private formBuilder: FormBuilder,
-    private messageService: MessagesService ,
+    private messageService: MessagesService,
     private spinner: NgxSpinnerService
 
   ) {
-
 
     // metodo get supliers
     this.listData();
@@ -295,6 +233,7 @@ export class SupliersComponent implements OnInit {
     this.getDataWithholdings();
 
   }
+
   // inicia
   ngOnInit() {
     // llama al pmenubar
@@ -306,16 +245,16 @@ export class SupliersComponent implements OnInit {
         command: () => {
           this.cargarModal();
         },
-        styleClass:'estilos'
+        styleClass: 'estilos'
       },
       {
         label: 'Estado de Cuenta', //titulo
         icon: 'pi pi-file',//icono
         // metodo salir sesion
         command: () => {
-          this.activeIndex=0;
-           this.btnRegistrarBanco=false;
-          this.btnRetenciones= false;
+          this.activeIndex = 0;
+          this.btnRegistrarBanco = false;
+          this.btnRetenciones = false;
           this.btnDeducciones = false;
         },
         styleClass: 'active'
@@ -325,10 +264,10 @@ export class SupliersComponent implements OnInit {
         icon: 'pi pi-credit-card',//icono
         // metodo salir sesion
         command: () => {
-          this.activeIndex=2;
-          this.btnRegistrarBanco=false;
-          this.btnRetenciones=true;
-          this.btnDeducciones =false;
+          this.activeIndex = 2;
+          this.btnRegistrarBanco = false;
+          this.btnRetenciones = true;
+          this.btnDeducciones = false;
         },
         styleClass: 'active'
       },
@@ -337,10 +276,10 @@ export class SupliersComponent implements OnInit {
         icon: 'pi pi-wallet',//icono
         // metodo salir sesion
         command: () => {
-          this.activeIndex=3 ;
-          this.btnRegistrarBanco=false;
-          this.btnRetenciones=false;
-          this.btnDeducciones=true;
+          this.activeIndex = 3;
+          this.btnRegistrarBanco = false;
+          this.btnRetenciones = false;
+          this.btnDeducciones = true;
         },
         styleClass: 'active'
       },
@@ -349,10 +288,10 @@ export class SupliersComponent implements OnInit {
         icon: 'pi pi-building-columns',//icono
         // metodo salir sesion
         command: () => {
-          this.activeIndex=1 ;
-          this.btnRegistrarBanco= true;
-          this.btnRetenciones=false;
-          this.btnDeducciones=false;
+          this.activeIndex = 1;
+          this.btnRegistrarBanco = true;
+          this.btnRetenciones = false;
+          this.btnDeducciones = false;
         },
         styleClass: 'active'
       },
@@ -374,16 +313,6 @@ export class SupliersComponent implements OnInit {
     this.cargarUsuario();
 
   }
-
-
-
-
-
-
-
-
-
-
 
   // metodo registra la data
   listData() {
@@ -410,15 +339,22 @@ export class SupliersComponent implements OnInit {
 
       this.DataSupliers = resp.rows;
       this.loading = true;
+      this.totalRecords1 = resp.rows.length;
+      this.Paginator1({ first: 0, rows: this.rows1 });
 
     }, (err) => {
       // this.messagesService.showError(err.error.message);
     });
 
   }
+      // metodo paginator
+      Paginator1(event: any): void {
+        // event.first es el event rows actual
+        const start = event.first;
+        const end = event.first + event.rows;
+        this.paginatedData1 = this.DataSupliers.slice(start, end);
 
-
-
+      }
 
 
   getDataAccountBanck() {
@@ -432,8 +368,6 @@ export class SupliersComponent implements OnInit {
       this.suppliers.getBankAccount(data2.CardCode).subscribe((resp: any) => {
         this.dataSuppliersBanck = resp.rows;
 
-
-
       }, (err) => {
         //  this.messagesService.showError(err.error.message);
       });
@@ -442,8 +376,6 @@ export class SupliersComponent implements OnInit {
     }
 
   }
-
-
 
 
   // cargar usuario datos del cliente
@@ -456,10 +388,6 @@ export class SupliersComponent implements OnInit {
     this.cardCode = data2.CardCode;
   }
 
-
-
-
-
   // MODAL ACTUALIZAR
   cargarModal() {
     this.modalBolean = true;
@@ -471,8 +399,10 @@ export class SupliersComponent implements OnInit {
   restablecer() {
 
     if (!this.loginForm.valid) {
-      return this.messageService.popUpServces('error' , 'Error',  'complete los datos por favor');
+      return this.messageService.popUpServces('error', 'Error', 'complete los datos por favor');
     }
+
+    this.spinner.show();
     // obteniendo la data
     const usuario = this.loginForm.controls['usuario'].value!.trim();
     const password = this.loginForm.controls['password'].value!.trim();
@@ -480,11 +410,13 @@ export class SupliersComponent implements OnInit {
     // llama al servicio y le envia
     this.loginService.updatePassword(usuario, password).subscribe((resp: any) => {
 
-      this.messageService.msjSuccees("cliente actualizado");
+      this.messageService.msjSuccees("Contraseña actualizada correctamente.");
       this.loginForm.reset();
       this.modalBolean = false;
+      this.spinner.hide();
     }, (err) => {
       this.messageService.msjError(err);
+      this.spinner.hide();
       console.log(err);
 
     });
@@ -492,17 +424,10 @@ export class SupliersComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-
   // registar banco
   registrarBank() {
     if (!this.registrarBanco.valid) {
-      return this.messageService.popUpServces('error', 'Error',  'complete los datos');
+      return this.messageService.popUpServces('error', 'Error', 'complete los datos');
     }
     const bankCreate = {
       cardCode: this.cardCode,
@@ -511,53 +436,52 @@ export class SupliersComponent implements OnInit {
       userCurrBank: this.divisas,
       bankAccountType: this.bankAccountType
     }
-      if(this.accountNo?.length !== 14 && this.bankAccountType === 'A'){
-        return this.messageService.warningMessage('el numero de cuentas para ahorros debe tener 14 digitos');
-      }else if( this.accountNo?.length !== 13 && this.bankAccountType ===  'C' ){
-        this.messageService.warningMessage('el numero de cuenta debe tener 13 digitos');
-      }else if(this.accountNo?.length !== 20 && this.bankAccountType ===  'CI'){
-        this.messageService.warningMessage('el n° cuenta para el tipo de cuenta CI debe tener 20 digitos')
-      }else{
+    if(this.accountNo?.length !== 14 && bankCreate.bankCode  === '002' && bankCreate.bankAccountType === 'A' ){
+      return this.messageService.warningMessage('la cuenta de ahorros para BCP debe contar 14 digitos ');
+    }else if(this.accountNo?.length !== 13 && bankCreate.bankCode  === '002' && bankCreate.bankAccountType === 'C' ){
+      return this.messageService.warningMessage('la cuenta de corriente para BCP debe contar 13 digitos ');
+    }else if(this.accountNo?.length !== 20 && bankCreate.bankCode  === '002' && bankCreate.bankAccountType === 'CI' ){
+      return this.messageService.warningMessage('la cuenta Interbancaria para BCP debe contar 20 digitos ');
+    }else {
+
+      this.spinner.show();
+
+      this.suppliers.updateBanck2(bankCreate).subscribe((resp: any) => {
 
 
+        this.getDataAccountBanck();
+        this.messageService.popUpServces('success', 'Confirmación', 'Banco registrado correctamente');
+        console.log(resp);
+      }, (err) => {
+        if (err.status === 200) {
+          this.getDataAccountBanck();
+          this.messageService.popUpServces('success', 'Confirmación', 'Banco registrado correctamente');
+          this.registrarBanco.reset();
+          this.modalRegistrar = false;
+          setTimeout(() => {
+            this.spinner.hide();
+          }, 2000);
 
-        this.spinner.show();
+        } else {
+          this.messageService.popUpServces('error', 'Error', 'Error al registrar el banco');
+          this.registrarBanco.reset();
+          this.modalRegistrar = false;
+          this.getDataAccountBanck();
+          setTimeout(() => {
+            this.spinner.hide();
+          }, 2000);
 
-
-           this.suppliers.updateBanck2(bankCreate).subscribe((resp: any) => {
-
-
-             this.getDataAccountBanck();
-             this.messageService.popUpServces('success', 'Confirmación' ,'Banco registrado correctamente');
-             console.log(resp);
-            },(err) => {
-              if(err.status === 200) {
-                this.getDataAccountBanck();
-                this.messageService.popUpServces('success', 'Confirmación' ,'Banco registrado correctamente');
-                this.registrarBanco.reset();
-                this.modalRegistrar=false;
-                setTimeout(() => {
-                  this.spinner.hide();
-                }, 2000);
-
-              }else{
-                this.messageService.popUpServces('error', 'Error' ,'Error al registrar el banco');
-                this.registrarBanco.reset();
-                this.modalRegistrar=false;
-                this.getDataAccountBanck();
-                setTimeout(() => {
-                  this.spinner.hide();
-                }, 2000);
-
-              }
-            });
-      }
+        }
+      });
+    }
   }
   mostrarModal() {
     this.modalRegistrar = true;
   }
-  changeTypeCount(){
-    if(this.bankCode ===  '002') {
+
+
+  changeTypeCount() {
+    if (this.bankCode === '002') {
       this.accountType = [
         { value: 'A', name: 'Cuenta Ahorro' },
         { value: 'C', name: 'Cuenta Corriente' },
@@ -570,26 +494,26 @@ export class SupliersComponent implements OnInit {
         { value: 'PEN', name: 'Soles' }
       ];
 
-      this.divisasBoolean=true;
+      this.divisasBoolean = true;
       this.tiposCuentas = true;
-    }else if(this.bankCode ===  '018'){
+    } else if (this.bankCode === '018') {
 
 
-      this.accountType=[
+      this.accountType = [
         { value: 'M', name: 'Cuenta Detracción' }
       ]
-      this.currency=[
+      this.currency = [
         { value: 'PEN', name: 'Soles' }
       ]
-      this.divisasBoolean=false;
+      this.divisasBoolean = false;
       this.tiposCuentas = false;
 
 
-    }else{
+    } else {
 
       this.divisasBoolean = true;
       this.tiposCuentas = true;
-      this.accountType =[
+      this.accountType = [
         { value: 'A', name: 'Cuenta Ahorro' },
         { value: 'M', name: 'Cuenta Interbancaria' }
       ]
@@ -599,7 +523,9 @@ export class SupliersComponent implements OnInit {
       ];
     }
   }
-  cancel(){
+
+
+  cancel() {
     this.accountType = [
       { value: 'A', name: 'Cuenta Ahorro' },
       { value: 'C', name: 'Cuenta Corriente' },
@@ -617,9 +543,9 @@ export class SupliersComponent implements OnInit {
 
 
     this.bankCode = '';
-    this.accountNo =  '';
-    this.divisas =  '' ;
-    this.bankAccountType= '';
+    this.accountNo = '';
+    this.divisas = '';
+    this.bankAccountType = '';
 
   }
 
@@ -662,7 +588,7 @@ export class SupliersComponent implements OnInit {
   // metodo acutalizar banco
   ActualizarBank() {
     if (!this.actualizarBanco.valid) {
-      return this.messageService.popUpServces('error', 'Error' ,'complete los datos');
+      return this.messageService.popUpServces('error', 'Error', 'complete los datos');
     }
     const updateBank = {
       cardCode: this.cardCode,
@@ -673,72 +599,69 @@ export class SupliersComponent implements OnInit {
       index: this.index
     }
 
-    if(updateBank.accountNo.length !== 14 && updateBank.bankAccountType ===  'A' ){
-      return this.messageService.warningMessage('el  numero de cuenta para ahorrros debe tener 14 digitos');
-    }else if(updateBank.accountNo.length !== 13 && updateBank.bankAccountType  === 'C'){
-      return this.messageService.warningMessage('el numero de cuenta para la cuenta corriente debe tener 13 digitos')
-    }else if(updateBank.accountNo.length !== 20 && updateBank.bankAccountType === 'CI'){
-      return this.messageService.warningMessage('el n° cuenta para el tipo de cuenta CI debe tener 20 digitos');
-    }else if(updateBank.bankCode ===  '002' && ( updateBank.bankAccountType !==   'A' || updateBank.bankAccountType !==   'M')){
-      return this.messageService.warningMessage('la cuenta maestra y de ahorros solo aplica para el BCP');
-    }else{
+    if(this.accountNo?.length !== 14 && updateBank.bankCode  === '002' && updateBank.bankAccountType === 'A' ){
+      return this.messageService.warningMessage('la cuenta de ahorros para BCP debe contar 14 digitos ');
+    }else if(this.accountNo?.length !== 13 && updateBank.bankCode  === '002' && updateBank.bankAccountType === 'C' ){
+      return this.messageService.warningMessage('la cuenta de corriente para BCP debe contar 13 digitos ');
+    }else if(this.accountNo?.length !== 20 && updateBank.bankCode === '002' && updateBank.bankAccountType === 'CI' ){
+      return this.messageService.warningMessage('la cuenta Interbancaria para BCP debe contar 20 digitos ');
+    }else {
 
 
       this.spinner.show();
 
-          this.suppliers.updateBanck2(updateBank).subscribe((resp: any) => {
+      this.suppliers.updateBanck2(updateBank).subscribe((resp: any) => {
 
 
-            this.messageService.popUpServces('info', 'Error', "banco actualizado");
-            setTimeout(() => {
-              this.spinner.hide();
-            }, 2000);
+        this.messageService.popUpServces('info', 'Error', "Banco actualizado.");
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 2000);
 
-          }, (error) => {
-            console.log(error);
-            this.messageService.popUpServces('success', 'Confirmación', "banco actualizado correctamente");
-            this.modalActualizar = false;
-            setTimeout(() => {
-              this.spinner.hide();
-            }, 2000);
+      }, (error) => {
+        console.log(error);
+        this.messageService.popUpServces('success', 'Confirmación', "Banco actualizado correctamente.");
+        this.modalActualizar = false;
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 2000);
 
 
-            this.bankCode2 =   '';
-            this.accountNo2 =  '';
-            this.userCurrBank2 =  '';
-            this.bankAccountType2 = '';
-            this.index= '';
+        this.bankCode2 = '';
+        this.accountNo2 = '';
+        this.userCurrBank2 = '';
+        this.bankAccountType2 = '';
+        this.index = '';
 
-            this.getDataAccountBanck()
+        this.getDataAccountBanck()
 
-          });
+      });
     }
   }
-  changeTypeCount2(){
-    if(this.bankCode2 ===  '002') {
+  changeTypeCount2() {
+    if (this.bankCode2 === '002') {
       this.accountType = [
         { value: 'A', name: 'Cuenta Ahorro' },
         { value: 'C', name: 'Cuenta Corriente' },
         { value: 'M', name: 'Cuenta Maestra' },
         { value: 'CI', name: 'Interbancaria/Cheque Gerencial' }
       ];
-
-      this.currency=[
+      this.currency = [
         { value: 'USD', name: 'Dolar Americano' },
         { value: 'PEN', name: 'Soles' }
       ]
-    }else if(this.bankCode2 ===  '018'){
+    } else if (this.bankCode2 === '018') {
 
-      this.accountType=[
-        { value: 'M', name: 'Cuenta Detracción' }
+      this.accountType = [
+        { value: 'D', name: 'Cuenta Detracción' }
       ]
-      this.currency=[
+      this.currency = [
         { value: 'PEN', name: 'Soles' }
       ]
 
-    }else{
-      this.accountType =[
-        { value: 'A', name: 'Cuenta Ahorro' },
+    } else {
+      this.accountType = [
+        { value: 'C', name: 'Cuenta Corriente' },
         { value: 'M', name: 'Cuenta Interbancaria' }
       ]
       this.currency = [
@@ -831,23 +754,20 @@ export class SupliersComponent implements OnInit {
     }
 
   }
-
   // metodo paginator
-    Paginator(event: any): void {
-
-      // event.first es el event rows actual
-      const start = event.first;
-      const end = event.first + event.rows;
-      this.paginatedData = this.dataDeductionsBanck.slice(start, end);
-
-    }
-
-
-
-
-
-
+  Paginator(event: any): void {
+    // event.first es el event rows actual
+    const start = event.first;
+    const end = event.first + event.rows;
+    this.paginatedData = this.dataDeductionsBanck.slice(start, end);
   }
+
+
+
+
+
+
+}
 
 
 

@@ -95,11 +95,12 @@
       <p-card #menu2 styleClass="menu2"
   class="h-7rem" >
 
-  <div class="flex flex-row-reverse  md:h-3rem mb-0 justify-content-between  h-4rem" style="margin-bottom: -30px;" >
+  <div class="flex flex-row-reverse  md:h-3rem mb-0 justify-content-between  h-4rem " style="margin-bottom: -30px;" >
     <div>
 
       @if(btnRegistrarBanco ){
-      <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class="title" styleClass="p-button-estilos"/>
+      <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class="title"
+      styleClass="text-sm w-9 md:w-11 md:text-base h-4rem md:h-3rem border-round-3xl md:border-round-xl"/>
       }
 
     </div>
@@ -127,43 +128,47 @@
 
               <!-- 1 tabla  -->
                 <p-tabPanel  >
-                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="DataSupliers"  id="myTable"
+                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="paginatedData1"  id="myTable"
 
                   >
                     <ng-template pTemplate="header"  >
                       <tr >
-                          <th>Serie_Correl</th>
-                          <th>Fecha Emision</th>
-                          <th>Fecha Vencimiento</th>
+                          <th class="text-center">Serie_Correl</th>
+                          <th class="text-center">Fecha Emision</th>
+                          <th class="text-center">Fecha Vencimiento</th>
                           <!-- <th>Fecha Programacion</th> -->
-                          <th>Moneda</th>
-                          <th class="text-center">Total</th>
-                          <th class="text-center">Monto</th>
-                          <th class="text-center">Saldo</th>
+                          <th class="text-center">Moneda</th>
+                          <th class="text-right">Total</th>
+                          <th class="text-right">Monto</th>
+                          <th class="text-right">Saldo</th>
                           <!-- <th></th> -->
                       </tr>
                   </ng-template>
                                   <ng-template pTemplate="body" let-supliers>
                                 <tr>
-                                    <td>{{supliers.SERIE_CORREL }}</td>
+                                    <td class="text-center">{{supliers.SERIE_CORREL }}</td>
                                     <!-- lo corta el valor  -->
-                                    <td>{{ supliers.Fec_Emision.split(' ')[0] }}</td>
-                                    <td>{{ supliers.Fec_VCTO.split(' ')[0] }}</td>
+                                    <td class="text-center">{{ supliers.Fec_Emision.split(' ')[0] }}</td>
+                                    <td class="text-center">{{ supliers.Fec_VCTO.split(' ')[0] }}</td>
                                     <!-- <td>{{ supliers.Fec_Programacion }}</td> -->
-                                    <td>{{ supliers.Moneda }}</td>
+                                    <td class="text-center">{{ supliers.Moneda }}</td>
 
                                     <!-- mejora el decimal con 2   -->
                                     <td class="text-right"> {{  supliers.Total_Documento | number:   '1.2-2' }}</td>
                                     <td class="text-right">{{ supliers.Monto_pagado  | number:   '1.2' }}</td>
-                                    <td class="flex justify-content-end">S/.{{ supliers.Saldo_pendiente | number :  '1.2'}}</td>
+                                    <td class="flex justify-content-end">
+                                      {{ supliers.Moneda === 'USD' ? '$' : 'S/.' }}
+                                      {{ supliers.Saldo_pendiente | number :  '1.2'}}
+                                    </td>
                                     <!-- <td class="text-center flex gap-3" >
                                       <p-button  icon="pi pi-pencil" [text]="true" [raised]="true" />
                                       <p-button  icon="pi pi-times" [text]="true" [raised]="true" />
                                   </td> -->
                                 </tr>
                             </ng-template>
-
                   </p-table>
+                  <p-paginator [rows]="rows1" [totalRecords]="totalRecords1" (onPageChange)="Paginator1($event)" styleClass="custom-paginator">
+                  </p-paginator>
                 </p-tabPanel>
 
                 <!-- 2 tabla  -->
@@ -171,29 +176,29 @@
                   <p-table [styleClass]="'p-datatable-sm'" [value]="dataSuppliersBanck" >
                     <ng-template pTemplate="header"  >
                       <tr >
-                          <th>Codigo Banco </th>
-                          <th>Pais</th>
-                          <th>Cuenta </th>
-                          <th>Tipo Cuenta</th>
-                          <th>Moneda Sap</th>
-                          <th>Moneda Banco</th>
+                          <th class="text-center">Codigo Banco</th>
+                          <th class="text-center">Pais</th>
+                          <th class="text-center">Cuenta </th>
+                          <th class="text-center">Tipo Cuenta</th>
+                          <th class="text-center">Moneda Sap</th>
+                          <th class="text-center">Moneda Banco</th>
 
                           <th></th>
                       </tr>
                   </ng-template>
                                   <ng-template pTemplate="body" let-supliersbanck let-i="rowIndex" >
                                 <tr>
-                                    <td>{{ supliersbanck.Codigo_Banco }}</td>
+                                    <td class="text-center">{{ supliersbanck.Codigo_Banco }}</td>
                                     <!-- lo corta el valor  -->
-                                    <td>{{ supliersbanck.Pais }}</td>
-                                    <td>{{ supliersbanck.Cuenta}}</td>
+                                    <td class="text-center">{{ supliersbanck.Pais }}</td>
+                                    <td class="text-center">{{ supliersbanck.Cuenta}}</td>
                                     <!-- <td>{{ supliersbanck.Fec_Programacion }}</td> -->
-                                    <td>{{ supliersbanck.Tipo_Cuenta }}</td>
+                                    <td class="text-center">{{ supliersbanck.Tipo_Cuenta }}</td>
 
                                     <!-- mejora el decimal con 2   -->
-                                    <td>{{  supliersbanck.Moneda_SAP }}</td>
-                                    <td>{{ supliersbanck.Moneda_Banco   }}</td>
-                                    <td>
+                                    <td class="text-center">{{  supliersbanck.Moneda_SAP }}</td>
+                                    <td class="text-center">{{ supliersbanck.Moneda_Banco   }}</td>
+                                    <td class="text-center">
                                       <p-button icon="pi pi-pencil" [rounded]="true" (click)="modalBanco(supliersbanck , i)" />
 
 
@@ -210,24 +215,24 @@
                   <p-table [styleClass]="'p-datatable-sm'" [value]="paginatedData" [tableStyle]="{  }">
                     <ng-template pTemplate="header" >
                       <tr >
-                          <th style="font-size: 16px;" >Sunat</th>
-                          <th style="font-size: 16px;">Emisión</th>
-                          <th style="font-size: 16px;">Vencimiento</th>
-                          <th style="font-size: 16px;">Moneda</th>
-                          <th style="font-size: 16px;">Total</th>
-                          <th style="font-size: 16px;" class="">Detracción</th>
+                          <th style="font-size: 16px;" class="text-center" >Sunat</th>
+                          <th style="font-size: 16px;" class="text-center">Emisión</th>
+                          <th style="font-size: 16px;" class="text-center">Vencimiento</th>
+                          <th style="font-size: 16px;" class="text-center">Moneda</th>
+                          <th style="font-size: 16px;" class="text-right">Total</th>
+                          <th style="font-size: 16px;" class="text-right">Detracción</th>
                           <!-- <th style="font-size: 16px;" class="text-center">Redondeo</th> -->
                       </tr>
                   </ng-template>
                                   <ng-template pTemplate="body" let-DeductionsBanck let-i="rowIndex" >
                                 <tr>
 
-                                  <td>{{DeductionsBanck.Sunat}}</td>
-                                  <td>{{DeductionsBanck.Emision.split(' ')[0]}}</td>
-                                  <td>{{DeductionsBanck.Vencimiento.split(' ')[0]}}</td>
-                                  <td>{{DeductionsBanck.Moneda}}</td>
-                                  <td>{{DeductionsBanck.Total | number  : '1.2-2'}}</td>
-                                  <td class="flex justify-content-evenly">{{DeductionsBanck.Detraccion | number : '1.2-2'}}</td>
+                                  <td class="text-center">{{DeductionsBanck.Sunat}}</td>
+                                  <td class="text-center">{{DeductionsBanck.Emision.split(' ')[0]}}</td>
+                                  <td class="text-center">{{DeductionsBanck.Vencimiento.split(' ')[0]}}</td>
+                                  <td class="text-center">{{DeductionsBanck.Moneda}}</td>
+                                  <td class="text-right">{{DeductionsBanck.Total | number  : '1.2-2'}}</td>
+                                  <td class="flex justify-content-evenly" class="text-right">{{DeductionsBanck.Detraccion | number : '1.2-2'}}</td>
                                   <!-- <td class="text-right bg-green-200">{{DeductionsBanck.Redondeo
                                     | number : '1.2-3'}}</td>
                                 </tr> -->
@@ -245,15 +250,15 @@
 
                     <ng-template pTemplate="header"  >
                       <tr >
-                          <th style="font-size: 16px;">Serie_Correlativo</th>
-                          <th style="font-size: 16px;">Fec_Emi</th>
-                          <th style="font-size: 16px;">Mo_Fac</th>
-                          <th style="font-size: 16px;">Total_Fact</th>
+                          <th style="font-size: 16px;" class="text-center">Serie_Correlativo</th>
+                          <th style="font-size: 16px;" class="text-center">Fec_Emi</th>
+                          <th style="font-size: 16px;" class="text-center">Mo_Fac</th>
+                          <th style="font-size: 16px;" class="text-right">Total_Fact</th>
                           <th style="font-size: 16px;" class="text-center">Compret</th>
                           <th style="font-size: 16px;" class="text-center">Fecha Retención</th>
                           <th style="font-size: 16px;" class="text-center">Mo_Pag</th>
-                          <th style="font-size: 16px;">Total Pago</th>
-                          <th style="font-size: 16px;">Retenido</th>
+                          <th style="font-size: 16px;" class="text-right">Total Pago</th>
+                          <th style="font-size: 16px;" class="text-right">Retenido</th>
                           <th style="font-size: 16px;" class="text-center">Tc</th>
                           <!-- <th style="font-size: 16px;">Tco</th> -->
 
@@ -262,26 +267,26 @@
                   </ng-template>
                                   <ng-template pTemplate="body" let-Withholdings let-i="rowIndex" >
                                 <tr>
-                                    <td>{{ Withholdings.SERIE_CORRELATIVO }}</td>
+                                    <td class="text-center">{{ Withholdings.SERIE_CORRELATIVO }}</td>
                                     <!-- lo corta el valor desde espacio en blanco muestra el 1 valor -->
-                                    <td>{{ Withholdings.FEC_EMI_FACT.split(' ')[0]   }}</td>
-                                    <td>{{ Withholdings.MONEDA_FACT }}</td>
+                                    <td class="text-center">{{ Withholdings.FEC_EMI_FACT.split(' ')[0]   }}</td>
+                                    <td class="text-center">{{ Withholdings.MONEDA_FACT }}</td>
 
-                                    <td>{{ Withholdings.TOTAL_FACT | number : '1.2-2'}}</td>
+                                    <td class="text-right">{{ Withholdings.TOTAL_FACT | number : '1.2-2'}}</td>
 
-                                    <td>
+                                    <td class="text-center">
                                       {{Withholdings.COMPRET }}
 
                                     </td>
-                                    <td>{{  Withholdings.FECHA_RETENCION.split(' ')[0] }}</td>
-                                    <td>{{ Withholdings.MONEDA_PAGO   }}</td>
-                                    <td>{{ Withholdings.TOTAL_PAGO  | number : '1.2-2' }}</td>
-                                    <td>
+                                    <td class="text-center">{{  Withholdings.FECHA_RETENCION.split(' ')[0] }}</td>
+                                    <td class="text-right">{{ Withholdings.MONEDA_PAGO   }}</td>
+                                    <td class="text-right">{{ Withholdings.TOTAL_PAGO  | number : '1.2-2' }}</td>
+                                    <td class="text-right">
                                       {{Withholdings.RETENIDO | number: '1.2-2' }}
 
                                     </td>
                                     <!-- mejora el decimal    -->
-                                    <td>
+                                    <td class="text-center">
                                     {{Withholdings.TC| number : '' }}
                                     </td>
                                     <!-- <td>
@@ -381,7 +386,6 @@ type="ball-fall"
 
 
 <!-- MODAL REGISTRAR BANCO  -->
-
 <p-dialog header="Registrar Banco" [(visible)]="modalRegistrar" [style]="{ width: '28rem' , height: '550px' }"  [draggable]="false" [resizable]="false"  (onHide)="cancel()">
 
   <form [formGroup]="registrarBanco" (ngSubmit)="registrarBank()">

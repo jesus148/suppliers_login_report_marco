@@ -20,7 +20,7 @@ min-height: 100vh;
 
 
 /* parte de arriba  estilos para header */
-/deep/ .menuclass {
+::ng-deep .menuclass {
   /* background: green; */
   /* background-color: #00c867; */
   display: flex;
@@ -48,7 +48,7 @@ justify-content: flex-end;
 }
 
 
-/deep/ .menu2{
+::ng-deep .menu2{
   font-family: "New Amsterdam", sans-serif;
   font-size: 20px;
 }
@@ -135,7 +135,7 @@ justify-content: flex-end;
 
 /* estilos para el nav mobile */
 
-@media screen and (min-width: 860px) {
+ @media screen and (min-width: 860px) {
 
   :host >>> .active{
     display: none;

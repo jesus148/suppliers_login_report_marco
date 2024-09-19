@@ -107,7 +107,7 @@ export class LoginComponent {
     if (!this.loginForm.valid) {
       console.log(this.loginForm.valid);
       console.log("error test")
-      return this.messageService.popUpServces('error', 'Error', 'complete los datos correctamente');
+      return this.messageService.popUpServces('error', 'Error', 'Complete todos los campos correctamente');
     }
 
 
