@@ -23,9 +23,9 @@ import { Withholdings } from '../../interfaces/withholdings.model';
 import { PaginatorModule } from 'primeng/paginator';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerComponent } from '../../spinner/spinner/spinner.component';
-
-
-
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 
@@ -55,7 +55,10 @@ import { SpinnerComponent } from '../../spinner/spinner/spinner.component';
     ReactiveFormsModule,
     PaginatorModule,
     NgxSpinnerModule,
-    SpinnerComponent
+    SpinnerComponent,
+    CalendarModule,
+    AutoCompleteModule,
+    InputTextModule
   ],
   templateUrl: './supliers.component.html',
   styleUrl: './supliers.component.css',

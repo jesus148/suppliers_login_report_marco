@@ -20,7 +20,7 @@
 
 
               <p-button
-                  (onClick)="activeIndex = 0 "
+                  (onClick)="activeIndex = 0"
                   styleClass="w-7rem h-3rem text-sm"
                   (onClick)="btnRegistrarBanco = false"
                   (onClick)="btnRetenciones = false"
@@ -89,28 +89,59 @@
 
     <!-- tabla  -->
 
-  <div class="contenedor_2 grid justify-content-center align-content-center  h-auto">
+  <div class="contenedor_2 grid justify-content-center align-content-center  h-auto ">
     <div class="col-11 md:col-12  ">
       <!-- elemento flexible  es para encabezado para el header -->
       <p-card #menu2 styleClass="menu2"
   class="h-7rem" >
 
-  <div class="flex flex-row-reverse  md:h-3rem mb-0 justify-content-between  h-4rem " style="margin-bottom: -30px;" >
-    <div>
+  <div class="flex flex-row-reverse  md:h-3rem mb-0 justify-content-between  h-4rem" style="margin-bottom: -30px; "  [ngClass]="{
+    'md:h-5rem':activeIndex===3
+  }">
+    <div class="" [ngClass]="{
+      'md:w-11':activeIndex===3
+    }">
 
       @if(btnRegistrarBanco ){
       <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class="title"
       styleClass="text-sm w-9 md:w-11 md:text-base h-4rem md:h-3rem border-round-3xl md:border-round-xl"/>
+      }@else if(btnDeducciones){
+        <div class="grid">
+          <div class="md:col-6">
+            <div class="grid">
+
+              <div class="md:col-6">
+                <label for="desde" class="font-bold block mb-2"> Desde: </label>
+                <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="desde" />
+              </div>
+              <div class="md:col-6">
+                <label for="desde" class="font-bold block mb-2"> Hasta: </label>
+                <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="desde" />
+              </div>
+            </div>
+          </div>
+          <div class="md:col-4">
+            <label for="desde" class="font-bold block mb-2">
+              Nro Factura: </label>
+            <input type="text" pInputText  />
+          </div>
+          <div class="md:col-2 align-content-center ">
+            <p-button icon="pi pi-search" [rounded]="true"
+            styleClass="ui-button-success color"/>
+          </div>
+        </div>
       }
-
     </div>
-    <div>
-
+    <div class="text-center"  [ngClass]="{
+      'md:w-4':activeIndex===3
+    }">
 
         @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones ){
           <h3 class="text-lg md:text-2xl">LISTA DE CUENTAS DE BANCO </h3>
         }@else if(!btnRegistrarBanco && btnDeducciones && !btnRetenciones  ){
-          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - RETENCIONES</h3>
+          <h3 class="text-lg md:text-2xl md:mr-1">ESTADO DE CUENTA - RETENCIONES</h3>
         }@else if(!btnRegistrarBanco && !btnDeducciones && btnRetenciones  ){
           <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - DETRACCIONES</h3>
         }@else {
@@ -217,7 +248,7 @@
                       <tr >
                           <th style="font-size: 16px;" class="text-center" >Sunat</th>
                           <th style="font-size: 16px;" class="text-center">Emisión</th>
-                          <th style="font-size: 16px;" class="text-center">Vencimiento</th>
+                          <th style="font-size: 16px;" class="text-center">Fec_Pago</th>
                           <th style="font-size: 16px;" class="text-center">Moneda</th>
                           <th style="font-size: 16px;" class="text-right">Total</th>
                           <th style="font-size: 16px;" class="text-right">Detracción</th>
@@ -230,7 +261,11 @@
                                   <td class="text-center">{{DeductionsBanck.Sunat}}</td>
                                   <td class="text-center">{{DeductionsBanck.Emision.split(' ')[0]}}</td>
                                   <td class="text-center">{{DeductionsBanck.Vencimiento.split(' ')[0]}}</td>
-                                  <td class="text-center">{{DeductionsBanck.Moneda}}</td>
+                                  <td class="text-center">
+
+                                    {{DeductionsBanck.Moneda}}
+
+                                  </td>
                                   <td class="text-right">{{DeductionsBanck.Total | number  : '1.2-2'}}</td>
                                   <td class="flex justify-content-evenly" class="text-right">{{DeductionsBanck.Detraccion | number : '1.2-2'}}</td>
                                   <!-- <td class="text-right bg-green-200">{{DeductionsBanck.Redondeo
@@ -366,7 +401,7 @@ type="ball-fall"
 
     <div class="flex align-items-center gap-3 mb-5 p-2">
         <label for="email" class="font-semibold w-6rem">Contraseña</label>
-        <input pInputText id="email" class="flex-auto border-1 h-2rem border-round" autocomplete="off" formControlName="password"/>
+        <input pInputText id="email" class="flex-auto border-1 h-2rem border-round" autocomplete="off" formControlName="password" />
     </div>
 
 
@@ -501,35 +536,6 @@ type="ball-fall"
   </form>
 
   </p-dialog>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
