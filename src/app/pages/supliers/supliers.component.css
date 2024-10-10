@@ -144,5 +144,16 @@ justify-content: flex-end;
 }
 
 
+/* estilos botones head table */
+:host ::ng-deep .contenedor_2 .contenedor_2_head .p-button {
+  box-shadow: none;  /* Elimina la sombra */
+  /* background-color: inherit; Mantiene el color de fondo */
+  color: white; /* Mantiene el color del texto */
+  border-radius: 50px;
+}
 
 
+:host ::ng-deep .contenedor .p-button {
+  box-shadow: none;
+  border-radius: 50px;
+}

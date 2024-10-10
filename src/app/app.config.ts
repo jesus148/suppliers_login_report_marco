@@ -24,6 +24,7 @@ export const appConfig: ApplicationConfig = {
           // spinner
           importProvidersFrom(NgxSpinnerModule.forRoot()),
 
+          // errores del peso img
           { provide: IMAGE_CONFIG, useValue: { disableImageSizeWarning: true, disableImageLazyLoadWarning: true } },
         ]
 };

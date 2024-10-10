@@ -3,9 +3,9 @@
 <!-- COMPONENTE TABLA  -->
 
 
-<div class="contenedor grid justify-content-center">
+<div class="contenedor grid justify-content-center ">
 
-<div class="col-11 md:col-11 relative" >
+<div class="col-11 md:col-11 relative mt-1" >
 
 
     <p-menubar class="" [model]="items" styleClass="menubar">
@@ -95,47 +95,45 @@
       <p-card #menu2 styleClass="menu2"
   class="h-7rem" >
 
-  <div class="flex flex-row-reverse  md:h-3rem mb-0 justify-content-between  h-4rem" style="margin-bottom: -30px; "  [ngClass]="{
-    'md:h-5rem':activeIndex===3
+  <div class="flex flex-row-reverse  md:h-4rem mb-0 justify-content-between h-4rem contenedor_2_head" style="margin-bottom: -30px; "  [ngClass]="{
+    'md:h-6rem':activeIndex===3
   }">
     <div class="" [ngClass]="{
-      'md:w-11':activeIndex===3
+      'md:w-7 ':activeIndex===3
     }">
 
-      @if(btnRegistrarBanco ){
+      @if(btnRegistrarBanco){
       <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class="title"
-      styleClass="text-sm w-9 md:w-11 md:text-base h-4rem md:h-3rem border-round-3xl md:border-round-xl"/>
+      styleClass="text-sm w-9 md:w-11 md:text-base h-4rem md:h-3rem border-round-3xl md:border-round-xl" />
       }@else if(btnDeducciones){
         <div class="grid">
-          <div class="md:col-6">
+          <div class="md:col-11 ">
             <div class="grid">
-
-              <div class="md:col-6">
+              <div class="md:col-4">
                 <label for="desde" class="font-bold block mb-2"> Desde: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
                     inputId="desde" />
               </div>
-              <div class="md:col-6">
+              <div class="md:col-4">
                 <label for="desde" class="font-bold block mb-2"> Hasta: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
                     inputId="desde" />
               </div>
+              <div  class="md:col-4 text-align">
+                <label for="desde" class="font-bold block mb-2">
+                  Nro Factura: </label>
+                <input type="text"  class="w-11" pInputText  />
+              </div>
             </div>
           </div>
-          <div class="md:col-4">
-            <label for="desde" class="font-bold block mb-2">
-              Nro Factura: </label>
-            <input type="text" pInputText  />
-          </div>
-          <div class="md:col-2 align-content-center ">
-            <p-button icon="pi pi-search" [rounded]="true"
-            styleClass="ui-button-success color"/>
+          <div class="md:col-1  flex align-items-center pt-5 ">
+              <p-button icon="pi pi-search"  severity="success"  />
           </div>
         </div>
       }
     </div>
     <div class="text-center"  [ngClass]="{
-      'md:w-4':activeIndex===3
+      'md:w-6  text-left':activeIndex===3
     }">
 
         @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones ){
@@ -394,14 +392,15 @@ type="ball-fall"
 
     <div class="flex align-items-center gap-3 mb-3 mt-5 p-2">
         <label for="username" class="font-semibold w-6rem">Usuario</label>
-        <input pInputText id="username" class="flex-auto border-1 h-2rem border-round" formControlName="usuario"
-        [(ngModel)]="cardCode"  type="text" readonly   />
+        <input pInputText id="username" class="flex-auto border-1 h-2rem border-round w-6rem" formControlName="usuario"
+        [(ngModel)]="cardCode"  type="text"     [disabled]="true"    />
+
     </div>
 
 
     <div class="flex align-items-center gap-3 mb-5 p-2">
         <label for="email" class="font-semibold w-6rem">Contraseña</label>
-        <input pInputText id="email" class="flex-auto border-1 h-2rem border-round" autocomplete="off" formControlName="password" />
+        <input pInputText id="email" class="flex-auto border-1 h-2rem border-round w-6rem " autocomplete="off" formControlName="password" />
     </div>
 
 
