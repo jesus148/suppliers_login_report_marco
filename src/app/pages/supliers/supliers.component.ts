@@ -112,6 +112,7 @@ export class SupliersComponent implements OnInit {
   btnRegistrarBanco: boolean = false;
   btnRetenciones: boolean = false;
   btnDeducciones: boolean = false;
+  btnPagosEfectuados:boolean = false;
 
   // banco
   // modalactualizar
@@ -291,10 +292,23 @@ export class SupliersComponent implements OnInit {
         icon: 'pi pi-building-columns',//icono
         // metodo salir sesion
         command: () => {
-          this.activeIndex = 1;
+          this.activeIndex = 6;
           this.btnRegistrarBanco = true;
           this.btnRetenciones = false;
           this.btnDeducciones = false;
+        },
+        styleClass: 'active'
+      },
+      {
+        label: 'Pagos Efectuados', //titulo
+        icon: 'pi pi-wallet',//icono
+        // metodo salir sesion
+        command: () => {
+          this.activeIndex = 4;
+          this.btnPagosEfectuados = true;
+          this.btnRetenciones = false;
+          this.btnDeducciones = false;
+          this.btnRegistrarBanco = false;
         },
         styleClass: 'active'
       },

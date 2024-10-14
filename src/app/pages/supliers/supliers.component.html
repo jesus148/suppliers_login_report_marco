@@ -25,6 +25,7 @@
                   (onClick)="btnRegistrarBanco = false"
                   (onClick)="btnRetenciones = false"
                   (onClick)="btnDeducciones = false"
+                  (onClick)="btnPagosEfectuados=false"
                   [outlined]="activeIndex !== 0"
                   label="Estado Cuenta"
                    severity="success"
@@ -54,11 +55,26 @@
                   severity="success" />
 
 
+
+                  <p-button
+                  (onClick)="activeIndex = 4"
+                  (onClick)="btnRegistrarBanco = false"
+                  (onClick)="btnRetenciones = false"
+                  (onClick)="btnDeducciones = false"
+                  (onClick)="btnPagosEfectuados = true"
+                  styleClass="w-7rem h-3rem text-sm"
+                  [outlined]="activeIndex !== 4"
+                  label="Pagos Efectuados"
+                  severity="success" />
+
+
+
                   <p-button
                   (onClick)="activeIndex = 1"
                   (onClick)="btnRegistrarBanco = true"
                   (onClick)="btnRetenciones = false"
                   (onClick)="btnDeducciones = false"
+                  (onClick)="btnPagosEfectuados = false"
                   styleClass=" w-8rem h-3rem  text-sm p-2"
                   [outlined]="activeIndex !== 1"
                   label="Cuentas de Banco"
@@ -90,16 +106,16 @@
     <!-- tabla  -->
 
   <div class="contenedor_2 grid justify-content-center align-content-center  h-auto ">
-    <div class="col-11 md:col-12  ">
+    <div class="col-11 md:col-12">
       <!-- elemento flexible  es para encabezado para el header -->
       <p-card #menu2 styleClass="menu2"
   class="h-7rem" >
 
-  <div class="flex flex-row-reverse  md:h-4rem mb-0 justify-content-between h-4rem contenedor_2_head" style="margin-bottom: -30px; "  [ngClass]="{
-    'md:h-6rem':activeIndex===3
+  <div class="flex flex-row-reverse  md:h-4rem mb-0 justify-content-between h-4rem contenedor_2_head " style="margin-bottom: -30px; "  [ngClass]="{
+    'md:h-6rem h-3rem':activeIndex===3
   }">
     <div class="" [ngClass]="{
-      'md:w-7 ':activeIndex===3
+      'w-7 md:w-7':activeIndex===3
     }">
 
       @if(btnRegistrarBanco){
@@ -107,7 +123,7 @@
       styleClass="text-sm w-9 md:w-11 md:text-base h-4rem md:h-3rem border-round-3xl md:border-round-xl" />
       }@else if(btnDeducciones){
         <div class="grid">
-          <div class="md:col-11 ">
+          <div class="col-12 md:col-10">
             <div class="grid">
               <div class="md:col-4">
                 <label for="desde" class="font-bold block mb-2"> Desde: </label>
@@ -126,22 +142,25 @@
               </div>
             </div>
           </div>
-          <div class="md:col-1  flex align-items-center pt-5 ">
+          <div class="col-12 md:col-2  flex align-items-center pt-5  gap-1 ">
               <p-button icon="pi pi-search"  severity="success"  />
+              <button type="button" pButton pRipple icon="pi pi-file-excel" class="p-button-success"  pTooltip="XLS" tooltipPosition="bottom"></button>
           </div>
         </div>
       }
     </div>
     <div class="text-center"  [ngClass]="{
-      'md:w-6  text-left':activeIndex===3
+      'w-5 md:w-3  lg:w-5  text-left':activeIndex===3
     }">
 
-        @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones ){
+        @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones && !btnPagosEfectuados){
           <h3 class="text-lg md:text-2xl">LISTA DE CUENTAS DE BANCO </h3>
-        }@else if(!btnRegistrarBanco && btnDeducciones && !btnRetenciones  ){
+        }@else if(!btnRegistrarBanco && btnDeducciones && !btnRetenciones && !btnPagosEfectuados  ){
           <h3 class="text-lg md:text-2xl md:mr-1">ESTADO DE CUENTA - RETENCIONES</h3>
-        }@else if(!btnRegistrarBanco && !btnDeducciones && btnRetenciones  ){
-          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - DETRACCIONES</h3>
+        }@else if(!btnRegistrarBanco && !btnDeducciones && btnRetenciones && !btnPagosEfectuados ){
+          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - DETRACCIONES </h3>
+        }@else if(!btnRegistrarBanco && !btnDeducciones && !btnRetenciones && btnPagosEfectuados){
+          <h3 class="text-lg md:text-2xl">PAGOS EFECTUADOS</h3>
         }@else {
           <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
         }
@@ -292,7 +311,7 @@
                           <th style="font-size: 16px;" class="text-center">Mo_Pag</th>
                           <th style="font-size: 16px;" class="text-right">Total Pago</th>
                           <th style="font-size: 16px;" class="text-right">Retenido</th>
-                          <th style="font-size: 16px;" class="text-center">Tc</th>
+                          <!-- <th style="font-size: 16px;" class="text-center">Tc</th> -->
                           <!-- <th style="font-size: 16px;">Tco</th> -->
 
                           <th></th>
@@ -319,9 +338,9 @@
 
                                     </td>
                                     <!-- mejora el decimal    -->
-                                    <td class="text-center">
+                                    <!-- <td class="text-center">
                                     {{Withholdings.TC| number : '' }}
-                                    </td>
+                                    </td> -->
                                     <!-- <td>
                                       {{Withholdings.TCO }}
                                     </td> -->
@@ -336,6 +355,49 @@
                   <p-paginator [rows]="rows" [totalRecords]="totalRecords2" (onPageChange)="Paginator2($event)" styleClass="custom-paginator">
                   </p-paginator>
 
+                </p-tabPanel>
+                <!-- 5 tabla  -->
+                <p-tabPanel  >
+                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="paginatedData1"  id="myTable"
+                  >
+                    <ng-template pTemplate="header"  >
+                      <tr >
+                          <th class="text-center">tabla 5</th>
+                          <th class="text-center">Fecha Emision</th>
+                          <th class="text-center">Fecha Vencimiento</th>
+                          <!-- <th>Fecha Programacion</th> -->
+                          <th class="text-center">Moneda</th>
+                          <th class="text-right">Total</th>
+                          <th class="text-right">Monto</th>
+                          <th class="text-right">Saldo</th>
+                          <!-- <th></th> -->
+                      </tr>
+                  </ng-template>
+                                  <ng-template pTemplate="body" let-supliers>
+                                <tr>
+                                    <td class="text-center">{{supliers.SERIE_CORREL }}</td>
+                                    <!-- lo corta el valor  -->
+                                    <td class="text-center">{{ supliers.Fec_Emision.split(' ')[0] }}</td>
+                                    <td class="text-center">{{ supliers.Fec_VCTO.split(' ')[0] }}</td>
+                                    <!-- <td>{{ supliers.Fec_Programacion }}</td> -->
+                                    <td class="text-center">{{ supliers.Moneda }}</td>
+
+                                    <!-- mejora el decimal con 2   -->
+                                    <td class="text-right"> {{  supliers.Total_Documento | number:   '1.2-2' }}</td>
+                                    <td class="text-right">{{ supliers.Monto_pagado  | number:   '1.2' }}</td>
+                                    <td class="flex justify-content-end">
+                                      {{ supliers.Moneda === 'USD' ? '$' : 'S/.' }}
+                                      {{ supliers.Saldo_pendiente | number :  '1.2'}}
+                                    </td>
+                                    <!-- <td class="text-center flex gap-3" >
+                                      <p-button  icon="pi pi-pencil" [text]="true" [raised]="true" />
+                                      <p-button  icon="pi pi-times" [text]="true" [raised]="true" />
+                                  </td> -->
+                                </tr>
+                            </ng-template>
+                  </p-table>
+                  <p-paginator [rows]="rows1" [totalRecords]="totalRecords1" (onPageChange)="Paginator1($event)" styleClass="custom-paginator">
+                  </p-paginator>
                 </p-tabPanel>
 
 
