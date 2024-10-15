@@ -331,26 +331,13 @@ export class SupliersComponent implements OnInit {
 
   }
 
+  // ESTADO DE CUENTA
   // metodo registra la data
   listData() {
 
     const token = localStorage.getItem('object');
     const data2 = JSON.parse(localStorage.getItem('object') || '');
 
-    if (token) {
-
-      this.loginService.getData(data2.CardCode).subscribe((resp: any) => {
-
-        this.DataSupliers = resp.rows;
-
-        this.loading = true;
-
-      }, (err) => {
-        // this.messagesService.showError(err.error.message);
-      });
-    } else {
-      return console.log("false");
-    }
 
     this.loginService.getData(data2.CardCode).subscribe((resp: any) => {
 
@@ -364,14 +351,14 @@ export class SupliersComponent implements OnInit {
     });
 
   }
-      // metodo paginator
-      Paginator1(event: any): void {
+  // metodo paginator
+  Paginator1(event: any): void {
         // event.first es el event rows actual
         const start = event.first;
         const end = event.first + event.rows;
         this.paginatedData1 = this.DataSupliers.slice(start, end);
 
-      }
+  }
 
 
   getDataAccountBanck() {

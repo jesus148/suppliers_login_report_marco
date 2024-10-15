@@ -55,9 +55,34 @@ justify-content: flex-end;
 
 
 
+/* estilos para el p-dialog actualizar contraseña  */
+
+:host ::ng-deep .contenedor2 .p-dialog {
+  background-color: greenyellow !important;
+}
+
+
+/* moviles */
+@media( max-width:390px){
+  :host ::ng-deep .contenedor2 .p-dialog {
+    width: 20rem !important;
+    font-family: "New Amsterdam", sans-serif;
+    font-size: 20px;
+    box-shadow: none;
+    color: white;
+  }
+
+}
+
+
+
+
+
+
 /* ---barra arriba barra de navegacion  */
 
 /*  */
+
 
 
 :host ::ng-deep .p-menubar {
@@ -157,3 +182,45 @@ justify-content: flex-end;
   box-shadow: none;
   border-radius: 50px;
 }
+
+
+
+
+
+/*Responsive tabla  1 retenciones */
+@media only screen and (max-width:390px){
+
+   .contenedor_2_head{
+    width: 100%;
+
+    z-index: 100;
+   }
+
+   .retenciones{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    padding-left: 60px;
+    margin-top: -20px;
+     }
+
+   .retenciones_2{
+    width: 50%;
+   }
+
+  ::ng-deep .p-calendar .p-inputtext {
+    width: 20px ;
+    height: 20px;
+    border-radius: 150px;
+  }
+
+  ::ng-deep .p-inputtext {
+    width: 40px;
+  }
+  .retenciones div div label{
+    font-size: 18px;{
+  }
+
+
+  }
+
