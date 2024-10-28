@@ -26,6 +26,7 @@ import { SpinnerComponent } from '../../spinner/spinner/spinner.component';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextModule } from 'primeng/inputtext';
+import { PayedInvoices } from '../../interfaces/PayedInvoices';
 
 
 
@@ -34,31 +35,31 @@ import { InputTextModule } from 'primeng/inputtext';
   standalone: true,
   imports: [
     // modulos para la vista de este componente
-    MenubarModule,
-    ToastModule,
-    TableModule,
+    AutoCompleteModule,
+    AvatarGroupModule,
+    AvatarModule,
+    ButtonModule,
+    CalendarModule,
     CardModule,
     ChartModule,
     CommonModule,
-    ButtonModule,
-    FormsModule,
-    DialogModule,
-    InputGroupModule,
-    InputGroupAddonModule,
-    FormsModule, CommonModule, ReactiveFormsModule,
-    TabViewModule,
-    MegaMenuModule,
-    AvatarModule,
-    AvatarGroupModule,
-    FormsModule,
     CommonModule,
-    ReactiveFormsModule,
-    PaginatorModule,
+    DialogModule,
+    FormsModule,
+    FormsModule,
+    FormsModule, CommonModule, ReactiveFormsModule,
+    InputGroupAddonModule,
+    InputGroupModule,
+    InputTextModule,
+    MegaMenuModule,
+    MenubarModule,
     NgxSpinnerModule,
+    PaginatorModule,
+    ReactiveFormsModule,
     SpinnerComponent,
-    CalendarModule,
-    AutoCompleteModule,
-    InputTextModule
+    TableModule,
+    TabViewModule,
+    ToastModule,
   ],
   templateUrl: './supliers.component.html',
   styleUrl: './supliers.component.css',
@@ -68,8 +69,7 @@ import { InputTextModule } from 'primeng/inputtext';
 export class SupliersComponent implements OnInit {
 
 
-  // private loginService = inject(LoginService);
-  // private messagesService = inject(MessagesService);
+
 
   // data estado de cuenta
   DataSupliers: any = [];
@@ -82,6 +82,10 @@ export class SupliersComponent implements OnInit {
 
   // tabla retenciones data
   dataWithholdings: Withholdings[] = [];
+
+
+  // data pagos efectuados
+  dataPayinvoices:PayedInvoices[] = [];
 
 
   // carga iconos
@@ -119,18 +123,19 @@ export class SupliersComponent implements OnInit {
   modalActualizar: boolean = false;
 
 
+    // datos actualizarbanco
+    bankCode2: any;
+    accountNo2: any;
+    userCurrBank2: any;
+    bankAccountType2: any;
+    index: any;
+
+
     // paginacion de estado cuenta
     paginatedData1: any[] = [];
     rows1: number = 10;
     totalRecords1: number = 0;
 
-
-  // datos actualizarbanco
-  bankCode2: any;
-  accountNo2: any;
-  userCurrBank2: any;
-  bankAccountType2: any;
-  index: any;
 
   // paginacion detracciones
   paginatedData: any[] = [];
@@ -141,6 +146,15 @@ export class SupliersComponent implements OnInit {
   paginatedData2: any[] = [];
   rows2: number = 12;
   totalRecords2: number = 0;
+
+
+
+  // paginacicion pagos efectuados
+  paginatedData5: any[] = [];
+  rows5: number = 12;
+  totalRecords5: number = 0;
+
+
 
   // array de bancosz
   listaBancos: any = [
@@ -235,6 +249,9 @@ export class SupliersComponent implements OnInit {
 
     // data retenciones
     this.getDataWithholdings();
+
+    // dataa pagos efectuados
+    this.getPagosEfectuados();
 
   }
 
@@ -556,8 +573,29 @@ export class SupliersComponent implements OnInit {
 
 
 
+  // listar pagos efectuados
 
+  getPagosEfectuados() {
+    const data2 = JSON.parse(localStorage.getItem('object') || '');
 
+    this.suppliers.getPayedInvoices(data2.CardCode).subscribe((resp: any) => {
+      this.dataPayinvoices = resp.rows;
+      this.loading = true;
+      this.totalRecords5 = resp.rows.length;
+      this.PaginatorPay({ first: 0, rows: this.rows5 });
+    }, (err) => {
+      // this.messagesService.showError(err.error.message);
+    });
+  }
+
+    // metodo paginator
+    PaginatorPay(event: any): void {
+      // event.first es el event rows actual
+      const start = event.first;
+      const end = event.first + event.rows;
+      this.paginatedData5 = this.dataPayinvoices.slice(start, end);
+
+    }
 
 
 
@@ -721,6 +759,41 @@ export class SupliersComponent implements OnInit {
     this.paginatedData2 = this.dataWithholdings.slice(start, end);
 
   }
+
+
+  async donwoladPdf(cardCode: string , withholdingNumnber : string){
+    console.log(cardCode , withholdingNumnber)
+    try {
+      // const res = await this.suppliers.downloadPpdf(cardCode, withholdingNumnber)
+      // this.donwoladpdfile(res);
+
+
+    // const url = `http://localhost:3000/pdf?cardCode=${cardCode}&withholdingNumnber=${withholdingNumnber}`;
+    const url = `http://localhost:3000/pdf/${cardCode}/${withholdingNumnber}`;
+    window.open(url, '_blank');
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // donwoladpdfile(data:any){
+
+  //   if(data.length){
+
+  //     var url = window.URL || window.webkitURL;
+  //     try {
+
+  //       const URL =url.createObjectURL(data);
+  //       window.open(URL);
+
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  // }
+
+
 
 
 

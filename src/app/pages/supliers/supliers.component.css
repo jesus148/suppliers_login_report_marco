@@ -187,26 +187,17 @@ justify-content: flex-end;
 
 
 
+
+
+
 /*Responsive tabla  1 retenciones */
 @media only screen and (max-width:390px){
 
-   .contenedor_2_head{
-    width: 100%;
-
-    z-index: 100;
-   }
-
-   .retenciones{
+  .retenciones{
+    height: 290px !important;
     display: flex;
-    flex-direction: row;
-    text-align: center;
-    padding-left: 60px;
-    margin-top: -20px;
-     }
-
-   .retenciones_2{
-    width: 50%;
-   }
+    flex-direction: column-reverse !important;
+  }
 
   ::ng-deep .p-calendar .p-inputtext {
     width: 20px ;
@@ -214,13 +205,41 @@ justify-content: flex-end;
     border-radius: 150px;
   }
 
-  ::ng-deep .p-inputtext {
-    width: 40px;
-  }
-  .retenciones div div label{
-    font-size: 18px;{
-  }
+}
+
+
+
+
+
+
+
+  /* paginator estilos  */
+
+  @media only screen and (max-width:390px){
+
+    :host ::ng-deep  .p-paginator {
+      margin: 0 auto;
+      width: 220px;
+     text-align: center;
+     display: block;
+     padding-right: 36px;
+    }
+
+     :host ::ng-deep  .p-paginator .p-icon{
+      width: 2rem ;
+      height: 2rem;
+    }
 
 
   }
+
+
+  /* tabla quitar linea headers */
+  :host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
+    overflow: hidden !important;
+    display: none !important;
+    visibility: hidden !important;
+    cursor: none;
+  }
+
 

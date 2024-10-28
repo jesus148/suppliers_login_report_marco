@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/enviroment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { environmentPro } from '../../environments/enviroment.prod';
+import { catchError, Observable, of, throwError } from 'rxjs';
+import { PayedInvoices } from '../interfaces/PayedInvoices';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +65,19 @@ export class SuppliersService {
     }
 
 
+
+
+    // pagos efectuados
+    getPayedInvoices(cardCode : string):Observable<PayedInvoices>{
+      return this.http.get<PayedInvoices>(`${environmentPro.base_url}/payed-invoices?cardCode=${cardCode}`)
+    }
+
+
+
+
+    downloadPpdf(cardCode : string , withholdingNumnber:string){
+      return this.http.get(`http://localhost:3000/pdf?cardCode=${cardCode}&withholdingNumnber=${withholdingNumnber}`)
+    }
 
 
 

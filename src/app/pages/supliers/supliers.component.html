@@ -110,11 +110,11 @@
       <p-card #menu2 styleClass="menu2"
   class="h-7rem" >
 
-  <div class="flex flex-row-reverse  md:h-4rem mb-0 justify-content-between h-4rem contenedor_2_head" style="margin-bottom: -30px; "  [ngClass]="{
-    'md:h-6rem md:h-3rem':activeIndex===3
+  <div class="flex flex-row-reverse  md:h-4rem mb-0 justify-content-between h-4rem " style="margin-bottom: -30px; "  [ngClass]="{
+    'md:h-6rem md:h-3rem retenciones':activeIndex===3
   }">
     <div  [ngClass]="{
-      ' md:w-7 retenciones':activeIndex===3
+      ' md:w-7 retenciones_1':activeIndex===3
     }">
 
       @if(btnRegistrarBanco){
@@ -124,6 +124,7 @@
         <div class="grid">
           <div class="md:col-10">
             <div class="grid">
+
               <div class="md:col-4">
                 <label for="desde" class="font-bold block mb-2"> Desde: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
@@ -143,7 +144,6 @@
           </div>
           <div class="md:col-2  flex align-items-center pt-5  gap-1 ">
               <p-button icon="pi pi-search"  severity="success"  />
-              <button type="button" pButton pRipple icon="pi pi-file-excel" class="p-button-success"  pTooltip="XLS" tooltipPosition="bottom"></button>
           </div>
         </div>
       }
@@ -170,7 +170,7 @@
   <div class="m-0">
 
         <!-- tabla  -->
-            <p-tabView [(activeIndex)]="activeIndex" styleClass=""
+            <p-tabView [(activeIndex)]="activeIndex"
             >
 
               <!-- 1 tabla  -->
@@ -214,8 +214,18 @@
                                 </tr>
                             </ng-template>
                   </p-table>
-                  <p-paginator [rows]="rows1" [totalRecords]="totalRecords1" (onPageChange)="Paginator1($event)" class="custom-paginator">
+                  <p-paginator [rows]="rows1" [totalRecords]="totalRecords1" (onPageChange)="Paginator1($event)" class="hidden md:block">
                   </p-paginator>
+
+                  <div class="paginator__one flex align-items-center justify-content-center  block md:hidden" >
+
+                    <p-paginator [rows]="rows2" [totalRecords]="120"  [showCurrentPageReport]="true"
+                        currentPageReportTemplate="" [showPageLinks]="false" [showFirstLastIcon]="false" class="paginator" ></p-paginator>
+                </div>
+
+
+
+
                 </p-tabPanel>
 
                 <!-- 2 tabla  -->
@@ -290,8 +300,14 @@
                             </ng-template>
 
                   </p-table>
-                  <p-paginator [rows]="rows" [totalRecords]="totalRecords" (onPageChange)="Paginator($event)" styleClass="custom-paginator">
+                  <p-paginator [rows]="rows" [totalRecords]="totalRecords" (onPageChange)="Paginator($event)" styleClass="custom-paginator" class="hidden md:block">
                   </p-paginator>
+
+                  <div class="paginator__one flex align-items-center justify-content-center  block md:hidden" >
+
+                    <p-paginator [rows]="rows2" [totalRecords]="120"  [showCurrentPageReport]="true"
+                        currentPageReportTemplate="" [showPageLinks]="false" [showFirstLastIcon]="false" class="paginator" ></p-paginator>
+                </div>
 
                 </p-tabPanel>
                 <!-- 4 tabla  -->
@@ -312,8 +328,7 @@
                           <th style="font-size: 16px;" class="text-right">Retenido</th>
                           <!-- <th style="font-size: 16px;" class="text-center">Tc</th> -->
                           <!-- <th style="font-size: 16px;">Tco</th> -->
-
-                          <th></th>
+                          <th> </th>
                       </tr>
                   </ng-template>
                                   <ng-template pTemplate="body" let-Withholdings let-i="rowIndex" >
@@ -343,6 +358,9 @@
                                     <!-- <td>
                                       {{Withholdings.TCO }}
                                     </td> -->
+                                    <td class="text-center w-7rem">
+                                                    <button type="button" pButton pRipple icon="pi pi-file-pdf" class="p-button-success"  pTooltip="pdf" tooltipPosition="bottom" (click)="donwoladPdf(cardCode,Withholdings.COMPRET.split('-')[1])"></button>
+                                    </td>
 
 
                                 </tr>
@@ -351,52 +369,62 @@
                   </p-table>
 
 
-                  <p-paginator [rows]="rows" [totalRecords]="totalRecords2" (onPageChange)="Paginator2($event)" styleClass="custom-paginator">
+                  <p-paginator [rows]="rows" [totalRecords]="totalRecords2" (onPageChange)="Paginator2($event)" styleClass="custom-paginator" class="hidden md:block">
                   </p-paginator>
+
+                  <div class="paginator__one flex align-items-center justify-content-center  block md:hidden" >
+
+                    <p-paginator [rows]="rows2" [totalRecords]="120"  [showCurrentPageReport]="true"
+                        currentPageReportTemplate="" [showPageLinks]="false" [showFirstLastIcon]="false" class="paginator" ></p-paginator>
+                </div>
 
                 </p-tabPanel>
                 <!-- 5 tabla  -->
                 <p-tabPanel  >
-                  <p-table [styleClass]="'p-datatable-sm'" [tableStyle]="{ 'min-width':'50rem' }" [value]="paginatedData1"  id="myTable"
+                  <p-table [styleClass]="'p-datatable-sm'"  [tableStyle]="{ 'min-width': '30rem','text-align':'center' }
+                  "[value]="paginatedData5"  id="myTable"
                   >
                     <ng-template pTemplate="header"  >
                       <tr >
-                          <th class="text-center">tabla 5</th>
-                          <th class="text-center">Fecha Emision</th>
-                          <th class="text-center">Fecha Vencimiento</th>
+                          <th class="text-center">Serie_Correl</th>
+                          <th class="text-center">Fec_Emisión</th>
+                          <th class="text-center">Fec_Vcto</th>
                           <!-- <th>Fecha Programacion</th> -->
-                          <th class="text-center">Moneda</th>
-                          <th class="text-right">Total</th>
-                          <th class="text-right">Monto</th>
-                          <th class="text-right">Saldo</th>
+                          <th class="text-right">Moneda</th>
+                          <th class="text-right">Total_Documento</th>
+                          <th class="text-right">Monto_Pagada</th>
+                          <th class="text-right">Saldo_Pendiente</th>
                           <!-- <th></th> -->
                       </tr>
                   </ng-template>
                                   <ng-template pTemplate="body" let-supliers>
                                 <tr>
-                                    <td class="text-center">{{supliers.SERIE_CORREL }}</td>
+                                    <td class="text-center">{{supliers.SERIE_CORREL}}</td>
                                     <!-- lo corta el valor  -->
-                                    <td class="text-center">{{ supliers.Fec_Emision.split(' ')[0] }}</td>
-                                    <td class="text-center">{{ supliers.Fec_VCTO.split(' ')[0] }}</td>
-                                    <!-- <td>{{ supliers.Fec_Programacion }}</td> -->
+                                    <td class="text-center">{{ supliers.Fec_Emision.split(' ')[0]  }}</td>
+                                    <td class="text-center">{{ supliers.Fec_VCTO.split(' ')[0]}}</td>
                                     <td class="text-center">{{ supliers.Moneda }}</td>
 
                                     <!-- mejora el decimal con 2   -->
                                     <td class="text-right"> {{  supliers.Total_Documento | number:   '1.2-2' }}</td>
                                     <td class="text-right">{{ supliers.Monto_pagado  | number:   '1.2' }}</td>
                                     <td class="flex justify-content-end">
-                                      {{ supliers.Moneda === 'USD' ? '$' : 'S/.' }}
-                                      {{ supliers.Saldo_pendiente | number :  '1.2'}}
+                                      {{ supliers.Saldo_pendiente | number:'1.3-3' }}
                                     </td>
-                                    <!-- <td class="text-center flex gap-3" >
-                                      <p-button  icon="pi pi-pencil" [text]="true" [raised]="true" />
-                                      <p-button  icon="pi pi-times" [text]="true" [raised]="true" />
-                                  </td> -->
+
                                 </tr>
                             </ng-template>
                   </p-table>
-                  <p-paginator [rows]="rows1" [totalRecords]="totalRecords1" (onPageChange)="Paginator1($event)" styleClass="custom-paginator">
+                  <p-paginator [rows]="rows5" [totalRecords]="totalRecords5" (onPageChange)="PaginatorPay($event)" styleClass="custom-paginator"
+                  class="hidden md:block" >
                   </p-paginator>
+
+                  <div class="paginator__one flex align-items-center justify-content-center  block md:hidden" >
+
+                    <p-paginator [rows]="rows2" [totalRecords]="120"  [showCurrentPageReport]="true"
+                        currentPageReportTemplate="" [showPageLinks]="false" [showFirstLastIcon]="false" class="paginator" ></p-paginator>
+                </div>
+
                 </p-tabPanel>
 
 
