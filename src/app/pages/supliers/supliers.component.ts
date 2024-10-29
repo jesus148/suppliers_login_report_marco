@@ -368,7 +368,7 @@ export class SupliersComponent implements OnInit {
     });
 
   }
-  // metodo paginator
+  // metodo paginator s
   Paginator1(event: any): void {
         // event.first es el event rows actual
         const start = event.first;
@@ -833,9 +833,16 @@ export class SupliersComponent implements OnInit {
   }
   // metodo paginator
   Paginator(event: any): void {
+
     // event.first es el event rows actual
     const start = event.first;
     const end = event.first + event.rows;
+    this.paginatedData = this.dataDeductionsBanck.slice(start, end);
+  }
+
+  paginatorMovildetrac(event:any):void{
+    const start=event.first;
+    const end= event.first + event.rows;
     this.paginatedData = this.dataDeductionsBanck.slice(start, end);
   }
 

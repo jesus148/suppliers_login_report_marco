@@ -161,7 +161,7 @@
         }@else if(!btnRegistrarBanco && !btnDeducciones && !btnRetenciones && btnPagosEfectuados){
           <h3 class="text-lg md:text-2xl">PAGOS EFECTUADOS</h3>
         }@else {
-          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
+          <h3 class="text-2xl md:text-2xl">ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
         }
 
     </div>
@@ -219,7 +219,7 @@
 
                   <div class="paginator__one flex align-items-center justify-content-center  block md:hidden" >
 
-                    <p-paginator [rows]="rows2" [totalRecords]="120"  [showCurrentPageReport]="true"
+                    <p-paginator [rows]="rows1" [totalRecords]="totalRecords1"  [showCurrentPageReport]="true" (onPageChange)="Paginator1($event)"
                         currentPageReportTemplate="" [showPageLinks]="false" [showFirstLastIcon]="false" class="paginator" ></p-paginator>
                 </div>
 
@@ -305,7 +305,7 @@
 
                   <div class="paginator__one flex align-items-center justify-content-center  block md:hidden" >
 
-                    <p-paginator [rows]="rows2" [totalRecords]="120"  [showCurrentPageReport]="true"
+                    <p-paginator [rows]="rows" [totalRecords]="totalRecords"  [showCurrentPageReport]="true"  (onPageChange)="Paginator($event)"
                         currentPageReportTemplate="" [showPageLinks]="false" [showFirstLastIcon]="false" class="paginator" ></p-paginator>
                 </div>
 
@@ -324,7 +324,7 @@
                           <th style="font-size: 16px;" class="text-center">Compret</th>
                           <th style="font-size: 16px;" class="text-center">Fecha Retención</th>
                           <th style="font-size: 16px;" class="text-center">Mo_Pag</th>
-                          <th style="font-size: 16px;" class="text-right">Total Pago</th>
+                          <!-- <th style="font-size: 16px;" class="text-right">Total Pago</th> -->
                           <th style="font-size: 16px;" class="text-right">Retenido</th>
                           <!-- <th style="font-size: 16px;" class="text-center">Tc</th> -->
                           <!-- <th style="font-size: 16px;">Tco</th> -->
@@ -346,7 +346,7 @@
                                     </td>
                                     <td class="text-center">{{  Withholdings.FECHA_RETENCION.split(' ')[0] }}</td>
                                     <td class="text-right">{{ Withholdings.MONEDA_PAGO   }}</td>
-                                    <td class="text-right">{{ Withholdings.TOTAL_PAGO  | number : '1.2-2' }}</td>
+                                    <!-- <td class="text-right">{{ Withholdings.TOTAL_PAGO  | number : '1.2-2' }}</td> -->
                                     <td class="text-right">
                                       {{Withholdings.RETENIDO | number: '1.2-2' }}
 
