@@ -161,7 +161,6 @@ justify-content: flex-end;
 /* estilos para el nav mobile */
 
  @media screen and (min-width: 860px) {
-
   :host >>> .active{
     display: none;
   }
@@ -188,23 +187,29 @@ justify-content: flex-end;
 
 
 
-
-
 /*Responsive tabla  1 retenciones */
 @media only screen and (max-width:390px){
 
   .retenciones{
-    height: 290px !important;
+    height: 220px !important;
     display: flex;
     flex-direction: column-reverse !important;
   }
 
   ::ng-deep .p-calendar .p-inputtext {
-    width: 20px ;
-    height: 20px;
+    width: 100px ;
+    height: 40px;
     border-radius: 150px;
   }
-
+  .retenciones .retenciones__factura ::ng-deep .p-inputtext {
+    width:160px !important;
+    height: 40px ;
+    border-radius: 140px;
+  }
+  .retenciones__icono::ng-deep .p-button{
+    margin-top: 30px;
+    margin-left: 5px;
+  }
 }
 
 

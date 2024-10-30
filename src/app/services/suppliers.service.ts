@@ -74,13 +74,16 @@ export class SuppliersService {
 
 
 
-
-    downloadPpdf(cardCode : string , withholdingNumnber:string){
-      return this.http.get(`http://localhost:3000/pdf?cardCode=${cardCode}&withholdingNumnber=${withholdingNumnber}`)
+    // no usamos solo muestra
+    donwloadPdfMethod(cardCode : string , withholdingNumnber:string){
+      return this.http.get(`http://52.207.189.125:3000/withholdings-with-filters?cardCode=${cardCode}&withholdingNumnber=${withholdingNumnber}`)
     }
 
 
 
+    getDateDedductiones(cardCode:string, dateFrom :string , dateTo : string){
+      return this.http.get(`${environmentPro.base_url}/deductions-by-dates?cardCode=${cardCode}&dateFrom=${dateFrom}&dateTo=${dateTo}`)
+    }
 
 
 

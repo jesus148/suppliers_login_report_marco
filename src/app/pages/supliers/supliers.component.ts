@@ -156,6 +156,12 @@ export class SupliersComponent implements OnInit {
 
 
 
+  //inputs fecha para consultas
+  desde : Date| undefined;
+  hasta:Date | undefined;
+
+
+
   // array de bancosz
   listaBancos: any = [
     { value: '001', name: 'BANCO CENTRAL DE RESERVA' },
@@ -345,6 +351,7 @@ export class SupliersComponent implements OnInit {
     this.listData();
 
     this.cargarUsuario();
+
 
   }
 
@@ -761,37 +768,6 @@ export class SupliersComponent implements OnInit {
   }
 
 
-  async donwoladPdf(cardCode: string , withholdingNumnber : string){
-    console.log(cardCode , withholdingNumnber)
-    try {
-      // const res = await this.suppliers.downloadPpdf(cardCode, withholdingNumnber)
-      // this.donwoladpdfile(res);
-
-
-    // const url = `http://localhost:3000/pdf?cardCode=${cardCode}&withholdingNumnber=${withholdingNumnber}`;
-    const url = `http://localhost:3000/pdf/${cardCode}/${withholdingNumnber}`;
-    window.open(url, '_blank');
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  // donwoladpdfile(data:any){
-
-  //   if(data.length){
-
-  //     var url = window.URL || window.webkitURL;
-  //     try {
-
-  //       const URL =url.createObjectURL(data);
-  //       window.open(URL);
-
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  // }
 
 
 
@@ -808,20 +784,20 @@ export class SupliersComponent implements OnInit {
 
 
 
-  // data de la detracciones
+
+
+
+  // data de la detracciones=====
   getDataDeductions() {
 
     const token = localStorage.getItem('object');
     const data2 = JSON.parse(localStorage.getItem('object') || '');
 
-
     if (token) {
-
       this.suppliers.getDeductions(data2.CardCode).subscribe((resp: any) => {
         this.dataDeductionsBanck = resp.rows;
         this.totalRecords = resp.rows.length;
         this.Paginator({ first: 0, rows: this.rows });
-
 
       }, (err) => {
         this.messageService.msjError(err);
@@ -845,6 +821,47 @@ export class SupliersComponent implements OnInit {
     const end= event.first + event.rows;
     this.paginatedData = this.dataDeductionsBanck.slice(start, end);
   }
+  async donwoladPdf(cardCode: string , withholdingNumnber : string){
+    try {
+
+    const url = `http://52.207.189.125:3000/withholdings-with-filters?cardCode=${cardCode}&&withholdingNumnber=${withholdingNumnber}`;
+    window.open(url, '_blank');
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  search(){
+    if(!this.desde || !this.hasta){
+      return this.messageService.warningMessage('Ingresa las Fechas')
+    }
+
+    const desdeformato = this.formatDate(this.desde);
+    const hastaformato = this.formatDate(this.hasta);
+
+    this.suppliers.getDateDedductiones(this.cardCode,desdeformato , hastaformato).subscribe((data:any)=>{
+      this.dataDeductionsBanck = data.rows;
+      this.totalRecords = data.rows.length;
+      this.Paginator({ first: 0, rows: this.rows });
+    })
+
+  }
+
+
+  formatDate(date:Date){
+    let dia= `${date.getDate()}`;
+    dia = (dia.length === 1)? `0${dia}`:dia;
+
+    // mes inicia por index 0 entonces se suma
+    let mes= `${date.getMonth() + 1}`;
+    mes= (mes.length === 1)? `0${mes}`:mes;
+
+    let año = `${ date.getFullYear()}`
+    return `${año}${mes}${dia}`
+  }
+
+
 
 
 

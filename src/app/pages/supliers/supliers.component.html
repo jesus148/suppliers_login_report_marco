@@ -32,7 +32,6 @@
 
 
 
-
               <p-button
                   (onClick)="activeIndex = 2"
                   (onClick)="btnRegistrarBanco = false"
@@ -110,58 +109,73 @@
       <p-card #menu2 styleClass="menu2"
   class="h-7rem" >
 
-  <div class="flex flex-row-reverse  md:h-4rem mb-0 justify-content-between h-4rem " style="margin-bottom: -30px; "  [ngClass]="{
-    'md:h-6rem md:h-3rem retenciones':activeIndex===3
+  <div class="flex flex-row-reverse  md:h-4rem mb-0 justify-content-between h-4rem" style="margin-bottom: -30px; "  [ngClass]="{
+    'md:h-6rem md:h-3rem retenciones':activeIndex===2
   }">
     <div  [ngClass]="{
-      ' md:w-7 retenciones_1':activeIndex===3
+      ' md:w-5 retenciones_1 ':activeIndex===2
     }">
 
       @if(btnRegistrarBanco){
       <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class="title"
       styleClass="text-sm w-9 md:w-11 md:text-base h-4rem md:h-3rem border-round-3xl md:border-round-xl" />
-      }@else if(btnDeducciones){
-        <div class="grid">
-          <div class="md:col-10">
+      }@else if(btnRetenciones){
+        <div class="grid ">
+          <div class="md:col-9">
             <div class="grid">
 
-              <div class="md:col-4">
+              <div class="md:col-6 m-1 md:m-auto">
                 <label for="desde" class="font-bold block mb-2"> Desde: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
-                    inputId="desde" />
+                  [(ngModel)]="desde"   inputId="desde" />
               </div>
-              <div class="md:col-4">
-                <label for="desde" class="font-bold block mb-2"> Hasta: </label>
+              <div class="md:col-6 m-1 md:m-auto">
+                <label for="hasta" class="font-bold block mb-2"> Hasta: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
-                    inputId="desde" />
+                    inputId="hasta" [(ngModel)]="hasta" />
               </div>
-              <div  class="md:col-4 text-align">
-                <label for="desde" class="font-bold block mb-2">
-                  Nro Factura: </label>
-                <input type="text"  class="w-11" pInputText  />
+              <div  class="col-12 md:hidden text-align retenciones__factura flex bg-blue-100">
+                 <div class="retenciones__icono" [ngClass]="{
+                  'block  md:hidden ':activeIndex===2
+                }">
+                  <p-button icon="pi pi-search"  severity="success"    />
+                 </div>
               </div>
             </div>
           </div>
-          <div class="md:col-2  flex align-items-center pt-5  gap-1 ">
-              <p-button icon="pi pi-search"  severity="success"  />
+          <div class="md:col-3 pt-5 " [ngClass]="{
+            'hidden overflow-hidden md:block ':activeIndex===2
+          }">
+          <div class="flex justify-content-center align-content-center gap-1">
+
+              <p-button icon="pi pi-search"  severity="success"  [ngClass]="{
+                'hidden overflow-hidden md:block ':activeIndex===2
+              }" (click)="search()"/>
+                                  <p-button  severity="success"
+                                   icon="pi pi-eraser"
+                                   (click)="getDataDeductions()"
+                                   [ngClass]="{
+                                    'hidden overflow-hidden md:block ':activeIndex===2
+                                  }"/>
+          </div>
           </div>
         </div>
       }
     </div>
-    <div class="text-center"  [ngClass]="{
-      'w-5 md:w-3  lg:w-5  text-left retenciones_2':activeIndex===3
-    }">
+    <div class="text-left md:text-center"  [ngClass]="{
+      'text-left  retenciones_2':activeIndex===3
+    }" >
 
         @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones && !btnPagosEfectuados){
           <h3 class="text-lg md:text-2xl">LISTA DE CUENTAS DE BANCO </h3>
         }@else if(!btnRegistrarBanco && btnDeducciones && !btnRetenciones && !btnPagosEfectuados  ){
           <h3 class="text-lg md:text-2xl md:mr-1">ESTADO DE CUENTA - RETENCIONES</h3>
         }@else if(!btnRegistrarBanco && !btnDeducciones && btnRetenciones && !btnPagosEfectuados ){
-          <h3 class="text-lg md:text-2xl">ESTADO DE CUENTA - DETRACCIONES </h3>
+          <h3 class="text-xl md:text-2xl">ESTADO DE CUENTA - DETRACCIONES </h3>
         }@else if(!btnRegistrarBanco && !btnDeducciones && !btnRetenciones && btnPagosEfectuados){
           <h3 class="text-lg md:text-2xl">PAGOS EFECTUADOS</h3>
         }@else {
-          <h3 class="text-2xl md:text-2xl">ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
+          <h3 class="text-xl  md:text-2xl">ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
         }
 
     </div>
