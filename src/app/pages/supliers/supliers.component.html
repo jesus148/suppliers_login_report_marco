@@ -127,14 +127,14 @@
               <div class="md:col-6 m-1 md:m-auto">
                 <label for="desde" class="font-bold block mb-2"> Desde: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
-                  [(ngModel)]="desde"   inputId="desde" />
+                  [(ngModel)]="desde"   inputId="desde" [maxDate]="maxDate" />
               </div>
               <div class="md:col-6 m-1 md:m-auto">
                 <label for="hasta" class="font-bold block mb-2"> Hasta: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
-                    inputId="hasta" [(ngModel)]="hasta" />
+                    inputId="hasta" [(ngModel)]="hasta" [maxDate]="maxDate"/>
               </div>
-              <div  class="col-12 md:hidden text-align retenciones__factura flex bg-blue-100">
+              <div  class="col-12 md:hidden text-align retenciones__factura flex ">
                  <div class="retenciones__icono" [ngClass]="{
                   'block  md:hidden ':activeIndex===2
                 }">
@@ -151,12 +151,12 @@
               <p-button icon="pi pi-search"  severity="success"  [ngClass]="{
                 'hidden overflow-hidden md:block ':activeIndex===2
               }" (click)="search()"/>
-                                  <p-button  severity="success"
+                                  <p-button  severity="danger"
                                    icon="pi pi-eraser"
                                    (click)="getDataDeductions()"
                                    [ngClass]="{
                                     'hidden overflow-hidden md:block ':activeIndex===2
-                                  }"/>
+                                  }" [disabled]="btnActive"/>
           </div>
           </div>
         </div>

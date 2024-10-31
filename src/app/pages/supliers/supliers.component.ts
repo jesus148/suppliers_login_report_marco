@@ -156,9 +156,12 @@ export class SupliersComponent implements OnInit {
 
 
 
-  //inputs fecha para consultas
+  //inputs fecha y btn para consultas y detracciones
   desde : Date| undefined;
   hasta:Date | undefined;
+  btnActive:boolean=true;
+  maxDate :Date;
+
 
 
 
@@ -259,6 +262,7 @@ export class SupliersComponent implements OnInit {
     // dataa pagos efectuados
     this.getPagosEfectuados();
 
+    this.maxDate= new Date();
   }
 
   // inicia
@@ -793,6 +797,9 @@ export class SupliersComponent implements OnInit {
     const token = localStorage.getItem('object');
     const data2 = JSON.parse(localStorage.getItem('object') || '');
 
+    this.btnActive === false? this.btnActive=true: this.btnActive=true ;
+
+
     if (token) {
       this.suppliers.getDeductions(data2.CardCode).subscribe((resp: any) => {
         this.dataDeductionsBanck = resp.rows;
@@ -803,8 +810,9 @@ export class SupliersComponent implements OnInit {
         this.messageService.msjError(err);
       });
     } else {
-      return console.log("false");
+      return console.log("no existe token");
     }
+
 
   }
   // metodo paginator
@@ -834,16 +842,26 @@ export class SupliersComponent implements OnInit {
 
   search(){
     if(!this.desde || !this.hasta){
-      return this.messageService.warningMessage('Ingresa las Fechas')
+      return this.messageService.warningMessage('Ingrese las Fechas Necesarias')
     }
 
     const desdeformato = this.formatDate(this.desde);
     const hastaformato = this.formatDate(this.hasta);
 
     this.suppliers.getDateDedductiones(this.cardCode,desdeformato , hastaformato).subscribe((data:any)=>{
+
+      if(data.rows.length === 0){
+        this.messageService.popUpServces('warn' ,'Error','No se encontraron datos en la tabla');
+        this.getDataDeductions();
+        this.clearInputs();
+        return
+      }
+
       this.dataDeductionsBanck = data.rows;
       this.totalRecords = data.rows.length;
       this.Paginator({ first: 0, rows: this.rows });
+      this.clearInputs();
+      this.btnActive=false;
     })
 
   }
@@ -861,6 +879,11 @@ export class SupliersComponent implements OnInit {
     return `${año}${mes}${dia}`
   }
 
+
+  clearInputs(){
+    this.desde= undefined;
+    this.hasta=undefined;
+  }
 
 
 
