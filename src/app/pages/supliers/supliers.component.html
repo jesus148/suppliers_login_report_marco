@@ -6,17 +6,11 @@
 
 <div class="col-11 md:col-11 relative mt-1" >
 
-
     <p-menubar class="" [model]="items" styleClass="menubar">
-
 
         <ng-template  pTemplate="start" class="" styleClass="menubar2">
           <div class="hidden md:flex md:mb-2 md:gap-3 md:justify-content-end ">
-
-
             <img src="assets/images/LogoMp2.png" height="38" class="mr-2">
-
-
 
               <p-button
                   (onClick)="activeIndex = 0"
@@ -29,8 +23,6 @@
                   label="Estado Cuenta"
                    severity="success"
                  />
-
-
 
               <p-button
                   (onClick)="activeIndex = 2"
@@ -65,8 +57,6 @@
                   label="Pagos Efectuados"
                   severity="success" />
 
-
-
                   <p-button
                   (onClick)="activeIndex = 1"
                   (onClick)="btnRegistrarBanco = true"
@@ -78,20 +68,11 @@
                   label="Cuentas de Banco"
                   severity="primary"
                   icon="pi pi-user-edit" />
-
-
-
           </div>
-
           <div class="flex mb-2 gap-3 justify-content-end  md:hidden">
             <img src="assets/images/LogoMp2.png" height="38" class="mr-2">
-
           </div>
-
-
-
         </ng-template>
-
   </p-menubar>
 
 
@@ -109,21 +90,60 @@
       <p-card #menu2 styleClass="menu2"
   class="h-7rem" >
 
-  <div class="flex flex-row-reverse  md:h-4rem mb-0 justify-content-between h-4rem" style="margin-bottom: -30px; "  [ngClass]="{
-    'md:h-6rem md:h-3rem retenciones':activeIndex===2
+  <div class="flex flex-row-reverse  md:h-6rem mb-0 justify-content-between h-4rem" style="margin-bottom: -30px; "  [ngClass]="{
+    'md:h-4rem cuentasBanco':activeIndex===1
   }">
     <div  [ngClass]="{
-      ' md:w-5 retenciones_1 ':activeIndex===2
+      'md:w-5 retenciones_1 ':activeIndex===2
     }">
 
       @if(btnRegistrarBanco){
       <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class="title"
       styleClass="text-sm w-9 md:w-11 md:text-base h-4rem md:h-3rem border-round-3xl md:border-round-xl" />
       }@else if(btnRetenciones){
-        <div class="grid ">
+        <div class="grid">
           <div class="md:col-9">
             <div class="grid">
+              <div class="md:col-6 m-1 md:m-auto">
+                <label for="desde" class="font-bold block mb-2"> Desde: </label>
+                <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
+                  [(ngModel)]="desde"   inputId="desde" [maxDate]="maxDate" />
+              </div>
+              <div class="md:col-6 m-1 md:m-auto">
+                <label for="hasta" class="font-bold block mb-2"> Hasta: </label>
+                <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="hasta" [(ngModel)]="hasta" [maxDate]="maxDate"/>
+              </div>
+              <div  class="col-12 md:hidden text-align retenciones__factura flex ">
+                 <div class="retenciones__icono" [ngClass]="{
+                  'block  md:hidden ':activeIndex===2
+                }">
+                  <p-button icon="pi pi-search"  severity="success"    />
+                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="md:col-3 pt-5 " [ngClass]="{
+            'hidden overflow-hidden md:block ':activeIndex===2
+          }">
+          <div class="flex justify-content-center align-content-center gap-1">
 
+              <p-button icon="pi pi-search"  severity="success"  [ngClass]="{
+                'hidden overflow-hidden md:block ':activeIndex===2
+              }" (click)="search()"/>
+                                  <p-button  severity="danger"
+                                   icon="pi pi-eraser"
+                                   (click)="getDataDeductions()"
+                                   [ngClass]="{
+                                    'hidden overflow-hidden md:block ':activeIndex===2
+                                  }" [disabled]="btnActive"/>
+          </div>
+          </div>
+        </div>
+      }@else if(btnDeducciones){
+        <div class="grid">
+          <div class="md:col-9">
+            <div class="grid">
               <div class="md:col-6 m-1 md:m-auto">
                 <label for="desde" class="font-bold block mb-2"> Desde: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
@@ -165,7 +185,6 @@
     <div class="text-left md:text-center"  [ngClass]="{
       'text-left  retenciones_2':activeIndex===3
     }" >
-
         @if(btnRegistrarBanco  && !btnDeducciones && !btnRetenciones && !btnPagosEfectuados){
           <h3 class="text-lg md:text-2xl">LISTA DE CUENTAS DE BANCO </h3>
         }@else if(!btnRegistrarBanco && btnDeducciones && !btnRetenciones && !btnPagosEfectuados  ){
@@ -177,7 +196,6 @@
         }@else {
           <h3 class="text-xl  md:text-2xl">ESTADO DE CUENTA - FACTURAS POR PAGAR</h3>
         }
-
     </div>
   </div>
 
@@ -402,7 +420,7 @@
                       <tr >
                           <th class="text-center">Serie_Correl</th>
                           <th class="text-center">Fec_Emisión</th>
-                          <th class="text-center">Fec_Vcto</th>
+                          <th class="text-center">Pago_Efectuado</th>
                           <!-- <th>Fecha Programacion</th> -->
                           <th class="text-right">Moneda</th>
                           <th class="text-right">Total_Documento</th>

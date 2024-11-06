@@ -385,7 +385,6 @@ export class SupliersComponent implements OnInit {
         const start = event.first;
         const end = event.first + event.rows;
         this.paginatedData1 = this.DataSupliers.slice(start, end);
-
   }
 
 
@@ -468,6 +467,7 @@ export class SupliersComponent implements OnInit {
       userCurrBank: this.divisas,
       bankAccountType: this.bankAccountType
     }
+
     if(this.accountNo?.length !== 14 && bankCreate.bankCode  === '002' && bankCreate.bankAccountType === 'A' ){
       return this.messageService.warningMessage('la cuenta de ahorros para BCP debe contar 14 digitos ');
     }else if(this.accountNo?.length !== 13 && bankCreate.bankCode  === '002' && bankCreate.bankAccountType === 'C' ){
@@ -479,8 +479,6 @@ export class SupliersComponent implements OnInit {
       this.spinner.show();
 
       this.suppliers.updateBanck2(bankCreate).subscribe((resp: any) => {
-
-
         this.getDataAccountBanck();
         this.messageService.popUpServces('success', 'Confirmación', 'Banco registrado correctamente');
         console.log(resp);
@@ -659,7 +657,6 @@ export class SupliersComponent implements OnInit {
     }else if(this.accountNo?.length !== 20 && updateBank.bankCode === '002' && updateBank.bankAccountType === 'CI' ){
       return this.messageService.warningMessage('la cuenta Interbancaria para BCP debe contar 20 digitos ');
     }else {
-
 
       this.spinner.show();
 
