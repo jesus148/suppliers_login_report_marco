@@ -148,7 +148,7 @@ export class LoginComponent {
         // console.log(resp.rows);
 
         // almacenando el token como objeto
-        // convierte a string de json
+        // /JSON.stringify :convierte un valor de JavaScript en una cadena JSON,osea convierte a string de json
         localStorage.setItem('object', JSON.stringify(resp.rows[0]));
 
         this.spinner.hide();

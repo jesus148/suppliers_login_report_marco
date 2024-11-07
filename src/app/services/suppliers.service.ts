@@ -74,17 +74,39 @@ export class SuppliersService {
 
 
 
-    // no usamos solo muestra
-    donwloadPdfMethod(cardCode : string , withholdingNumnber:string){
-      return this.http.get(`http://52.207.189.125:3000/withholdings-with-filters?cardCode=${cardCode}&withholdingNumnber=${withholdingNumnber}`)
-    }
-
-
-
     getDateDedductiones(cardCode:string, dateFrom :string , dateTo : string){
       return this.http.get(`${environmentPro.base_url}/deductions-by-dates?cardCode=${cardCode}&dateFrom=${dateFrom}&dateTo=${dateTo}`)
     }
 
+
+
+
+        // pdf retenciones
+        donwloadPdfMethod(cardCode : string , withholdingNumnber:string){
+          return this.http.get(`http://52.207.189.125:3000/withholdings-with-filters?cardCode=${cardCode}&withholdingNumnber=${withholdingNumnber}`)
+        }
+
+
+        // excel
+        // estado cuenta
+        DownloadXlsStateCount(cardCode:string){
+          return this.http.get(`${environmentPro.base_url}/account-state-report?cardCode=${cardCode}`)
+        }
+
+        // detracciones
+        DownloadXlsdetraccions(cardCode:string){
+          return this.http.get(`${environmentPro.base_url}/deductions-report?cardCode=${cardCode}`)
+        }
+
+        // retenciones
+        DownloadXlsWithholdings(cardCode:string){
+          return this.http.get(`${environmentPro.base_url}/withholdings-report?cardCode=${cardCode}`)
+        }
+
+        // pagos efectuados
+        DownloadXlsPaymentsMade(cardCode:string){
+          return this.http.get(`${environmentPro.base_url}/payed-invoices-report?cardCode=${cardCode}`)
+        }
 
 
 

@@ -19,6 +19,7 @@
                   (onClick)="btnRetenciones = false"
                   (onClick)="btnDeducciones = false"
                   (onClick)="btnPagosEfectuados=false"
+                  (onClick)="btnEstadoCuenta=true"
                   [outlined]="activeIndex !== 0"
                   label="Estado Cuenta"
                    severity="success"
@@ -29,6 +30,9 @@
                   (onClick)="btnRegistrarBanco = false"
                   (onClick)="btnRetenciones = true"
                   (onClick)="btnDeducciones = false"
+                  (onClick)="btnPagosEfectuados=false"
+                  (onClick)="btnEstadoCuenta=false"
+                  (onClick)="btnFirstCuenta=false"
                   styleClass="w-7rem h-3rem text-sm "
                   [outlined]="activeIndex !== 2"
                   label="Detracciones"
@@ -39,6 +43,9 @@
                   (onClick)="btnRegistrarBanco = false"
                   (onClick)="btnRetenciones = false"
                   (onClick)="btnDeducciones = true"
+                  (onClick)="btnPagosEfectuados=false"
+                  (onClick)="btnEstadoCuenta=false"
+                  (onClick)="btnFirstCuenta=false"
                   styleClass="w-7rem h-3rem text-sm"
                   [outlined]="activeIndex !== 3"
                   label="Retenciones"
@@ -50,8 +57,10 @@
                   (onClick)="activeIndex = 4"
                   (onClick)="btnRegistrarBanco = false"
                   (onClick)="btnRetenciones = false"
+                  (onClick)="btnEstadoCuenta=false"
                   (onClick)="btnDeducciones = false"
                   (onClick)="btnPagosEfectuados = true"
+                  (onClick)="btnFirstCuenta=false"
                   styleClass="w-7rem h-3rem text-sm"
                   [outlined]="activeIndex !== 4"
                   label="Pagos Efectuados"
@@ -62,7 +71,9 @@
                   (onClick)="btnRegistrarBanco = true"
                   (onClick)="btnRetenciones = false"
                   (onClick)="btnDeducciones = false"
+                  (onClick)="btnEstadoCuenta=false"
                   (onClick)="btnPagosEfectuados = false"
+                  (onClick)="btnFirstCuenta=false"
                   styleClass=" w-8rem h-3rem  text-sm p-2"
                   [outlined]="activeIndex !== 1"
                   label="Cuentas de Banco"
@@ -90,19 +101,20 @@
       <p-card #menu2 styleClass="menu2"
   class="h-7rem" >
 
-  <div class="flex flex-row-reverse  md:h-6rem mb-0 justify-content-between h-4rem" style="margin-bottom: -30px; "  [ngClass]="{
-    'md:h-4rem cuentasBanco':activeIndex===1
+  <div class="flex flex-row-reverse  md:h-6rem mb-0 justify-content-between h-4rem " style="margin-bottom: -30px; "  [ngClass]="{
+    'md:h-4rem cuentasBanco':activeIndex === 1
   }">
     <div  [ngClass]="{
-      'md:w-5 retenciones_1 ':activeIndex===2
+      'md:w-7': (btnEstadoCuenta || btnDeducciones || btnPagosEfectuados || btnFirstCuenta ) && !btnRegistrarBanco &&!btnRetenciones ,
+      'md:w-6':!btnEstadoCuenta &&(btnRetenciones || btnRegistrarBanco) && !btnDeducciones && !btnPagosEfectuados,
+      'md:text-right':btnRegistrarBanco===true,
     }">
-
       @if(btnRegistrarBanco){
       <p-button label="Registrar Banco" severity="primary" (onClick)="mostrarModal()" class="title"
-      styleClass="text-sm w-9 md:w-11 md:text-base h-4rem md:h-3rem border-round-3xl md:border-round-xl" />
+      styleClass="text-sm w-9 md:w-3 md:text-base h-4rem md:h-3rem border-round-3xl md:border-x-2" />
       }@else if(btnRetenciones){
         <div class="grid">
-          <div class="md:col-9">
+          <div class="md:col-8">
             <div class="grid">
               <div class="md:col-6 m-1 md:m-auto">
                 <label for="desde" class="font-bold block mb-2"> Desde: </label>
@@ -123,7 +135,7 @@
               </div>
             </div>
           </div>
-          <div class="md:col-3 pt-5 " [ngClass]="{
+          <div class="md:col-4 pt-5 " [ngClass]="{
             'hidden overflow-hidden md:block ':activeIndex===2
           }">
           <div class="flex justify-content-center align-content-center gap-1">
@@ -137,6 +149,7 @@
                                    [ngClass]="{
                                     'hidden overflow-hidden md:block ':activeIndex===2
                                   }" [disabled]="btnActive"/>
+                                                                  <p-button icon="pi pi-file-excel" [rounded]="true" severity="success" (click)="getDownloadXlsdetraccions()" />
           </div>
           </div>
         </div>
@@ -144,12 +157,16 @@
         <div class="grid">
           <div class="md:col-9">
             <div class="grid">
-              <div class="md:col-6 m-1 md:m-auto">
+              <div class="md:col-4 m-1 md:m-auto">
+                <label for="comprobante" class="font-bold block mb-2">Comprobante</label>
+                <input type="text" pInputText  class="w-12">
+              </div>
+              <div class="md:col-4 m-1 md:m-auto">
                 <label for="desde" class="font-bold block mb-2"> Desde: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
                   [(ngModel)]="desde"   inputId="desde" [maxDate]="maxDate" />
               </div>
-              <div class="md:col-6 m-1 md:m-auto">
+              <div class="md:col-4 m-1 md:m-auto">
                 <label for="hasta" class="font-bold block mb-2"> Hasta: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
                     inputId="hasta" [(ngModel)]="hasta" [maxDate]="maxDate"/>
@@ -163,9 +180,7 @@
               </div>
             </div>
           </div>
-          <div class="md:col-3 pt-5 " [ngClass]="{
-            'hidden overflow-hidden md:block ':activeIndex===2
-          }">
+          <div class="md:col-3 pt-5 " >
           <div class="flex justify-content-center align-content-center gap-1">
 
               <p-button icon="pi pi-search"  severity="success"  [ngClass]="{
@@ -177,6 +192,83 @@
                                    [ngClass]="{
                                     'hidden overflow-hidden md:block ':activeIndex===2
                                   }" [disabled]="btnActive"/>
+                                <p-button icon="pi pi-file-excel" [rounded]="true" severity="success"  (click)="DownloadXlsWithholdings()" />
+          </div>
+          </div>
+        </div>
+      }@else if(btnPagosEfectuados){
+        <div class="grid">
+          <div class="md:col-9">
+            <div class="grid">
+              <div class="md:col-4 m-1 md:m-auto">
+                <label for="comprobante" class="font-bold block mb-2">Comprobante</label>
+                <input type="text" pInputText  class="w-12">
+              </div>
+              <div class="md:col-4 m-1 md:m-auto">
+                <label for="desde" class="font-bold block mb-2"> Desde: </label>
+                <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
+                  [(ngModel)]="desde"   inputId="desde" [maxDate]="maxDate" />
+              </div>
+              <div class="md:col-4 m-1 md:m-auto">
+                <label for="hasta" class="font-bold block mb-2"> Hasta: </label>
+                <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="hasta" [(ngModel)]="hasta" [maxDate]="maxDate"/>
+              </div>
+              <div  class="col-12 md:hidden text-align retenciones__factura flex ">
+                 <div class="retenciones__icono" [ngClass]="{
+                  'block  md:hidden ':activeIndex===2
+                }">
+                  <p-button icon="pi pi-search"  severity="success"    />
+                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="md:col-3 pt-5 " >
+          <div class="flex justify-content-center align-content-center gap-1">
+
+              <p-button icon="pi pi-search"  severity="success"  [ngClass]="{
+                'hidden overflow-hidden md:block ':activeIndex===2
+              }" (click)="search()"/>
+                                  <p-button  severity="danger"
+                                   icon="pi pi-eraser"
+                                   (click)="getDataDeductions()"
+                                   [ngClass]="{
+                                    'hidden overflow-hidden md:block ':activeIndex===2
+                                  }" [disabled]="btnActive"/>
+                                <p-button icon="pi pi-file-excel" [rounded]="true" severity="success"
+                                (click)="getDownloadXslsPaymentsMade()"/>
+          </div>
+          </div>
+        </div>
+      }@else if(btnEstadoCuenta || btnFirstCuenta){
+        <div class="grid">
+          <div class="md:col-9">
+            <div class="grid">
+              <div class="md:col-4 m-1 md:m-auto">
+                <label for="comprobante" class="font-bold block mb-2">Comprobante</label>
+                <input type="text" pInputText  class="w-12">
+              </div>
+              <div class="md:col-4 m-1 md:m-auto">
+                <label for="desde" class="font-bold block mb-2"> Desde: </label>
+                <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
+                  [(ngModel)]="desde"   inputId="desde" [maxDate]="maxDate" />
+              </div>
+              <div class="md:col-4 m-1 md:m-auto">
+                <label for="hasta" class="font-bold block mb-2"> Hasta: </label>
+                <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="hasta" [(ngModel)]="hasta" [maxDate]="maxDate"/>
+              </div>
+            </div>
+          </div>
+          <div class="md:col-3 pt-5 " >
+          <div class="flex justify-content-center align-content-center gap-1">
+              <p-button icon="pi pi-search"  severity="success"  (click)="search()"/>
+                                  <p-button  severity="danger"
+                                   icon="pi pi-eraser"
+                                   (click)="getDataDeductions()"
+                                 [disabled]="btnActive"/>
+                                <p-button icon="pi pi-file-excel" [rounded]="true" severity="success"
+                                (click)="getDownloadXlsStateCount()"/>
           </div>
           </div>
         </div>
@@ -425,7 +517,7 @@
                           <th class="text-right">Moneda</th>
                           <th class="text-right">Total_Documento</th>
                           <th class="text-right">Monto_Pagada</th>
-                          <th class="text-right">Saldo_Pendiente</th>
+                          <!-- <th class="text-right">Saldo_Pendiente</th> -->
                           <!-- <th></th> -->
                       </tr>
                   </ng-template>
@@ -440,10 +532,9 @@
                                     <!-- mejora el decimal con 2   -->
                                     <td class="text-right"> {{  supliers.Total_Documento | number:   '1.2-2' }}</td>
                                     <td class="text-right">{{ supliers.Monto_pagado  | number:   '1.2' }}</td>
-                                    <td class="flex justify-content-end">
+                                    <!-- <td class="flex justify-content-end">
                                       {{ supliers.Saldo_pendiente | number:'1.3-3' }}
-                                    </td>
-
+                                    </td> -->
                                 </tr>
                             </ng-template>
                   </p-table>

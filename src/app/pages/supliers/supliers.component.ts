@@ -1,33 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { CardModule } from 'primeng/card';
-import { ChartModule } from 'primeng/chart';
-import { MenubarModule } from 'primeng/menubar';
-import { TableModule } from 'primeng/table';
-import { LoginService } from '../../services/login.service';
-import { Router } from '@angular/router';
-import { MessagesService } from '../../services/messages.service';
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DialogModule } from 'primeng/dialog';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { MegaMenuModule } from 'primeng/megamenu';
-import { TabViewModule } from 'primeng/tabview';
-import { SuppliersService } from '../../services/suppliers.service';
-import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
-import { ToastModule } from 'primeng/toast';
 import { Withholdings } from '../../interfaces/withholdings.model';
+import { ToastModule } from 'primeng/toast';
+import { TabViewModule } from 'primeng/tabview';
+import { TableModule } from 'primeng/table';
+import { SuppliersService } from '../../services/suppliers.service';
+import { SpinnerComponent } from '../../spinner/spinner/spinner.component';
+import { Router } from '@angular/router';
+import { PayedInvoices } from '../../interfaces/PayedInvoices';
 import { PaginatorModule } from 'primeng/paginator';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
-import { SpinnerComponent } from '../../spinner/spinner/spinner.component';
-import { CalendarModule } from 'primeng/calendar';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MessagesService } from '../../services/messages.service';
+import { MenuItem } from 'primeng/api';
+import { MenubarModule } from 'primeng/menubar';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { LoginService } from '../../services/login.service';
 import { InputTextModule } from 'primeng/inputtext';
-import { PayedInvoices } from '../../interfaces/PayedInvoices';
-
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChartModule } from 'primeng/chart';
+import { CardModule } from 'primeng/card';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import {environmentPro} from '../../../environments/enviroment.prod';
 
 
 @Component({
@@ -117,7 +117,8 @@ export class SupliersComponent implements OnInit {
   btnRetenciones: boolean = false;
   btnDeducciones: boolean = false;
   btnPagosEfectuados:boolean = false;
-
+  btnEstadoCuenta:boolean=false;
+  btnFirstCuenta:boolean = true;
   // banco
   // modalactualizar
   modalActualizar: boolean = false;
@@ -365,8 +366,6 @@ export class SupliersComponent implements OnInit {
 
     const token = localStorage.getItem('object');
     const data2 = JSON.parse(localStorage.getItem('object') || '');
-
-
     this.loginService.getData(data2.CardCode).subscribe((resp: any) => {
 
       this.DataSupliers = resp.rows;
@@ -386,34 +385,21 @@ export class SupliersComponent implements OnInit {
         const end = event.first + event.rows;
         this.paginatedData1 = this.DataSupliers.slice(start, end);
   }
-
-
-  getDataAccountBanck() {
-
-    const token = localStorage.getItem('object');
-    const data2 = JSON.parse(localStorage.getItem('object') || '');
-
-
-    if (token) {
-
-      this.suppliers.getBankAccount(data2.CardCode).subscribe((resp: any) => {
-        this.dataSuppliersBanck = resp.rows;
-
-      }, (err) => {
-        //  this.messagesService.showError(err.error.message);
-      });
-    } else {
-      return console.log("false");
-    }
-
+  getDownloadXlsStateCount(){
+    const url = `${environmentPro.base_url}/account-state-report?cardCode=${this.cardCode}`;
+    window.open(url, '_blank');
   }
+
+
+
+
 
 
   // cargar usuario datos del cliente
   cargarUsuario() {
     // obtiene el token
     const allObject = localStorage.getItem('object');
-    // conviritendo de objeto a string
+    // JSON.parse :analiza una cadena JSON y construye el valor u objeto de JavaScript descrito por la cadena.
     const data2 = JSON.parse(allObject || '');
     this.usuario = data2.CardName;
     this.cardCode = data2.CardCode;
@@ -453,6 +439,31 @@ export class SupliersComponent implements OnInit {
     });
 
   }
+
+
+
+
+
+
+
+
+  // data cuenta de banco
+  getDataAccountBanck() {
+
+    const token = localStorage.getItem('object');
+    const data2 = JSON.parse(localStorage.getItem('object') || '');
+    if (token) {
+      this.suppliers.getBankAccount(data2.CardCode).subscribe((resp: any) => {
+        this.dataSuppliersBanck = resp.rows;
+      }, (err) => {
+        //  this.messagesService.showError(err.error.message);
+      });
+    } else {
+      return console.log("false");
+    }
+
+  }
+
 
 
   // registar banco
@@ -582,6 +593,11 @@ export class SupliersComponent implements OnInit {
 
 
 
+
+
+
+
+
   // listar pagos efectuados
 
   getPagosEfectuados() {
@@ -603,8 +619,14 @@ export class SupliersComponent implements OnInit {
       const start = event.first;
       const end = event.first + event.rows;
       this.paginatedData5 = this.dataPayinvoices.slice(start, end);
-
     }
+
+    getDownloadXslsPaymentsMade(){
+      const url = `${environmentPro.base_url}/payed-invoices-report?cardCode=${this.cardCode}`;
+      window.open(url, '_blank');
+    }
+
+
 
 
 
@@ -765,8 +787,13 @@ export class SupliersComponent implements OnInit {
     const start = event.first;
     const end = event.first + event.rows;
     this.paginatedData2 = this.dataWithholdings.slice(start, end);
-
   }
+
+  DownloadXlsWithholdings(){
+    const url = `${environmentPro.base_url}/withholdings-report?cardCode=${this.cardCode}`;
+    window.open(url, '_blank');
+  }
+
 
 
 
@@ -881,6 +908,12 @@ export class SupliersComponent implements OnInit {
     this.desde= undefined;
     this.hasta=undefined;
   }
+
+  getDownloadXlsdetraccions(){
+    const url = `${environmentPro.base_url}/deductions-report?cardCode=${this.cardCode}`;
+    window.open(url, '_blank');
+  }
+
 
 
 
