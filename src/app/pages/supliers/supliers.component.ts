@@ -28,6 +28,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import {environmentPro} from '../../../environments/enviroment.prod';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -244,8 +245,8 @@ export class SupliersComponent implements OnInit {
     private suppliers: SuppliersService,
     private formBuilder: FormBuilder,
     private messageService: MessagesService,
-    private spinner: NgxSpinnerService
-
+    private spinner: NgxSpinnerService,
+    private hhtpclient:HttpClient
   ) {
 
     // metodo get supliers
@@ -264,6 +265,8 @@ export class SupliersComponent implements OnInit {
     this.getPagosEfectuados();
 
     this.maxDate= new Date();
+
+
   }
 
   // inicia
@@ -360,7 +363,11 @@ export class SupliersComponent implements OnInit {
 
   }
 
-  // ESTADO DE CUENTA
+
+
+
+
+  // ESTADO DE CUENTA 
   // metodo registra la data
   listData() {
 
@@ -440,6 +447,22 @@ export class SupliersComponent implements OnInit {
 
   }
 
+  getDownloadXlsAccountState(){
+    if(this.btnActive){
+      this.hhtpclient.post( `${environmentPro.base_url}/deductions-report`, {rows:this.dataDeductionsBanck}).subscribe((data:any)=>{
+        window.open(data.publicPath, '_blank');
+      } , (error)=>{
+        console.log(error);
+      })
+    }
+
+    this.hhtpclient.post( `${environmentPro.base_url}/deductions-report`, {rows:this.paginatedData}).subscribe((data:any)=>{
+      window.open(data.publicPath, '_blank');
+    } , (error)=>{
+      console.log(error);
+    })
+
+  }
 
 
 
@@ -447,7 +470,17 @@ export class SupliersComponent implements OnInit {
 
 
 
-  // data cuenta de banco
+
+
+
+
+
+
+
+
+
+
+  // CUENTAS DE BANCO
   getDataAccountBanck() {
 
     const token = localStorage.getItem('object');
@@ -464,8 +497,6 @@ export class SupliersComponent implements OnInit {
 
   }
 
-
-
   // registar banco
   registrarBank() {
     if (!this.registrarBanco.valid) {
@@ -478,7 +509,6 @@ export class SupliersComponent implements OnInit {
       userCurrBank: this.divisas,
       bankAccountType: this.bankAccountType
     }
-
     if(this.accountNo?.length !== 14 && bankCreate.bankCode  === '002' && bankCreate.bankAccountType === 'A' ){
       return this.messageService.warningMessage('la cuenta de ahorros para BCP debe contar 14 digitos ');
     }else if(this.accountNo?.length !== 13 && bankCreate.bankCode  === '002' && bankCreate.bankAccountType === 'C' ){
@@ -580,14 +610,28 @@ export class SupliersComponent implements OnInit {
       { value: 'USD', name: 'Dolar Americano' },
       { value: 'PEN', name: 'Soles' }
     ];
-
-
-
     this.bankCode = '';
     this.accountNo = '';
     this.divisas = '';
     this.bankAccountType = '';
-
+  }
+  public invitationMap = {
+    '001': 'BANCO CENTRAL DE RESERVA',
+    '002': 'BANCO DE CREDITO DEL PERU',
+    '003': 'INTERBANK',
+    '004': 'BANCO INTERAMERICANO DE FINANZAS',
+    '007': 'CITIBANK',
+    '008': 'STANDARD CHARTERED',
+    '009': 'BANCO SCOTIABANK',
+    '011': 'BBVA',
+    '018': 'BANCO DE LA NACION',
+    '035': 'BANCO PICHINCHA',
+    '038': 'BANBIF',
+    '042': 'BANCO DEL LIBERTADOR',
+    '043': 'BANCO DEL TRABAJO',
+    '053': 'BANCO GNB',
+    '056': 'BANCO SANTANDER',
+    '803': 'CMAC AREQUIPA'
   }
 
 
@@ -598,8 +642,12 @@ export class SupliersComponent implements OnInit {
 
 
 
-  // listar pagos efectuados
 
+
+
+
+
+  // listar pagos efectuados
   getPagosEfectuados() {
     const data2 = JSON.parse(localStorage.getItem('object') || '');
 
@@ -789,6 +837,15 @@ export class SupliersComponent implements OnInit {
     this.paginatedData2 = this.dataWithholdings.slice(start, end);
   }
 
+  async donwoladPdf(cardCode: string , withholdingNumnber : string){
+    try {
+    const url = `http://52.207.189.125:3000/withholdings-with-filters?cardCode=${cardCode}&&withholdingNumnber=${withholdingNumnber}`;
+    window.open(url, '_blank');
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   DownloadXlsWithholdings(){
     const url = `${environmentPro.base_url}/withholdings-report?cardCode=${this.cardCode}`;
     window.open(url, '_blank');
@@ -817,19 +874,16 @@ export class SupliersComponent implements OnInit {
 
   // data de la detracciones=====
   getDataDeductions() {
-
     const token = localStorage.getItem('object');
     const data2 = JSON.parse(localStorage.getItem('object') || '');
 
     this.btnActive === false? this.btnActive=true: this.btnActive=true ;
-
 
     if (token) {
       this.suppliers.getDeductions(data2.CardCode).subscribe((resp: any) => {
         this.dataDeductionsBanck = resp.rows;
         this.totalRecords = resp.rows.length;
         this.Paginator({ first: 0, rows: this.rows });
-
       }, (err) => {
         this.messageService.msjError(err);
       });
@@ -841,7 +895,6 @@ export class SupliersComponent implements OnInit {
   }
   // metodo paginator
   Paginator(event: any): void {
-
     // event.first es el event rows actual
     const start = event.first;
     const end = event.first + event.rows;
@@ -852,16 +905,6 @@ export class SupliersComponent implements OnInit {
     const start=event.first;
     const end= event.first + event.rows;
     this.paginatedData = this.dataDeductionsBanck.slice(start, end);
-  }
-  async donwoladPdf(cardCode: string , withholdingNumnber : string){
-    try {
-
-    const url = `http://52.207.189.125:3000/withholdings-with-filters?cardCode=${cardCode}&&withholdingNumnber=${withholdingNumnber}`;
-    window.open(url, '_blank');
-
-    } catch (error) {
-      console.log(error)
-    }
   }
 
   search(){
@@ -910,8 +953,23 @@ export class SupliersComponent implements OnInit {
   }
 
   getDownloadXlsdetraccions(){
-    const url = `${environmentPro.base_url}/deductions-report?cardCode=${this.cardCode}`;
-    window.open(url, '_blank');
+    // const url = `${environmentPro.base_url}/deductions-report?cardCode=${this.cardCode}`;
+    // window.open(url, '_blank');
+
+    if(this.btnActive){
+      this.hhtpclient.post( `${environmentPro.base_url}/deductions-report`, {rows:this.dataDeductionsBanck}).subscribe((data:any)=>{
+        window.open(data.publicPath, '_blank');
+      } , (error)=>{
+        console.log(error);
+      })
+    }
+
+    this.hhtpclient.post( `${environmentPro.base_url}/deductions-report`, {rows:this.paginatedData}).subscribe((data:any)=>{
+      window.open(data.publicPath, '_blank');
+    } , (error)=>{
+      console.log(error);
+    })
+
   }
 
 

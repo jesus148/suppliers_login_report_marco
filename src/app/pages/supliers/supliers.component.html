@@ -146,9 +146,7 @@
                                   <p-button  severity="danger"
                                    icon="pi pi-eraser"
                                    (click)="getDataDeductions()"
-                                   [ngClass]="{
-                                    'hidden overflow-hidden md:block ':activeIndex===2
-                                  }" [disabled]="btnActive"/>
+                                  [disabled]="btnActive"/>
                                                                   <p-button icon="pi pi-file-excel" [rounded]="true" severity="success" (click)="getDownloadXlsdetraccions()" />
           </div>
           </div>
@@ -369,7 +367,7 @@
                   </ng-template>
                                   <ng-template pTemplate="body" let-supliersbanck let-i="rowIndex" >
                                 <tr>
-                                    <td class="text-center">{{ supliersbanck.Codigo_Banco }}</td>
+                                    <td class="text-center">{{ supliersbanck.Codigo_Banco |i18nSelect:invitationMap }}</td>
                                     <!-- lo corta el valor  -->
                                     <td class="text-center">{{ supliersbanck.Pais }}</td>
                                     <td class="text-center">{{ supliersbanck.Cuenta}}</td>
