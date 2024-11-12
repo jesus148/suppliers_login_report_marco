@@ -367,7 +367,7 @@ export class SupliersComponent implements OnInit {
 
 
 
-  // ESTADO DE CUENTA 
+  // ESTADO DE CUENTA
   // metodo registra la data
   listData() {
 
@@ -393,9 +393,18 @@ export class SupliersComponent implements OnInit {
         this.paginatedData1 = this.DataSupliers.slice(start, end);
   }
   getDownloadXlsStateCount(){
-    const url = `${environmentPro.base_url}/account-state-report?cardCode=${this.cardCode}`;
-    window.open(url, '_blank');
+    this.suppliers.DownloadXlsStateCount( this.DataSupliers).subscribe((data:any)=>{
+      window.open(data.publicPath,'_blank')
+    },(error)=>{
+      console.log(error);
+    })
+
   }
+
+
+
+
+
 
 
 

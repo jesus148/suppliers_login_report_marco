@@ -89,8 +89,8 @@ export class SuppliersService {
 
         // excel
         // estado cuenta
-        DownloadXlsStateCount(cardCode:string){
-          return this.http.get(`${environmentPro.base_url}/account-state-report?cardCode=${cardCode}`)
+        DownloadXlsStateCount(body:any){
+          return this.http.post(`${environmentPro.base_url}/account-state-report`,{rows :body})
         }
 
         // detracciones
