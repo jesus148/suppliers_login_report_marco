@@ -166,6 +166,14 @@ export class SupliersComponent implements OnInit {
 
 
 
+    //inputs fecha y btn para consultas y estado de cuenta
+    desdeState : Date| undefined;
+    hastaState:Date | undefined;
+    btnActiveState:boolean=true;
+    maxDateState :Date;
+    comprobante:string ='';
+
+
 
   // array de bancosz
   listaBancos: any = [
@@ -264,8 +272,11 @@ export class SupliersComponent implements OnInit {
     // dataa pagos efectuados
     this.getPagosEfectuados();
 
+
+    // seteando variable fechas consultas
     this.maxDate= new Date();
 
+    this.maxDateState = new Date();
 
   }
 
@@ -400,6 +411,33 @@ export class SupliersComponent implements OnInit {
     })
 
   }
+  seachStateCount(){
+
+    if(!this.desdeState || !this.hastaState){
+      return this.messageService.warningMessage('Ingrese las Fechas Necesarias')
+    }
+
+    if(!this.comprobante){
+      // formato fechas para las consultas
+      const desdeformato=this.formatDate(this.desdeState);
+      const hastaformato=this.formatDate(this.hastaState);
+
+      return this.suppliers.getQueryStateCountDate(this.cardCode, desdeformato , hastaformato).subscribe((res:any)=>{
+        console.log(res.rows)
+      })
+    }
+
+    const desdeformato=this.formatDate(this.desdeState);
+    const hastaformato=this.formatDate(this.hastaState);
+    console.log(desdeformato , hastaformato , this.comprobante);
+    return this.suppliers.getQueryStateCountDateCompro(this.cardCode,desdeformato , hastaformato , this.comprobante).subscribe((res:any)=>{
+      console.log(res.rows);
+    },(error=>{
+      console.log(error)
+    }))
+
+  }
+
 
 
 
@@ -678,10 +716,15 @@ export class SupliersComponent implements OnInit {
       this.paginatedData5 = this.dataPayinvoices.slice(start, end);
     }
 
-    getDownloadXslsPaymentsMade(){
-      const url = `${environmentPro.base_url}/payed-invoices-report?cardCode=${this.cardCode}`;
-      window.open(url, '_blank');
+    getDownloadXlsPaymentsMade(){
+      this.suppliers.DownloadXlsPaymentsMade( this.dataPayinvoices).subscribe((data:any)=>{
+        window.open(data.publicPath,'_blank')
+      },(error)=>{
+        console.log(error);
+      })
+
     }
+
 
 
 
@@ -829,6 +872,7 @@ export class SupliersComponent implements OnInit {
 
       }, (err) => {
 
+
         console.log(err);
         this.messageService.msjError(err);
 
@@ -855,11 +899,14 @@ export class SupliersComponent implements OnInit {
     }
   }
 
-  DownloadXlsWithholdings(){
-    const url = `${environmentPro.base_url}/withholdings-report?cardCode=${this.cardCode}`;
-    window.open(url, '_blank');
-  }
+  getDownloadXlswithholdings(){
+    this.suppliers.DownloadXlsWithholdings( this.dataWithholdings).subscribe((data:any)=>{
+      window.open(data.publicPath,'_blank')
+    },(error)=>{
+      console.log(error);
+    })
 
+  }
 
 
 

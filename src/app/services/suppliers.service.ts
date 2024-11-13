@@ -99,16 +99,25 @@ export class SuppliersService {
         }
 
         // retenciones
-        DownloadXlsWithholdings(cardCode:string){
-          return this.http.get(`${environmentPro.base_url}/withholdings-report?cardCode=${cardCode}`)
+        DownloadXlsWithholdings(body:any){
+          return this.http.post(`${environmentPro.base_url}/withholdings-report`,{ rows : body})
         }
 
         // pagos efectuados
-        DownloadXlsPaymentsMade(cardCode:string){
-          return this.http.get(`${environmentPro.base_url}/payed-invoices-report?cardCode=${cardCode}`)
+        DownloadXlsPaymentsMade(body:any){
+          return this.http.post(`${environmentPro.base_url}/payed-invoices-report`,{rows:body})
         }
 
 
+
+
+        getQueryStateCountDate(cardCode:string, dateFrom :string , dateTo : string){
+          return this.http.get(`${environmentPro.base_url}/account-state-by-dates?cardCode=${cardCode}&dateFrom=${dateFrom}&dateTo=${dateTo}`)
+        }
+
+        getQueryStateCountDateCompro(carCode:string, dateFrom:string,dateTo:string, docNum:String){
+          return this.http.get(`${environmentPro.base_url}/account-state-by-dates-and-docnum?cardCode=${carCode}&dateFrom=${dateFrom}&dateTo=${dateTo}&docNum=${docNum}`)
+        }
 
 
 
