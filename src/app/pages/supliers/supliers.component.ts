@@ -163,6 +163,14 @@ export class SupliersComponent implements OnInit {
   hasta:Date | undefined;
   btnActive:boolean=true;
   maxDate :Date;
+  comprobanteDetra:string='';
+
+
+
+    //inputs fecha y btn para consultas y retenciones
+    desdeRetencion : Date| undefined;
+    hastaRetencion:Date | undefined;
+    comprobanteRete:string='';
 
 
 
@@ -172,6 +180,8 @@ export class SupliersComponent implements OnInit {
     btnActiveState:boolean=true;
     maxDateState :Date;
     comprobante:string ='';
+
+
 
 
 
@@ -418,10 +428,10 @@ export class SupliersComponent implements OnInit {
     }
 
     if(!this.comprobante){
+      console.log("sin compro")
       // formato fechas para las consultas
       const desdeformato=this.formatDate(this.desdeState);
       const hastaformato=this.formatDate(this.hastaState);
-
       return this.suppliers.getQueryStateCountDate(this.cardCode, desdeformato , hastaformato).subscribe((res:any)=>{
         console.log(res.rows)
       })
@@ -429,7 +439,6 @@ export class SupliersComponent implements OnInit {
 
     const desdeformato=this.formatDate(this.desdeState);
     const hastaformato=this.formatDate(this.hastaState);
-    console.log(desdeformato , hastaformato , this.comprobante);
     return this.suppliers.getQueryStateCountDateCompro(this.cardCode,desdeformato , hastaformato , this.comprobante).subscribe((res:any)=>{
       console.log(res.rows);
     },(error=>{
@@ -861,6 +870,10 @@ export class SupliersComponent implements OnInit {
     const token = localStorage.getItem('object');
     const data2 = JSON.parse(localStorage.getItem('object') || '');
 
+
+    this.btnActive === false? this.btnActive=true: this.btnActive=true ;
+
+
     if (token) {
 
       this.suppliers.getWithholdings(data2.CardCode).subscribe((resp: any) => {
@@ -907,7 +920,19 @@ export class SupliersComponent implements OnInit {
     })
 
   }
+  searchretenciones(){
+    if(!this.desde && !this.hasta && !this.comprobanteRete) return;
 
+      return this.suppliers.getWithholdingsquerycardCodeDocNum(this.cardCode, this.comprobanteRete).subscribe((data:any)=>{
+        this.dataWithholdings = data.rows;
+        this.totalRecords = data.rows.length;
+        this.Paginator2({ first: 0, rows: this.rows });
+        this.clearInputs();
+        this.btnActive=false;
+      },(error)=>{
+        console.log(error)
+      })
+  }
 
 
 
@@ -964,14 +989,27 @@ export class SupliersComponent implements OnInit {
   }
 
   search(){
+    if(!this.desde && !this.hasta && !this.comprobanteDetra) return;
+
     if(!this.desde || !this.hasta){
-      return this.messageService.warningMessage('Ingrese las Fechas Necesarias')
+      // return this.messageService.warningMessage('Ingrese las Fechas Necesarias')
+      return this.suppliers.getDeducctionsDocnumCardcode(this.cardCode, this.comprobanteDetra).subscribe((data:any)=>{
+        this.dataDeductionsBanck = data.rows;
+        this.totalRecords = data.rows.length;
+        this.Paginator({ first: 0, rows: this.rows });
+        this.clearInputs();
+        this.btnActive=false;
+      },(error)=>{
+        console.log(error)
+      })
+
     }
+
 
     const desdeformato = this.formatDate(this.desde);
     const hastaformato = this.formatDate(this.hasta);
 
-    this.suppliers.getDateDedductiones(this.cardCode,desdeformato , hastaformato).subscribe((data:any)=>{
+    return this.suppliers.getDateDedductiones(this.cardCode,desdeformato , hastaformato).subscribe((data:any)=>{
 
       if(data.rows.length === 0){
         this.messageService.popUpServces('warn' ,'Error','No se encontraron datos en la tabla');
@@ -998,7 +1036,7 @@ export class SupliersComponent implements OnInit {
     let mes= `${date.getMonth() + 1}`;
     mes= (mes.length === 1)? `0${mes}`:mes;
 
-    let año = `${ date.getFullYear()}`
+    let año = `${ date.getFullYear()}`;
     return `${año}${mes}${dia}`
   }
 
@@ -1006,6 +1044,7 @@ export class SupliersComponent implements OnInit {
   clearInputs(){
     this.desde= undefined;
     this.hasta=undefined;
+    this.comprobanteDetra='';
   }
 
   getDownloadXlsdetraccions(){

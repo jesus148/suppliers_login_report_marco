@@ -233,9 +233,8 @@ justify-content: flex-end;
       width: 2rem ;
       height: 2rem;
     }
-
-
   }
+
 
 
   /* tabla quitar linea headers */
@@ -247,7 +246,12 @@ justify-content: flex-end;
   }
 
 
-
+::ng-deep .p-button .p-button-label {
+  font-family: "New Amsterdam", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
 
   /* estilos cuentas banco */
 .cuentasBanco{
