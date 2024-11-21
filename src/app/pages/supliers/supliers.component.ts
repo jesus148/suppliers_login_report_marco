@@ -185,6 +185,7 @@ export class SupliersComponent implements OnInit {
 
 
 
+
   // array de bancosz
   listaBancos: any = [
     { value: '001', name: 'BANCO CENTRAL DE RESERVA' },
@@ -391,20 +392,26 @@ export class SupliersComponent implements OnInit {
   // ESTADO DE CUENTA
   // metodo registra la data
   listData() {
-
     const token = localStorage.getItem('object');
     const data2 = JSON.parse(localStorage.getItem('object') || '');
+
+    this.btnActiveState === false? this.btnActiveState=true: this.btnActiveState=true ;
     this.loginService.getData(data2.CardCode).subscribe((resp: any) => {
 
       this.DataSupliers = resp.rows;
-      this.loading = true;
       this.totalRecords1 = resp.rows.length;
       this.Paginator1({ first: 0, rows: this.rows1 });
-
+      this.clearInputs();
+      // this.btnActiveState=false;
     }, (err) => {
-      // this.messagesService.showError(err.error.message);
-    });
+      console.log(err);
+        });
 
+  }
+  clearInputsState(){
+    this.desdeState= undefined;
+    this.hastaState=undefined;
+    this.comprobante='';
   }
   // metodo paginator s
   Paginator1(event: any): void {
@@ -422,25 +429,32 @@ export class SupliersComponent implements OnInit {
 
   }
   seachStateCount(){
-
-    if(!this.desdeState || !this.hastaState){
-      return this.messageService.warningMessage('Ingrese las Fechas Necesarias')
+    if(!this.desdeState && !this.hastaState && !this.comprobante){
+      // return this.messageService.warningMessage('Ingrese las Fechas Necesarias');
+      return
     }
 
-    if(!this.comprobante){
-      console.log("sin compro")
+    if(!this.comprobante && this.desdeState && this.hastaState){
       // formato fechas para las consultas
       const desdeformato=this.formatDate(this.desdeState);
       const hastaformato=this.formatDate(this.hastaState);
       return this.suppliers.getQueryStateCountDate(this.cardCode, desdeformato , hastaformato).subscribe((res:any)=>{
-        console.log(res.rows)
+        this.DataSupliers = res.rows;
+        this.totalRecords1 = res.rows.length;
+        this.btnActiveState=false;
+        this.clearInputsState();
+        this.Paginator1({ first: 0, rows: this.rows1 });
       })
     }
 
-    const desdeformato=this.formatDate(this.desdeState);
-    const hastaformato=this.formatDate(this.hastaState);
+    const desdeformato=this.formatDate(this.desdeState!);
+    const hastaformato=this.formatDate(this.hastaState!);
     return this.suppliers.getQueryStateCountDateCompro(this.cardCode,desdeformato , hastaformato , this.comprobante).subscribe((res:any)=>{
-      console.log(res.rows);
+      this.DataSupliers = res.rows;
+      this.totalRecords1 = res.rows.length;
+      this.btnActiveState=false;
+      this.clearInputsState();
+      this.Paginator1({ first: 0, rows: this.rows1 });
     },(error=>{
       console.log(error)
     }))
@@ -864,6 +878,8 @@ export class SupliersComponent implements OnInit {
 
 
 
+
+
   // data de la retenciones
   getDataWithholdings() {
 
@@ -929,11 +945,17 @@ export class SupliersComponent implements OnInit {
         this.Paginator2({ first: 0, rows: this.rows });
         this.clearInputs();
         this.btnActive=false;
+        this.clearInputswithholdings();
       },(error)=>{
         console.log(error)
       })
   }
 
+  clearInputswithholdings(){
+    this.desde= undefined;
+    this.hasta=undefined;
+    this.comprobanteRete='';
+  }
 
 
 

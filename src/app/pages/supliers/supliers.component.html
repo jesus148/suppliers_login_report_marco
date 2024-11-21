@@ -247,7 +247,7 @@
           <div class="md:col-9">
             <div class="grid">
               <div class="md:col-4 m-1 md:m-auto">
-                <label for="comprobante" class="font-bold block mb-2">Comprobante</label>
+                <label for="comprobante" class="font-bold block mb-2">Comprobante:</label>
                 <input type="text" pInputText  class="w-12" [(ngModel)]="comprobante" id="comprobante">
               </div>
               <div class="md:col-4 m-1 md:m-auto">
@@ -267,8 +267,8 @@
               <p-button icon="pi pi-search"  severity="success"  (click)="seachStateCount()"/>
                                   <p-button  severity="danger"
                                    icon="pi pi-eraser"
-                                   (click)="getDataDeductions()"
-                                 [disabled]="btnActive"/>
+                                   (click)="listData()"
+                                 [disabled]="btnActiveState"/>
                                 <p-button icon="pi pi-file-excel" [rounded]="true" severity="success"
                                 (click)="getDownloadXlsStateCount()"/>
           </div>
@@ -600,7 +600,6 @@ type="ball-fall"
 <!-- MODAL ACTUALIZAR CONTRASEÑA -->
 
 <div class="contenedor2">
-
   <p-dialog header="Actualizar Contraseña" [(visible)]="modalBolean" [style]="{ width: '25rem' , height: '350px' }"  [draggable]="false" [resizable]="false"
     >
 
