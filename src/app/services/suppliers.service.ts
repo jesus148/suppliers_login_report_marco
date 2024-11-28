@@ -98,9 +98,16 @@ export class SuppliersService {
         getQueryStateCountDate(cardCode:string, dateFrom :string , dateTo : string){
           return this.http.get(`${environmentPro.base_url}/account-state-by-dates?cardCode=${cardCode}&dateFrom=${dateFrom}&dateTo=${dateTo}`)
         }
+
+
         // estado de cuenta por fechas y numdoc
         getQueryStateCountDateCompro(carCode:string, dateFrom:string,dateTo:string, docNum:String){
-          return this.http.get(`${environmentPro.base_url}/account-state-by-dates-and-docnum?cardCode=${carCode}&dateFrom=${dateFrom}&dateTo=${dateTo}&docNum=${docNum}`)
+          return this.http.get(`${environmentPro.base_url}/account-state-by-dates-and-docnum?cardCode=${carCode}&docNum=${docNum}`)
+        }
+
+        // estado cuenta solo por docnum
+        getQueryStateStateCountDocnum(cardCode:string , docNum:string){
+          return this.http.get(`${environmentPro.base_url}/account-state-by-docnum?cardCode=${cardCode}&docNum=${docNum}`)
         }
 
 
@@ -138,6 +145,10 @@ export class SuppliersService {
           return this.http.post(`${environmentPro.base_url}/payed-invoices-report`,{rows:body})
         }
 
+        // pagos efectuados fechas
+        getQueryPaymentDates(cardCode:string, dateFrom :string , dateTo : string){
+          return this.http.get(`${environmentPro.base_url}/payed-invoices-by-dates?cardCode=${cardCode}&dateFrom=${dateFrom}&dateTo=${dateTo}`)
+        }
 
 
 

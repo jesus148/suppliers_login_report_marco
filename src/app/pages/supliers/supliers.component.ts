@@ -182,6 +182,14 @@ export class SupliersComponent implements OnInit {
     comprobante:string ='';
 
 
+    //inputs pagos efectuados
+    desdePagos:Date |undefined;
+    hastaPagos:Date |undefined;
+    btnActivePays:boolean=true;
+    maxDatePayments:Date;
+
+
+
 
 
 
@@ -288,6 +296,8 @@ export class SupliersComponent implements OnInit {
     this.maxDate= new Date();
 
     this.maxDateState = new Date();
+
+    this.maxDatePayments = new Date();
 
   }
 
@@ -438,6 +448,7 @@ export class SupliersComponent implements OnInit {
       // formato fechas para las consultas
       const desdeformato=this.formatDate(this.desdeState);
       const hastaformato=this.formatDate(this.hastaState);
+
       return this.suppliers.getQueryStateCountDate(this.cardCode, desdeformato , hastaformato).subscribe((res:any)=>{
         this.DataSupliers = res.rows;
         this.totalRecords1 = res.rows.length;
@@ -447,7 +458,20 @@ export class SupliersComponent implements OnInit {
       })
     }
 
-    const desdeformato=this.formatDate(this.desdeState!);
+
+    if(this.comprobante && !this.desdeState && !this.hastaState){
+    return this.suppliers.getQueryStateStateCountDocnum(this.cardCode,this.comprobante).subscribe((res:any)=>{
+      this.DataSupliers = res.rows;
+      this.totalRecords1 = res.rows.length;
+      this.btnActiveState=false;
+      this.clearInputsState();
+      this.Paginator1({ first: 0, rows: this.rows1 });
+    },(error=>{
+      console.log(error)
+    }))
+    }
+
+        const desdeformato=this.formatDate(this.desdeState!);
     const hastaformato=this.formatDate(this.hastaState!);
     return this.suppliers.getQueryStateCountDateCompro(this.cardCode,desdeformato , hastaformato , this.comprobante).subscribe((res:any)=>{
       this.DataSupliers = res.rows;
@@ -458,6 +482,7 @@ export class SupliersComponent implements OnInit {
     },(error=>{
       console.log(error)
     }))
+
 
   }
 
@@ -723,7 +748,7 @@ export class SupliersComponent implements OnInit {
 
     this.suppliers.getPayedInvoices(data2.CardCode).subscribe((resp: any) => {
       this.dataPayinvoices = resp.rows;
-      this.loading = true;
+      this.btnActivePays = true;
       this.totalRecords5 = resp.rows.length;
       this.PaginatorPay({ first: 0, rows: this.rows5 });
     }, (err) => {
@@ -746,6 +771,26 @@ export class SupliersComponent implements OnInit {
         console.log(error);
       })
 
+    }
+
+    getgetQueryPaymentDates(){
+      if(!this.desdePagos && !this.hastaPagos) return;
+
+      const desdeformato = this.formatDate(this.desdePagos!);
+      const hastaformato = this.formatDate(this.hastaPagos!);
+
+      this.suppliers.getQueryPaymentDates(this.cardCode, desdeformato,hastaformato).subscribe((resp:any)=>{
+        this.dataPayinvoices = resp.rows;
+        this.btnActivePays=false;
+        this.clearInputsPayments();
+        this.totalRecords5 = resp.rows.length;
+        this.PaginatorPay({ first: 0, rows: this.rows5 });
+      })
+    }
+
+    clearInputsPayments(){
+      this.desdePagos= undefined;
+      this.hastaPagos=undefined;
     }
 
 

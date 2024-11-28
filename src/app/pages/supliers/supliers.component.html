@@ -105,8 +105,9 @@
     'md:h-4rem cuentasBanco':activeIndex === 1
   }">
     <div  [ngClass]="{
-      'md:w-7': (btnEstadoCuenta || btnDeducciones || btnPagosEfectuados || btnFirstCuenta || btnRetenciones) && !btnRegistrarBanco  ,
-      'md:w-5 ':!btnEstadoCuenta &&  btnRegistrarBanco && !btnDeducciones && !btnPagosEfectuados && !btnRetenciones,
+      'md:w-7': (btnEstadoCuenta || btnDeducciones || btnPagosEfectuados || btnFirstCuenta || btnRetenciones) && !btnRegistrarBanco ,
+      'md:w-5 ':  btnRegistrarBanco && (!btnDeducciones || !btnPagosEfectuados || !btnRetenciones || !btnEstadoCuenta ),
+      'estilos1': (!btnEstadoCuenta || !btnDeducciones  || !btnFirstCuenta || !btnRetenciones || !btnRegistrarBanco) &&  btnPagosEfectuados,
       'md:text-right':btnRegistrarBanco===true,
     }">
       @if(btnRegistrarBanco){
@@ -199,22 +200,22 @@
           </div>
         </div>
       }@else if(btnPagosEfectuados){
-        <div class="grid">
-          <div class="md:col-9">
+        <div class="grid ">
+          <div class="md:col-8 ">
             <div class="grid">
-              <div class="md:col-4 m-1 md:m-auto">
+              <!-- <div class="md:col-4 m-1 md:m-auto">
                 <label for="comprobante" class="font-bold block mb-2">Comprobante</label>
                 <input type="text" pInputText  class="w-12">
-              </div>
-              <div class="md:col-4 m-1 md:m-auto">
+              </div> -->
+              <div class="md:col-6  ">
                 <label for="desde" class="font-bold block mb-2"> Desde: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
-                  [(ngModel)]="desde"   inputId="desde" [maxDate]="maxDate" />
+                  [(ngModel)]="desdePagos"   inputId="desde" [maxDate]="maxDatePayments" />
               </div>
-              <div class="md:col-4 m-1 md:m-auto">
+              <div class="md:col-6 ">
                 <label for="hasta" class="font-bold block mb-2"> Hasta: </label>
                 <p-calendar placeholder="MM/dd/YYYY" [iconDisplay]="'input'" [showIcon]="true"
-                    inputId="hasta" [(ngModel)]="hasta" [maxDate]="maxDate"/>
+                    inputId="hasta" [(ngModel)]="hastaPagos" [maxDate]="maxDatePayments"/>
               </div>
               <div  class="col-12 md:hidden text-align retenciones__factura flex ">
                  <div class="retenciones__icono" [ngClass]="{
@@ -225,18 +226,18 @@
               </div>
             </div>
           </div>
-          <div class="md:col-3 pt-5 " >
+          <div class="md:col-4 pt-5 " >
           <div class="flex justify-content-center align-content-center gap-1">
 
               <p-button icon="pi pi-search"  severity="success"  [ngClass]="{
                 'hidden overflow-hidden md:block ':activeIndex===2
-              }" (click)="search()"/>
+              }" (click)="getgetQueryPaymentDates()"/>
                                   <p-button  severity="danger"
                                    icon="pi pi-eraser"
-                                   (click)="getDataDeductions()"
+                                   (click)="getPagosEfectuados()"
                                    [ngClass]="{
                                     'hidden overflow-hidden md:block ':activeIndex===2
-                                  }" [disabled]="btnActive"/>
+                                  }" [disabled]="btnActivePays"/>
                                 <p-button icon="pi pi-file-excel" [rounded]="true" severity="success"
                                 (click)="getDownloadXlsPaymentsMade()"/>
           </div>
